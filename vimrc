@@ -24,8 +24,8 @@ set number
 " show command in bottom bar
 set showcmd		
 
-" highlight current line
-set cursorline		
+" don't highlight current line
+set nocursorline		
 
 " load filetype-specific indent files
 filetype indent on	
