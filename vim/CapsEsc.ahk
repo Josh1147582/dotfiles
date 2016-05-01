@@ -1,0 +1,2 @@
+#SingleInstance ignore
+Capslock::Esc
