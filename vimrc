@@ -169,7 +169,7 @@ if exists(':SyntasticStatuslineFlag()')
 endif
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/ycm_extra_conf.py'    
+let g:ycm_global_ycm_extra_conf = '/home/josh/.vim/bundle/ycm_extra_conf.py'    
 " autoclose suggestion windows
 let g:ycm_autoclose_preview_window_after_insertion=1
 

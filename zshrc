@@ -84,6 +84,9 @@ if hash fuck 2>/dev/null; then
     eval $(thefuck --alias)
 fi
 
+# For playing raw data
+alias playdata='aplay -c 2 -f S16_LE -r 44100'
+
 # zsh-syntax-highlighting (MUST BE AT THE BOTTOM OF THIS FILE)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
