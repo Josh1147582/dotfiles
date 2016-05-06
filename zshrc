@@ -47,7 +47,9 @@ bindkey "^[OF" end-of-line
 
 # Ctrl-Left and Ctrl-Right keys move between words
 bindkey ";5C" forward-word
+bindkey "^[[C" forward-word
 bindkey ";5D" backward-word
+bindkey "^[[D" backward-word
 
 # bind UP and DOWN arrow keys
 bindkey '^[[A' history-substring-search-up
