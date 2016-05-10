@@ -28,3 +28,8 @@ d2h(){
 # alias for vim muscle memory when quitting
 alias :q='exit'
 alias :e='vim'
+
+# allow X forwarding in Cygwin
+if [ $(uname -o) == "Cygwin" ]; then
+    export DISPLAY=:0
+fi
