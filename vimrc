@@ -56,7 +56,7 @@ set foldmethod=indent
 
 " set shell to zsh (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
-    if filereadable("/bin/zsh")
+    if filereadable("/bin/zsh") && $SHELL=="/bin/zsh"
         silent! set shell=/bin/zsh  
     endif
 endif
@@ -70,7 +70,7 @@ function! UnixCapsControl()
 endfunction
 
 " map caps lock to escape under Linux
-if !(has("win32") || has("win16") || has("win32unix"))
+if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY)
     au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
     au VimLeave * :call UnixCapsControl() 
 endif
@@ -169,7 +169,7 @@ if exists(':SyntasticStatuslineFlag()')
 endif
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/ycm_extra_conf.py'    
+let g:ycm_global_ycm_extra_conf = '/home/josh/.vim/bundle/ycm_extra_conf.py'    
 " autoclose suggestion windows
 let g:ycm_autoclose_preview_window_after_insertion=1
 

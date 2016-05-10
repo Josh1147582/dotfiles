@@ -47,7 +47,9 @@ bindkey "^[OF" end-of-line
 
 # Ctrl-Left and Ctrl-Right keys move between words
 bindkey ";5C" forward-word
+bindkey "^[[C" forward-word
 bindkey ";5D" backward-word
+bindkey "^[[D" backward-word
 
 # bind UP and DOWN arrow keys
 bindkey '^[[A' history-substring-search-up
@@ -83,6 +85,9 @@ alias :q='exit'
 if hash fuck 2>/dev/null; then
     eval $(thefuck --alias)
 fi
+
+# For playing raw data
+alias playdata='aplay -c 2 -f S16_LE -r 44100'
 
 # zsh-syntax-highlighting (MUST BE AT THE BOTTOM OF THIS FILE)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
