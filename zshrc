@@ -47,9 +47,9 @@ bindkey "^[OF" end-of-line
 
 # Ctrl-Left and Ctrl-Right keys move between words
 bindkey ";5C" forward-word
-bindkey "^[[C" forward-word
+# bindkey "^[[C" forward-word
 bindkey ";5D" backward-word
-bindkey "^[[D" backward-word
+# bindkey "^[[D" backward-word
 
 # bind UP and DOWN arrow keys
 bindkey '^[[A' history-substring-search-up
@@ -66,14 +66,6 @@ export PATH=$HOME/bin:$PATH
 # Flags used for CS243 "Mechanics of Programming"
 alias gcc='gcc -std=c99 -Wall -ggdb -Wextra -pedantic'
 
-# Functions for converting between hex and decimal
-h2d(){
-    echo "ibase=16; $@"|bc
-  }
-d2h(){
-    echo "obase=16; $@"|bc
-}
-
 # devkitPro/devkitPPC sources
 export DEVKITPRO=/home/josh/devkitPro/ 
 export DEVKITPPC=/home/josh/devkitPro//devkitPPC
@@ -86,8 +78,8 @@ if hash fuck 2>/dev/null; then
     eval $(thefuck --alias)
 fi
 
-# For playing raw data
-alias playdata='aplay -c 2 -f S16_LE -r 44100'
+# Instantly write history
+setopt -o sharehistory
 
 # zsh-syntax-highlighting (MUST BE AT THE BOTTOM OF THIS FILE)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
