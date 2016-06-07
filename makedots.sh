@@ -12,3 +12,7 @@ ln -s $DIR/zsh .zsh
 
 rm -i .bashrc
 ln -s $DIR/bashrc .bashrc
+
+mkdir -p .config/
+rm -ri .config/nvim
+ln -s $DIR/vim .config/nvim

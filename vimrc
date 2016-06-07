@@ -70,7 +70,7 @@ function! UnixCapsControl()
 endfunction
 
 " map caps lock to escape under Linux
-if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY)
+if !(has("win32") && !has("win16") && !has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
     au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
     au VimLeave * :call UnixCapsControl() 
 endif
@@ -97,7 +97,7 @@ function! CygwinCapsControl()
     endif
 endfunction
 
-" map caps lock to excape under Cygwin
+" map caps lock to escape under Cygwin
 if (has("win32unix"))
     au VimEnter * silent! !/home/josh/.vim/CapsEsc.exe &
     au VimLeave * :call CygwinCapsControl()
@@ -132,13 +132,6 @@ com! DiffSaved call s:DiffWithSaved()
 " map the comp buff function above
 noremap <Leader>d :DiffSaved<CR>
 
-" function to write a file and immediately run make
-function! s:writeAndMake()
-    :w
-    :make
-endfunction
-com! WriteMake call s:writeAndMake()
-
 " map the write and make function
 noremap <Leader>c :WriteMake<CR>
 
@@ -156,7 +149,7 @@ noremap <Leader>g :Geeknote<CR>
 " show undo tree
 noremap <Leader>u :UndotreeToggle<CR>  
 
-" syntastic 
+" syntastic/YCM 
 if exists(':SyntasticStatuslineFlag()')
     set statusline+=%#warningmsg#
     set statusline+=%{SyntasticStatuslineFlag()}
@@ -170,6 +163,7 @@ endif
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '/home/josh/.vim/bundle/ycm_extra_conf.py'    
+
 " autoclose suggestion windows
 let g:ycm_autoclose_preview_window_after_insertion=1
 
