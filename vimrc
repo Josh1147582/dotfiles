@@ -21,6 +21,9 @@ set expandtab
 " show line numbers
 set number		
 
+" show relative line numbers
+set rnu
+
 " show command in bottom bar
 set showcmd		
 
@@ -53,6 +56,24 @@ map <space> <leader>
 
 " fold based on indent level
 set foldmethod=indent	
+
+" toggle relative line nums when focus is gained/lost
+:au FocusLost * :set norelativenumber
+:au FocusGained * :set relativenumber
+
+" map C-n to toggle line nums
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set norelativenumber
+    else
+        set relativenumber
+    endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<CR>
+
+" Esc clears search highlight
+nnoremap <silent> <esc> :noh<cr><esc>
 
 " set shell to zsh (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
