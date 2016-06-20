@@ -194,3 +194,6 @@ highlight YcmWarningSign ctermfg=Yellow
 
 highlight YcmErrorSection ctermfg=Red
 highlight YcmErrorsign ctermfg=Red
+
+" vim-airline
+set laststatus=2
