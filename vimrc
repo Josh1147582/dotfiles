@@ -13,49 +13,49 @@ set tabstop=4
 set softtabstop=4
 
 " number of space when using > or <
-set shiftwidth=4	
+set shiftwidth=4
 
 " tabs are spaces
-set expandtab		
+set expandtab
 
 " show line numbers
-set number		
+set number
 
 " show relative line numbers
 set rnu
 
 " show command in bottom bar
-set showcmd		
+set showcmd
 
 " don't highlight current line
-set nocursorline		
+set nocursorline
 
 " load filetype-specific indent files
-filetype indent on	
+filetype indent on
 
 " visual autocomplete for command menu
-set wildmenu		
+set wildmenu
 
 " redraw only when necessary (faster macros)
-set lazyredraw		
+set lazyredraw
 
 " highlight matching brackets
-set showmatch		
+set showmatch
 
 " search as characters are entered
-set incsearch   
+set incsearch
 
 " fold based on indent
-set foldmethod=indent   
+set foldmethod=indent
 
 " foldlevel when window is loaded
-set foldlevelstart=1   
+set foldlevelstart=1
 
 " space is Leader
 map <space> <leader>
 
 " fold based on indent level
-set foldmethod=indent	
+set foldmethod=indent
 
 " toggle relative line nums when focus is gained/lost
 :au FocusLost * :set norelativenumber
@@ -78,7 +78,7 @@ nnoremap <silent> <esc> :noh<cr><esc>
 " set shell to zsh (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
     if filereadable("/bin/zsh") && $SHELL=="/bin/zsh"
-        silent! set shell=/bin/zsh  
+        silent! set shell=/bin/zsh
     endif
 endif
 
@@ -93,7 +93,7 @@ endfunction
 " map caps lock to escape under Linux
 if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
     au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    au VimLeave * :call UnixCapsControl() 
+    au VimLeave * :call UnixCapsControl()
 endif
 
 " function to check for running instances of vim on Windows
@@ -125,13 +125,13 @@ if (has("win32unix"))
 endif
 
 " swap files are rotated every 10 keystrokes
-set updatecount=10  
+set updatecount=10
 
 " backspace is used to remove previous characters, indents, and newlines
-set backspace=indent,eol,start	
+set backspace=indent,eol,start
 
 " <Leader>l formats a line
-noremap <Leader>l Vgq   
+noremap <Leader>l Vgq
 
 " make an undo file to allow undoing after closing a file
 set undofile
@@ -159,18 +159,21 @@ noremap <Leader>c :WriteMake<CR>
 " write w/ privileges when Vim isn't started as root
 cmap w!! %!sudo tee > /dev/null %
 
+" remove trailing whitespace and return to start position
+noremap <Leader>w :%s/\s\+$//<CR>``
+
 " plugins
 
 " show recently opened files
-noremap <Leader>m :MRU<CR>  
+noremap <Leader>m :MRU<CR>
 
 " Start Geeknote
-noremap <Leader>g :Geeknote<CR>  
+noremap <Leader>g :Geeknote<CR>
 
 " show undo tree
-noremap <Leader>u :UndotreeToggle<CR>  
+noremap <Leader>u :UndotreeToggle<CR>
 
-" syntastic/YCM 
+" syntastic/YCM
 if exists(':SyntasticStatuslineFlag()')
     set statusline+=%#warningmsg#
     set statusline+=%{SyntasticStatuslineFlag()}
@@ -183,7 +186,7 @@ if exists(':SyntasticStatuslineFlag()')
 endif
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '/home/josh/.vim/bundle/ycm_extra_conf.py'    
+let g:ycm_global_ycm_extra_conf = '/home/josh/.vim/bundle/ycm_extra_conf.py'
 
 " autoclose suggestion windows
 let g:ycm_autoclose_preview_window_after_insertion=1
