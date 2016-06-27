@@ -1,18 +1,18 @@
 DIR=$(pwd)
 cd ~
-rm -i .vimrc
-ln -s $DIR/vimrc .vimrc
-rm -i .vim
-ln -s $DIR/vim .vim
 
-rm -i .zshrc
-ln -s $DIR/zshrc .zshrc
-rm -i .zsh
-ln -s $DIR/zsh .zsh
-
-rm -i .bashrc
-ln -s $DIR/bashrc .bashrc
+for i in {vimrc, vim, zshrc, zsh, bashrc}
+do
+    if [ -f .$i ]
+    then
+        rm -i .$i
+    fi
+    ln -s $DIR/$i .$i
+done
 
 mkdir -p .config/
-rm -ri .config/nvim
+if [ -d .config/nvim ]
+then
+    rm -ri .config/nvim
+fi
 ln -s $DIR/vim .config/nvim
