@@ -1,7 +1,7 @@
 DIR=$(pwd)
 cd ~
 
-for i in {vimrc, vim, zshrc, zsh, bashrc}
+for i in vimrc vim zshrc zsh bashrc
 do
     if [ -f .$i ]
     then
