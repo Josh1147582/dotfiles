@@ -51,10 +51,6 @@ bindkey ";5C" forward-word
 bindkey ";5D" backward-word
 # bindkey "^[[D" backward-word
 
-# bind UP and DOWN arrow keys
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
 # Used for X forwarding in Cygwin
 if [[ "$(uname -o)" != "GNU/Linux" ]]; then
     DISPLAY=:1.0
