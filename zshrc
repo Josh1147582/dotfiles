@@ -86,6 +86,3 @@ setopt HIST_IGNORE_DUPS
 
 # zsh-syntax-highlighting (MUST BE AT THE BOTTOM OF THIS FILE)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# zsh-history-substring-search (MUST BE BELOW SYNTAX HIGHLIGHTING)
-source ~/.zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
