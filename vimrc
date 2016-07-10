@@ -92,7 +92,8 @@ endif
 "endfunction
 "
 "" map caps lock to escape under Linux
-"if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
+"!(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
+"
 "    au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 "    au VimLeave * :call UnixCapsControl()
 "endif
