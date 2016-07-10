@@ -75,54 +75,55 @@ nnoremap <C-n> :call NumberToggle()<CR>
 " Esc clears search highlight
 nnoremap <silent> <esc> :noh<cr><esc>
 
-" set shell to zsh (if it exists)
+" set shell to zsh on linux (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
     if filereadable("/bin/zsh") && $SHELL=="/bin/zsh"
         silent! set shell=/bin/zsh
     endif
 endif
 
-" function to check for running instances of vim on Linux
-function! UnixCapsControl()
-    silent! let running = system('echo $(pgrep -c vim)')
-    if(running <= 1)
-        silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
-    endif
-endfunction
-
-" map caps lock to escape under Linux
-if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
-    au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-    au VimLeave * :call UnixCapsControl()
-endif
-
-" function to check for running instances of vim on Windows
-function! WindowsCapsControl()
-    silent! let running = system('tasklist /FI "IMAGENAME eq vim.exe" 2>NUL | find /I /C "vim.exe"')
-    if(running <= 1)
-        silent! !start taskkill /IM CapsEsc.exe
-    endif
-endfunction
-
-" map caps lock to escape under Windows
-if (has("win32") || has("win16"))
-    au VimEnter * silent! !start C:\Users\Josh\vimfiles\CapsEsc.exe
-    au VimLeave * :call WindowsCapsControl()
-endif
+"caps switching functions - unused
+"" function to check for running instances of vim on Linux
+"function! UnixCapsControl()
+"    silent! let running = system('echo $(pgrep -c vim)')
+"    if(running <= 1)
+"        silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+"    endif
+"endfunction
 "
-" function to check for running instances of vim on Cygwin
-function! CygwinCapsControl()
-    silent! let running = system('echo $(pgrep -c vim)')
-    if(running <= 1)
-        silent! !pkill CapsEsc
-    endif
-endfunction
-
-" map caps lock to escape under Cygwin
-if (has("win32unix"))
-    au VimEnter * silent! !/home/josh/.vim/CapsEsc.exe &
-    au VimLeave * :call CygwinCapsControl()
-endif
+"" map caps lock to escape under Linux
+"if !(has("win32") || has("win16") || has("win32unix")) && (!$SSH_CLIENT && !$SSH_TTY) && executable("xmodmap")
+"    au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+"    au VimLeave * :call UnixCapsControl()
+"endif
+"
+"" function to check for running instances of vim on Windows
+"function! WindowsCapsControl()
+"    silent! let running = system('tasklist /FI "IMAGENAME eq vim.exe" 2>NUL | find /I /C "vim.exe"')
+"    if(running <= 1)
+"        silent! !start taskkill /IM CapsEsc.exe
+"    endif
+"endfunction
+"
+"" map caps lock to escape under Windows
+"if (has("win32") || has("win16"))
+"    au VimEnter * silent! !start C:\Users\Josh\vimfiles\CapsEsc.exe
+"    au VimLeave * :call WindowsCapsControl()
+"endif
+""
+"" function to check for running instances of vim on Cygwin
+"function! CygwinCapsControl()
+"    silent! let running = system('echo $(pgrep -c vim)')
+"    if(running <= 1)
+"        silent! !pkill CapsEsc
+"    endif
+"endfunction
+"
+"" map caps lock to escape under Cygwin
+"if (has("win32unix"))
+"    au VimEnter * silent! !/home/josh/.vim/CapsEsc.exe &
+"    au VimLeave * :call CygwinCapsControl()
+"endif
 
 " swap files are rotated every 10 keystrokes
 set updatecount=10
@@ -199,4 +200,5 @@ highlight YcmErrorSection ctermfg=Red
 highlight YcmErrorsign ctermfg=Red
 
 " vim-airline
+" place the airline bar above the command line
 set laststatus=2
