@@ -57,6 +57,9 @@ map <space> <leader>
 " fold based on indent level
 set foldmethod=indent
 
+" disable the mouse
+set mouse=
+
 " toggle relative line nums when focus is gained/lost
 :au FocusLost * :set norelativenumber
 :au FocusGained * :set relativenumber
