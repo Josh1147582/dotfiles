@@ -1,13 +1,12 @@
 DIR=$(pwd)
-cd ~
 
 for i in vimrc vim zshrc zsh bashrc tmux.conf
 do
-    if [ -f .$i ]
+    if [ -f $HOME/.$i ]
     then
-        rm -i .$i
+        rm -i $HOME/.$i
     fi
-    ln -s $DIR/$i .$i
+    ln -s $DIR/$i $HOME/.$i
 done
 
 mkdir -p .config/
