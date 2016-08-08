@@ -76,7 +76,9 @@ endfunc
 nnoremap <C-n> :call NumberToggle()<CR>
 
 " Esc clears search highlight
-nnoremap <silent> <esc> :noh<cr><esc>
+if has('nvim')
+    nnoremap <silent> <esc> :noh<cr><esc>
+endif
 
 " set shell to zsh on linux (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
