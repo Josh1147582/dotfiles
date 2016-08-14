@@ -4,9 +4,6 @@
 [submodule "vim/bundle/undotree"]
 	path = vim/bundle/undotree
 	url = https://github.com/mbbill/undotree
-[submodule "vim/bundle/vim-geeknote"]
-	path = vim/bundle/vim-geeknote
-	url = https://github.com/neilagabriel/vim-geeknote
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic
