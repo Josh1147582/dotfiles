@@ -1,3 +1,4 @@
+
 " start plugins
 execute pathogen#infect()
 
@@ -74,11 +75,6 @@ function! NumberToggle()
 endfunc
 
 nnoremap <C-n> :call NumberToggle()<CR>
-
-" Esc clears search highlight
-if has('nvim')
-    nnoremap <silent> <esc> :noh<cr><esc>
-endif
 
 " set shell to zsh on linux (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
@@ -169,6 +165,15 @@ cmap w!! %!sudo tee > /dev/null %
 " remove trailing whitespace and return to start position
 noremap <Leader>w :%s/\s\+$//<CR>``
 
+" toggle background
+function! ClearBG()
+  highlight Normal ctermbg=none
+endfunction
+
+function! BlackBG()
+  highlight Nornal ctermbg=black
+endfunction
+
 " plugins
 
 " show recently opened files
@@ -208,3 +213,13 @@ highlight YcmErrorsign ctermfg=Red
 " vim-airline
 " place the airline bar above the command line
 set laststatus=2
+
+" neovim
+
+if has('nvim')
+    " Esc clears search highlight
+    nnoremap <silent> <esc> :noh<cr><esc>
+
+    " Esc returns to normal mode in terminal mode
+    tnoremap <Esc> <C-\><C-n>
+endif
