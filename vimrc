@@ -221,5 +221,5 @@ if has('nvim')
     nnoremap <silent> <esc> :noh<cr><esc>
 
     " Esc returns to normal mode in terminal mode
-    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-w> <C-\><C-n><C-w>
 endif
