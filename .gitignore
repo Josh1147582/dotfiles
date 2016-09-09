@@ -1,3 +1,4 @@
 vim/bundle/ycm_extra_conf.pyc
+vim/bundle/__pycache__
 *.swp
 vim/.netrwhist
