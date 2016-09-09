@@ -1,4 +1,3 @@
-
 " start plugins
 execute pathogen#infect()
 
@@ -36,6 +35,9 @@ filetype indent on
 
 " visual autocomplete for command menu
 set wildmenu
+
+" don't autocomplete on first tab press
+set wildmode=list,full
 
 " redraw only when necessary (faster macros)
 set lazyredraw
@@ -86,6 +88,9 @@ set updatecount=10
 " backspace is used to remove previous characters, indents, and newlines
 set backspace=indent,eol,start
 
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+imap <C-BS> <C-W>
+
 " make an undo file to allow undoing after closing a file
 set undofile
 set undodir=~/.vim/undodir
@@ -115,8 +120,16 @@ function! ClearBG()
 endfunction
 
 function! BlackBG()
-  highlight Nornal ctermbg=black
+  highlight Normal ctermbg=black
 endfunction
+
+" remove trailing whitespace and return to start position
+" remove lighlight if in nvim
+if has('nvim')
+    noremap <Leader>w :%s/\s\+$//<CR>:nohl<CR>``
+else
+    noremap <Leader>w :%s/\s\+$//<CR>``
+endif
 
 " ensure normal tabs and 8 space tabs in assembly files
 autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0
