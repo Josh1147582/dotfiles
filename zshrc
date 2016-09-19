@@ -80,5 +80,8 @@ setopt -o sharehistory
 # Ignore duplicates in history
 setopt HIST_IGNORE_DUPS
 
+# timestamp alias for dates
+alias ts='date +%y-%m-%d'
+
 # zsh-syntax-highlighting (MUST BE AT THE BOTTOM OF THIS FILE)
 source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
