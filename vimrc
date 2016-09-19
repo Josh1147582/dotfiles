@@ -30,6 +30,9 @@ set showcmd
 " don't highlight current line
 set nocursorline
 
+" disable search highlight
+set nohlsearch
+
 " load filetype-specific indent files
 filetype indent on
 
@@ -189,9 +192,6 @@ set laststatus=2
 " neovim
 
 if has('nvim')
-    " Esc clears search highlight
-    nnoremap <silent> <esc> :noh<cr><esc>
-
     " Esc returns to normal mode in terminal mode
     tnoremap <C-w> <C-\><C-n><C-w>
 endif
