@@ -40,7 +40,7 @@ filetype indent on
 set wildmenu
 
 " don't autocomplete on first tab press
-set wildmode=list,full
+set wildmode=longest,full
 
 " redraw only when necessary (faster macros)
 set lazyredraw
