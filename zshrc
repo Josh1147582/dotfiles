@@ -12,6 +12,9 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# List of word delimeters
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 # Use prompt colors (green for regular user, red for root)
 autoload -U colors && colors
 if [ "$(id -u)" != "0" ]; then
