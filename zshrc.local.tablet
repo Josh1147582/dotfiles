@@ -1,0 +1,7 @@
+# apt-get aliases 
+alias update='sudo apt-get update && sudo apt-get dist-upgrade' 
+alias clean='sudo apt-get clean'
+
+# devkit
+export DEVKITPRO=/mnt/data/devkitPro
+export DEVKITARM=${DEVKITPRO}/devkitARM

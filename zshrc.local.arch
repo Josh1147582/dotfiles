@@ -1,0 +1,9 @@
+# Used to keep steam from throwing errors
+export SWT_GTK3=0
+
+# devkitPro/devkitPPC sources
+export DEVKITPRO=/home/josh/devkitPro/ 
+export DEVKITPPC=/home/josh/devkitPro/devkitPPC
+
+# local folder in PATH for UE4
+export PATH=$HOME/bin:$PATH
