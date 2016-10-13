@@ -74,4 +74,4 @@ if [ -d .config/nvim ]
 then
     rm -ri .config/nvim
 fi
-ln -s $DIR/vim .config/nvim
+ln -s $DIR/vim $HOME/.config/nvim
