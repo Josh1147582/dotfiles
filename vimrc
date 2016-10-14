@@ -127,7 +127,7 @@ function! BlackBG()
 endfunction
 
 " remove trailing whitespace and return to start position
-" remove lighlight if in nvim
+" remove highlight if in nvim
 if has('nvim')
     noremap <Leader>w :%s/\s\+$//<CR>:nohl<CR>``
 else
@@ -188,6 +188,9 @@ highlight YcmErrorsign ctermfg=Red
 " vim-airline
 " place the airline bar above the command line
 set laststatus=2
+
+" ignore trailing whitespace in markdown
+autocmd FileType markdown AirlineToggleWhitespace
 
 " neovim
 
