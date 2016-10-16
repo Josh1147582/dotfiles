@@ -2,4 +2,4 @@
 alias update='sudo apt-get update && sudo apt-get dist-upgrade' 
 alias clean='sudo apt-get clean'
 
-
+alias zork='sudo ttyecho -n /dev/tty7'
