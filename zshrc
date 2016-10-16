@@ -30,6 +30,7 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 # ls pleasantness
 alias l='\ls --color=auto'
 alias ls='ls --color=auto'
+alias la='ls -a --color=auto'
 alias lsa='ls -a --color=auto'
 alias lls='ls -lh --color=auto'
 alias ll='ls -lh --color=auto'
