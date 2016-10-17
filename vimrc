@@ -1,67 +1,39 @@
 " start plugins
 execute pathogen#infect()
 
-" set black color scheme
-colorscheme torte
-" enable syntax processing
-syntax enable
+" space is Leader
+map <space> <leader>
 
-" number of visual spaces per TAB
-set tabstop=4
+""" Visual
 
-" number of spaces in tab when editing
-set softtabstop=4
+colorscheme torte " set black color scheme
 
-" number of space when using > or <
-set shiftwidth=4
+syntax enable " enable syntax processing
 
-" tabs are spaces
-set expandtab
+set nocursorline " don't highlight current line
 
-" show line numbers
-set number
+set nohlsearch " disable search highlight
 
-" show relative line numbers
-set rnu
+set showmatch " highlight matching brackets
 
-" show command in bottom bar
-set showcmd
+set lazyredraw " redraw only when necessary (faster macros)
 
-" don't highlight current line
-set nocursorline
+""" Tabs
 
-" disable search highlight
-set nohlsearch
+set tabstop=4 " number of visual spaces per TAB
 
-" load filetype-specific indent files
-filetype indent on
+set softtabstop=4 " number of spaces in tab when editing
 
-" visual autocomplete for command menu
-set wildmenu
+set shiftwidth=4 " number of space when using > or <
 
-" don't autocomplete on first tab press
-set wildmode=longest,full
+set expandtab " tabs are spaces
 
-" redraw only when necessary (faster macros)
-set lazyredraw
 
-" highlight matching brackets
-set showmatch
+""" Numbering
 
-" search as characters are entered
-set incsearch
+set number " show line numbers
 
-" fold based on indent
-set foldmethod=indent
-
-" foldlevel when window is loaded
-set foldlevelstart=1
-
-" fold based on indent level
-set foldmethod=indent
-
-" disable the mouse
-set mouse=
+set rnu " show relative line numbers
 
 " toggle relative line nums when focus is gained/lost
 :au FocusLost * :set norelativenumber
@@ -76,7 +48,54 @@ function! NumberToggle()
     endif
 endfunc
 
-nnoremap <C-n> :call NumberToggle()<CR>
+nnoremap <Leader>n :call NumberToggle()<CR>
+
+
+""" Command menu and Searching
+
+set wildmenu " visual autocomplete for command menu
+
+set wildmode=longest,full " don't autocomplete on first tab press
+
+set showcmd " show command in bottom bar
+
+set incsearch " search as characters are entered
+
+" search through subdirectories when looking for files
+set path+=**
+
+
+""" Folds
+
+set foldmethod=indent " fold based on indent
+
+set foldlevelstart=1 " foldlevel when window is loaded
+
+set foldmethod=indent " fold based on indent level
+
+
+""" Insert mode
+
+" backspace is used to remove previous characters, indents, and newlines
+set backspace=indent,eol,start
+
+" Map Ctrl-Backspace to delete the previous word in insert mode.
+imap <C-BS> <C-W>
+
+
+""" Filetypes
+
+autocmd FileType make setlocal noexpandtab " set Makefiles with tabs not spaces
+
+filetype indent on " load filetype-specific indent files
+
+" ensure normal tabs and 8 space tabs in assembly files
+autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0
+
+
+""" System/OS
+
+set mouse= " disable the mouse
 
 " set shell to zsh on linux (if it exists)
 if !(has("win32") || has("win16") || has("win32unix"))
@@ -85,21 +104,11 @@ if !(has("win32") || has("win16") || has("win32unix"))
     endif
 endif
 
-" swap files are rotated every 10 keystrokes
-set updatecount=10
-
-" backspace is used to remove previous characters, indents, and newlines
-set backspace=indent,eol,start
-
-" Map Ctrl-Backspace to delete the previous word in insert mode.
-imap <C-BS> <C-W>
+set updatecount=10 " swap files are rotated every 10 keystrokes
 
 " make an undo file to allow undoing after closing a file
 set undofile
 set undodir=~/.vim/undodir
-
-" set Makefiles with tabs not spaces
-autocmd FileType make setlocal noexpandtab
 
 " compare current buffer to saved file
 function! s:DiffWithSaved()
@@ -110,6 +119,9 @@ function! s:DiffWithSaved()
   exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 com! DiffSaved call s:DiffWithSaved()
+
+" map the comp buff function above
+noremap <Leader>d :DiffSaved<CR>
 
 " write w/ privileges when Vim isn't started as root
 cmap w!! %!sudo tee > /dev/null %
@@ -126,6 +138,9 @@ function! BlackBG()
   highlight Normal ctermbg=black
 endfunction
 
+
+""" Key shortcuts
+
 " remove trailing whitespace and return to start position
 " remove highlight if in nvim
 if has('nvim')
@@ -134,25 +149,11 @@ else
     noremap <Leader>w :%s/\s\+$//<CR>``
 endif
 
-" ensure normal tabs and 8 space tabs in assembly files
-autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0
-
-" space is Leader
-map <space> <leader>
-
 " <Leader>l formats a line
 noremap <Leader>l Vgq
 
-" map the comp buff function above
-noremap <Leader>d :DiffSaved<CR>
 
-" map the write and make function
-noremap <Leader>c :WriteMake<CR>
-
-" remove trailing whitespace and return to start position
-noremap <Leader>w :%s/\s\+$//<CR>``
-
-" plugins
+""" Plugins
 
 " show recently opened files
 noremap <Leader>m :MRU<CR>
@@ -185,14 +186,14 @@ highlight YcmWarningSign ctermfg=Yellow
 highlight YcmErrorSection ctermfg=Red
 highlight YcmErrorsign ctermfg=Red
 
-" vim-airline
-" place the airline bar above the command line
+" place the vim-airline bar above the command line
 set laststatus=2
 
 " ignore trailing whitespace in markdown
 autocmd FileType markdown AirlineToggleWhitespace
 
-" neovim
+
+""" Neovim
 
 if has('nvim')
     " Esc returns to normal mode in terminal mode
