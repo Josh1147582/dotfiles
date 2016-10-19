@@ -61,3 +61,10 @@ alias ts='date +%y-%m-%d'
 
 # default to terminal emacs
 alias emacs='emacs -nw'
+
+# enable syntax highlighting in grml
+if [ ! $ZSH_CUSTOM ]
+then
+    source .zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
