@@ -66,7 +66,7 @@ alias emacs='emacs -nw'
 if [ ! $ZSH_CUSTOM ]
 then
     # enable syntax highlighting
-    source .zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
     # enable C-s for forward search
     stty -ixon
