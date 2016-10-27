@@ -152,6 +152,17 @@ endif
 " <Leader>l formats a line
 noremap <Leader>l Vgq
 
+" <Leader>s toggles spelling
+function! SpellToggle()
+    if(&spell == 1)
+        setlocal nospell
+    else
+        setlocal spell spelllang=en_us
+    endif
+endfunc
+
+nnoremap <Leader>s :call SpellToggle()<CR>
+
 
 """ Plugins
 
