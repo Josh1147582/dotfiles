@@ -22,7 +22,7 @@ bindkey -e
 zstyle :compinstall filename '/home/josh/.zshrc'
 
 autoload -Uz compinit
-compinit
+compinit -u
 
 # List of word delimeters
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
