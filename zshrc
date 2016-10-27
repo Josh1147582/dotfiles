@@ -62,6 +62,9 @@ alias ts='date +%y-%m-%d'
 # default to terminal emacs
 alias emacs='emacs -nw'
 
+# alias for getting latest file in a folder
+alias latest='ls -t | head -n 1'
+
 # grml
 if [ ! $ZSH_CUSTOM ]
 then
