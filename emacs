@@ -52,9 +52,11 @@ Return a list of installed packages or nil for every skipped package."
 
 
 ;; TODO:
+;; Go through the tutorials, skim the manuals
+;; learning elisp
+;; Fuzzy
 ;; Evil leader mode
 ;; Hotkey for undo tree
 ;; autocomplete
 ;; recent files
 ;; magit bindings
-;; learning elisp
