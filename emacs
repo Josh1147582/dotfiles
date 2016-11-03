@@ -27,15 +27,26 @@ Return a list of installed packages or nil for every skipped package."
 ;; Activate installed packages
 (package-initialize)
 
-;; Assuming you wish to install "iedit" and "magit"
+;; Check that all packages are installed
 (ensure-package-installed 'iedit
 			  'magit
 			  'undo-tree
-			  'evil)
+			  'evil
+			  'evil-leader)
+
+;; Evil leader is Space
+(global-evil-leader-mode)
+(evil-leader/set-leader "<SPC>")
+
+;; Leader keybinds
+(evil-leader/set-key
+  "u" 'undo-tree-visualize)
+;; 'evil-window-move-far-left
 
 ;; Default to evil mode
 (require 'evil)
 (evil-mode t)
+
 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -49,7 +60,6 @@ Return a list of installed packages or nil for every skipped package."
          `(("." . ,(concat user-emacs-directory "undo"))))
    (unless (file-exists-p (concat user-emacs-directory "undo"))
 (make-directory (concat user-emacs-directory "undo")))
-
 
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
