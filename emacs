@@ -28,20 +28,23 @@ Return a list of installed packages or nil for every skipped package."
 (package-initialize)
 
 ;; Check that all packages are installed
-(ensure-package-installed 'iedit
-			  'magit
-			  'undo-tree
-			  'evil
-			  'evil-leader)
+(ensure-package-installed
+ 'iedit
+ 'magit
+ 'undo-tree
+ 'evil
+ 'evil-leader
+ 'evil-tabs
+ 'zenburn-theme
+ 'powerline-evil
+ )
 
 ;; Evil leader is Space
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
 
-;; Leader keybinds
-(evil-leader/set-key
-  "u" 'undo-tree-visualize)
-;; 'evil-window-move-far-left
+;; Evil tabs
+(global-evil-tabs-mode t)
 
 ;; Default to evil mode
 (require 'evil)
@@ -61,6 +64,37 @@ Return a list of installed packages or nil for every skipped package."
    (unless (file-exists-p (concat user-emacs-directory "undo"))
 (make-directory (concat user-emacs-directory "undo")))
 
+;; Delete info bindings for evil to take over
+(define-key Info-mode-map "g" nil)
+(define-key Info-mode-map "n" nil)
+(define-key Info-mode-map "p" nil)
+
+;; Leave the clipboard alone
+(setq x-select-enable-clipboard nil)
+
+;; Never follow symlinks
+(setq vc-follow-symlinks nil)
+
+;; Save minibar history
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
+;; Powerline
+(require 'powerline)
+(powerline-vim-theme)
+
+;; Recent Files
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; Leader keybinds
+(evil-leader/set-key
+  "u" 'undo-tree-visualize
+  "m" 'recentf-open-files)
+
+
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
 ;; learning elisp
@@ -70,3 +104,25 @@ Return a list of installed packages or nil for every skipped package."
 ;; autocomplete
 ;; recent files
 ;; magit bindings
+
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (zenburn)))
+ '(custom-safe-themes
+   (quote
+    ("4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
+ '(package-selected-packages
+   (quote
+    (evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
