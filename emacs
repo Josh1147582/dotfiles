@@ -50,10 +50,6 @@ Return a list of installed packages or nil for every skipped package."
 (require 'evil)
 (evil-mode t)
 
-
-;; All yes or no prompts are y or n
-(defalias 'yes-or-no-p 'y-or-n-p)
-
 ;; Disable file backup
 (setq make-backup-files nil)
 
@@ -69,15 +65,6 @@ Return a list of installed packages or nil for every skipped package."
 (define-key Info-mode-map "n" nil)
 (define-key Info-mode-map "p" nil)
 
-;; Leave the clipboard alone
-(setq x-select-enable-clipboard nil)
-
-;; Never follow symlinks
-(setq vc-follow-symlinks nil)
-
-;; Save minibar history
-(savehist-mode 1)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
 ;; Powerline
 (require 'powerline)
@@ -95,6 +82,20 @@ Return a list of installed packages or nil for every skipped package."
   "m" 'recentf-open-files)
 
 
+;; Leave the clipboard alone
+(setq x-select-enable-clipboard nil)
+
+;; All yes or no prompts are y or n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;; Never follow symlinks
+(setq vc-follow-symlinks nil)
+
+;; Text and Notes
+(setq sentence-end-double-space nil)
+;; Save minibar history
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
 ;; learning elisp
@@ -117,6 +118,13 @@ Return a list of installed packages or nil for every skipped package."
  '(custom-safe-themes
    (quote
     ("4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
+ '(inhibit-default-init t)
+ '(inhibit-startup-buffer-menu nil)
+ '(inhibit-startup-echo-area-message "josh")
+ '(initial-buffer-choice t)
+ '(initial-scratch-message ";; scratch buffer
+
+")
  '(package-selected-packages
    (quote
     (evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
