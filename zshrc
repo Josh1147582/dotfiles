@@ -2,7 +2,7 @@
 source ~/.zshrc.local
 
 # load antigen if it exists
-if [ -e ~/.antigen.zsh ]
+if [ -h ~/.antigen.zsh ]
 then
 
     source ~/.antigen.zsh

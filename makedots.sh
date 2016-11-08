@@ -45,7 +45,7 @@ ln -s $DIR/vim $HOME/.config/nvim
 
 
 # Antigen
-if [ -e $HOME/.antigen.zsh ]
+if [ -h $HOME/.antigen.zsh ]
 then
     rm -i $HOME/.antigen.zsh
 fi
