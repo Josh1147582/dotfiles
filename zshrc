@@ -1,7 +1,36 @@
 # local zsh config
 source ~/.zshrc.local
 
+# load antigen if it exists
+if [ -e ~/.antigen.zsh ]
+then
+
+    source ~/.antigen.zsh
+
+    # Load oh-my-zsh's library.
+    antigen use oh-my-zsh
+
+    # Bundles from the default repo (robbyrussell's oh-my-zsh).
+    antigen bundle git
+    antigen bundle heroku
+    antigen bundle pip
+    antigen bundle lein
+    antigen bundle command-not-found
+
+    # Syntax highlighting bundle.
+    antigen bundle zsh-users/zsh-syntax-highlighting
+
+    # Load the theme.
+    antigen theme agnoster
+
+    # Tell antigen that you're done.
+    antigen apply
+
+fi
+
+
 # History
+
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
@@ -37,10 +66,6 @@ alias ll='ls -lh --color=auto'
 
 # Use vim as the default text editor
 export VISUAL=vim
-
-# Home and End keysjump the the beginning/end of the command
-bindkey "^[OH" beginning-of-line
-bindkey "^[OF" end-of-line
 
 # Ctrl-Left and Ctrl-Right keys move between words
 bindkey ";5C" forward-word
@@ -88,13 +113,11 @@ RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-# grml
-if [ ! $ZSH_CUSTOM ]
-then
-    # enable syntax highlighting
-    source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Home and End keys jump the the beginning/end of the command
+bindkey "^[OH" beginning-of-line
+bindkey "^[[H" beginning-of-line
+bindkey "^[OF" end-of-line
+bindkey "^[[F" end-of-line
 
-    # enable C-s for forward search
-    stty -ixon
-fi
-
+# Enable forward search
+bindkey "^s" history-incremental-search-forward
