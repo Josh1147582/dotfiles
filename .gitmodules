@@ -35,8 +35,6 @@
 	path = vim/bundle/rust.vim
 	url = https://github.com/rust-lang/rust.vim
 	branch = master
-[submodule "oh-my-zsh"]
-	path = oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh
-    ignore = dirty
-	branch = master
+[submodule "antigen"]
+	path = antigen
+	url = https://github.com/zsh-users/antigen
