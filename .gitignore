@@ -6,3 +6,5 @@ vim/bundle/__pycache__
 vim/.netrwhist
 
 vim/spell/*
+vim/bundle/*
+!vim/bundle/Vundle.vim
