@@ -21,7 +21,7 @@ then
     antigen bundle zsh-users/zsh-syntax-highlighting
 
     # Load the theme.
-    antigen theme agnoster
+    antigen theme bira
 
     # Tell antigen that you're done.
     antigen apply
