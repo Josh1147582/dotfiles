@@ -39,16 +39,28 @@ Return a list of installed packages or nil for every skipped package."
  'powerline-evil
  )
 
+;; Evil
+
 ;; Evil leader is Space
-(global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
+;; (global-evil-leader-mode)
+;; (evil-leader/set-leader "<SPC>")
 
 ;; Evil tabs
-(global-evil-tabs-mode t)
+;; (global-evil-tabs-mode t)
 
 ;; Default to evil mode
-(require 'evil)
-(evil-mode t)
+;; (require 'evil)
+;; (evil-mode t)
+
+;; Leader keybinds
+;; (evil-leader/set-key
+;;   "u" 'undo-tree-visualize
+;;   "m" 'recentf-open-files)
+
+;; Delete info bindings for evil to take over
+;; (define-key Info-mode-map "g" nil)
+;; (define-key Info-mode-map "n" nil)
+;; (define-key Info-mode-map "p" nil)
 
 ;; Disable file backup
 (setq make-backup-files nil)
@@ -60,11 +72,6 @@ Return a list of installed packages or nil for every skipped package."
    (unless (file-exists-p (concat user-emacs-directory "undo"))
 (make-directory (concat user-emacs-directory "undo")))
 
-;; Delete info bindings for evil to take over
-(define-key Info-mode-map "g" nil)
-(define-key Info-mode-map "n" nil)
-(define-key Info-mode-map "p" nil)
-
 
 ;; Powerline
 (require 'powerline)
@@ -75,11 +82,6 @@ Return a list of installed packages or nil for every skipped package."
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-
-;; Leader keybinds
-(evil-leader/set-key
-  "u" 'undo-tree-visualize
-  "m" 'recentf-open-files)
 
 
 ;; Leave the clipboard alone
@@ -96,6 +98,7 @@ Return a list of installed packages or nil for every skipped package."
 ;; Save minibar history
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
 ;; learning elisp
