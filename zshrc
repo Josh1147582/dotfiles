@@ -64,8 +64,8 @@ alias lsa='ls -a --color=auto'
 alias lls='ls -lh --color=auto'
 alias ll='ls -lh --color=auto'
 
-export VISUAL=emacs -nw
-
+# Use vim as the default text editor
+export VISUAL=vim
 
 # eval used by thefuck
 if hash fuck 2>/dev/null; then
@@ -88,15 +88,12 @@ bindkey "^[[F" end-of-line
 # Enable forward search
 bindkey "^s" history-incremental-search-forward
 
+# Ctrl-Left and Ctrl-Right keys move between words
+bindkey ";5C" forward-word
+bindkey ";5D" backward-word
+
 
 # Vim and vi bindings
-
-# Use vim as the default text editor
-# export VISUAL=vim
-
-# Ctrl-Left and Ctrl-Right keys move between words
-# bindkey ";5C" forward-word
-# bindkey ";5D" backward-word
 
 # alias for vim muscle memory when quitting
 #alias :q='exit'
