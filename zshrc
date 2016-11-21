@@ -64,17 +64,8 @@ alias lsa='ls -a --color=auto'
 alias lls='ls -lh --color=auto'
 alias ll='ls -lh --color=auto'
 
-# Use vim as the default text editor
-export VISUAL=vim
+export VISUAL=emacs -nw
 
-# Ctrl-Left and Ctrl-Right keys move between words
-bindkey ";5C" forward-word
-# bindkey "^[[C" forward-word
-bindkey ";5D" backward-word
-# bindkey "^[[D" backward-word
-
-# alias for vim muscle memory when quitting
-alias :q='exit'
 
 # eval used by thefuck
 if hash fuck 2>/dev/null; then
@@ -87,31 +78,6 @@ alias ts='date +%y-%m-%d'
 # alias for getting latest file in a folder
 alias latest='ls -t | head -n 1'
 
-# vi bindings
-bindkey -v
-export KEYTIMEOUT=1
-
-bindkey '^P' up-history
-bindkey '^N' down-history
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
-
-function zle-line-init zle-keymap-select {
-    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
-    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-    zle reset-prompt
-}
-function zle-line-finish {
-    VIM_PROMPT=""
-    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-    zle reset-prompt
-}
-RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-
-zle -N zle-line-init
-zle -N zle-keymap-select
 
 # Home and End keys jump the the beginning/end of the command
 bindkey "^[OH" beginning-of-line
@@ -121,3 +87,42 @@ bindkey "^[[F" end-of-line
 
 # Enable forward search
 bindkey "^s" history-incremental-search-forward
+
+
+# Vim and vi bindings
+
+# Use vim as the default text editor
+# export VISUAL=vim
+
+# Ctrl-Left and Ctrl-Right keys move between words
+# bindkey ";5C" forward-word
+# bindkey ";5D" backward-word
+
+# alias for vim muscle memory when quitting
+#alias :q='exit'
+
+# vi bindings
+#bindkey -v
+#export KEYTIMEOUT=1
+#
+#bindkey '^P' up-history
+#bindkey '^N' down-history
+#bindkey '^?' backward-delete-char
+#bindkey '^h' backward-delete-char
+#bindkey '^w' backward-kill-word
+#bindkey '^r' history-incremental-search-backward
+#
+#function zle-line-init zle-keymap-select {
+#    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
+#    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+#    zle reset-prompt
+#}
+#function zle-line-finish {
+#    VIM_PROMPT=""
+#    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+#    zle reset-prompt
+#}
+#RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
+#
+#zle -N zle-line-init
+#zle -N zle-keymap-select
