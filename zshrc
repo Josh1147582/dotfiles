@@ -64,6 +64,9 @@ alias lsa='ls -a --color=auto'
 alias lls='ls -lh --color=auto'
 alias ll='ls -lh --color=auto'
 
+# Custom ls colors
+eval $(dircolors ~/.dircolors)
+
 # Use vim as the default text editor
 export VISUAL=vim
 
