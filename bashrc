@@ -11,6 +11,8 @@ alias la='ls -a --color=auto'
 alias lsa='ls -a --color=auto'
 alias lls='ls -lh --color=auto'
 alias ll='ls -lh --color=auto'
+# Custom ls colors
+eval $(dircolors ~/.dircolors)
 
 # grep the entirety of the history
 alias hg='history | grep'
