@@ -107,7 +107,7 @@ set path+=**
 
 set foldmethod=indent " fold based on indent
 
-set foldlevelstart=1 " foldlevel when window is loaded
+set foldlevelstart=20 " foldlevel when window is loaded
 
 set foldmethod=indent " fold based on indent level
 
