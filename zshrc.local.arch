@@ -6,7 +6,7 @@ export DEVKITPRO=/home/josh/devkitPro/
 export DEVKITPPC=${DEVKITPRO}/devkitPPC
 export DEVKITARM=${DEVKITPRO}/devkitARM
 
-# local folder in PATH for UE4
+# local bin in PATH 
 export PATH=$HOME/bin:$PATH
 
 # DOOM config
