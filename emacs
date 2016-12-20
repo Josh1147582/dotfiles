@@ -17,6 +17,20 @@
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
+;; system-specific configs
+(cond ((eq system-type 'windows-nt) (win-setup))
+      ((eq system-type 'gnu/linux) (linux-setup))
+      (t (message "")))
+
+(defun win-setup ()
+    (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
+    (setq ispell-program-name "aspell"))
+
+(defun linux-setup ()
+       ;; linux specific things
+       )
+
+
 ;;;; Packages
 
 ;; Package installation
@@ -203,7 +217,7 @@
  '(custom-enabled-themes (quote (zenburn)))
  '(custom-safe-themes
    (quote
-    ("4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
+    ("14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
  '(inhibit-default-init t)
  '(inhibit-startup-buffer-menu nil)
  '(inhibit-startup-echo-area-message "josh")
