@@ -1,5 +1,5 @@
-;; Disable beep
-(setq visible-bell 1)
+;; Disable beep & flash
+ (setq ring-bell-function 'ignore)
 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -208,9 +208,7 @@
  '(inhibit-startup-buffer-menu nil)
  '(inhibit-startup-echo-area-message "josh")
  '(initial-buffer-choice t)
- '(initial-scratch-message ";; scratch buffer
-
-")
+ '(initial-scratch-message "")
  '(package-selected-packages
    (quote
     (relative-line-numbers general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
