@@ -1,6 +1,6 @@
 ;; Disable beep & flash
  (setq ring-bell-function 'ignore)
-
+ 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -79,6 +79,8 @@
 
 ;;;; Evil
 
+(setq evil-want-C-i-jump nil)
+
 ;; Evil leader is Space
 (global-evil-leader-mode)
 (evil-leader/set-leader "<SPC>")
@@ -130,9 +132,10 @@
 ;; Autocomplete
 (require 'auto-complete)
 (ac-config-default)
-(define-key ac-mode-map (kbd "TAB") 'auto-complete)
+;;(define-key ac-mode-map (kbd "TAB") 'auto-complete)
 (setq ac-auto-start nil)
 (global-set-key (kbd "<backtab>") 'ac-previous)
+(ac-set-trigger-key "TAB")
 
 ;; Spelling
 ;; TODO Mess with how I want spelling to be done. Maybe enable spelling on auto-fill mode?
