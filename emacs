@@ -18,17 +18,16 @@
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
 ;; system-specific configs
-(cond ((eq system-type 'windows-nt) (win-setup))
-      ((eq system-type 'gnu/linux) (linux-setup))
-      (t (message "")))
-
 (defun win-setup ()
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
     (setq ispell-program-name "aspell"))
 
 (defun linux-setup ()
-       ;; linux specific things
-       )
+       (message ""))
+
+(cond ((eq system-type 'windows-nt) (win-setup))
+      ((eq system-type 'gnu/linux) (linux-setup))
+      (t (message "")))
 
 
 ;;;; Packages
