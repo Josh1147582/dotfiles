@@ -14,3 +14,6 @@ alias doom='dosbox -conf .dosbox/dosbox-0.74-doom.conf'
 
 # Better fonts, proper GTK theming in Swing
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+
+# pacman aliases
+alias update='sudo pacman -Syu'
