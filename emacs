@@ -8,7 +8,10 @@
 (setq vc-follow-symlinks nil)
 
 ;; Leave the OS clipboard alone (use evil's "+ and "* instead)
-(setq x-select-enable-clipboard nil)
+; Don't copy and paste to the clipboard
+(setq select-enable-clipboard nil)
+; Don't save to the clipboard on exit
+(setq x-select-enable-clipboard-manager nil)
 
 ;; Text and Notes
 (setq sentence-end-double-space nil)
@@ -110,8 +113,11 @@
 
 ;;;; Files
 
-;; Disable file backup
-(setq make-backup-files nil)
+;; move file backups
+(setq backup-directory-alist
+      `((".*" . ,(concat user-emacs-directory "backups"))))
+(setq auto-save-file-name-transforms
+      `((".*" ,(concat user-emacs-directory "backups") t)))
 
 ;; Instead save undo history under .emacs.d/undo
 (setq undo-tree-auto-save-history t
