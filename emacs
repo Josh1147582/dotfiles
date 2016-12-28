@@ -76,7 +76,7 @@
  'auto-complete
  'fuzzy
  'general
- 'relative-line-numbers
+ 'linum-relative
  )
 
 
@@ -203,8 +203,10 @@
 (general-vmap "[" 'evil-change)
 
 ;; Relative line numbers
-(require 'relative-line-numbers)
-(global-relative-line-numbers-mode)
+(require 'linum-relative)
+(setq linum-relative-current-symbol "")
+(linum-mode)
+(linum-relative-global-mode)
 
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
@@ -233,7 +235,7 @@
  '(initial-scratch-message "")
  '(package-selected-packages
    (quote
-    (relative-line-numbers general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+    (linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
