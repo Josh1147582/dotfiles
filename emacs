@@ -103,6 +103,8 @@
 (define-key Info-mode-map "n" nil)
 (define-key Info-mode-map "p" nil)
 
+(define-key evil-window-map (kbd "q") 'delete-window)
+(define-key evil-window-map (kbd "C-q") 'delete-window)
 
 ;;;; Files
 
@@ -231,7 +233,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (zenburn)))
+ '(custom-enabled-themes (quote (wombat)))
  '(custom-safe-themes
    (quote
     ("14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
