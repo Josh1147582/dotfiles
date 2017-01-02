@@ -26,7 +26,10 @@
     (setq ispell-program-name "aspell"))
 
 (defun linux-setup ()
-       (message ""))
+    ;; Magit
+    (require 'magit)
+    (require 'evil-magit)
+    (global-magit-file-mode))
 
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))
@@ -197,12 +200,6 @@
 (setq linum-relative-current-symbol "")
 (linum-mode)
 (linum-relative-global-mode)
-
-;; Magit
-
-(require 'magit)
-(require 'evil-magit)
-(global-magit-file-mode)
 
 ;; Evil leader is Space
 (global-evil-leader-mode)
