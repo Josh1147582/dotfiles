@@ -67,6 +67,7 @@
 (ensure-package-installed
  'iedit
  'magit
+ 'evil-magit
  'undo-tree
  'evil
  'evil-leader
@@ -84,22 +85,11 @@
 
 (setq evil-want-C-i-jump nil)
 
-;; Evil leader is Space
-(global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
-
 ;; Evil tabs
 (global-evil-tabs-mode t)
 
 ;; Default to evil mode
 (evil-mode t)
-
-;; Leader keybinds
-(evil-leader/set-key
- "u" 'undo-tree-visualize
- "m" 'recentf-open-files
- "l" 'auto-fill-mode
- "s" 'flyspell-mode)
 
 ;; Move all elements of evil-emacs-state-modes to evil-motion-state-modes
 (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
@@ -208,6 +198,26 @@
 (linum-mode)
 (linum-relative-global-mode)
 
+;; Magit
+
+(require 'magit)
+(require 'evil-magit)
+(global-magit-file-mode)
+
+;; Evil leader is Space
+(global-evil-leader-mode)
+(evil-leader/set-leader "<SPC>")
+
+;; Leader keybinds
+(evil-leader/set-key
+ "d" 'diff-buffer-with-file
+ "u" 'undo-tree-visualize
+ "m" 'recentf-open-files
+ "l" 'auto-fill-mode
+ "s" 'flyspell-mode
+ "g" 'magit-status
+ "M-g" 'magit-dispatch-popup)
+
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
 ;; learning elisp
@@ -235,7 +245,7 @@
  '(initial-scratch-message "")
  '(package-selected-packages
    (quote
-    (linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+    (evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
