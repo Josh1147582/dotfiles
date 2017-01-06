@@ -203,6 +203,7 @@
 (evil-leader/set-key
  "d" 'diff-buffer-with-file
  "b" 'buffer-menu
+ "f" '(lambda ()  (interactive) (dired '"./"))
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
