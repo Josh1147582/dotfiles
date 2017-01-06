@@ -20,20 +20,12 @@
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
-;; system-specific configs
-(defun win-setup ()
-    (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
-    (setq ispell-program-name "aspell"))
-
-(defun linux-setup ()
-    ;; Magit
-    (require 'magit)
-    (require 'evil-magit)
-    (global-magit-file-mode))
-
-(cond ((eq system-type 'windows-nt) (win-setup))
-      ((eq system-type 'gnu/linux) (linux-setup))
-      (t (message "")))
+;; Indent HTML with 2 spaces
+    (add-hook 'sgml-mode-hook
+        (lambda ()
+          ;; Default indentation to 2, but let SGML mode guess, too.
+          (set (make-local-variable 'sgml-basic-offset) 2)
+          (sgml-guess-indent)))
 
 
 ;;;; Packages
@@ -210,12 +202,31 @@
 ;; Leader keybinds
 (evil-leader/set-key
  "d" 'diff-buffer-with-file
+ "b" 'buffer-menu
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
  "s" 'flyspell-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup)
+
+
+;; System-specific configs
+(defun win-setup ()
+    (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
+    (setq ispell-program-name "aspell"))
+
+(defun linux-setup ()
+    ;; Magit
+    (require 'magit)
+    (setq evil-magit-state 'normal)
+    (require 'evil-magit)
+    (global-magit-file-mode))
+
+(cond ((eq system-type 'windows-nt) (win-setup))
+      ((eq system-type 'gnu/linux) (linux-setup))
+      (t (message "")))
+
 
 ;; TODO:
 ;; Go through the tutorials, skim the manuals
