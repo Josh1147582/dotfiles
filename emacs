@@ -20,14 +20,6 @@
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
-;; Indent HTML with 2 spaces
-    (add-hook 'sgml-mode-hook
-        (lambda ()
-          ;; Default indentation to 2, but let SGML mode guess, too.
-          (set (make-local-variable 'sgml-basic-offset) 2)
-          (sgml-guess-indent)))
-
-
 ;;;; Packages
 
 ;; Package installation
@@ -70,9 +62,11 @@
  'powerline-evil
  'zenburn-theme
  'auto-complete
+ 'ac-html
  'fuzzy
  'general
  'linum-relative
+ 'web-mode
  )
 
 
@@ -122,13 +116,36 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 
+;; Web mode
+(require 'web-mode)
+
+;; 2 spaces for an indent
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; Auto-enable web-mode when opening relevent files
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode))
+
 ;; Autocomplete
 (require 'auto-complete)
+(eval-and-compile
+  (require 'auto-complete nil 'noerror))
 (ac-config-default)
+(setq ac-auto-start t)
 ;;(define-key ac-mode-map (kbd "TAB") 'auto-complete)
-(setq ac-auto-start nil)
+;;;;;(setq ac-auto-start nil)
 (global-set-key (kbd "<backtab>") 'ac-previous)
-(ac-set-trigger-key "TAB")
+;;;;;(ac-set-trigger-key "TAB")
+(require 'ac-html)
+(setq web-mode-ac-sources-alist
+  '(("css" . (ac-source-css-property))
+    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+(ac-linum-workaround)
 
 ;; Spelling
 ;; TODO Mess with how I want spelling to be done. Maybe enable spelling on auto-fill mode?
@@ -245,6 +262,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ac-auto-show-menu t)
  '(custom-enabled-themes (quote (wombat)))
  '(custom-safe-themes
    (quote
@@ -256,7 +274,7 @@
  '(initial-scratch-message "")
  '(package-selected-packages
    (quote
-    (evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+    (ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
