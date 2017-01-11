@@ -20,6 +20,9 @@
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 
+;; Auto-enable elisp when opening .emacs in dotfiles (without the .)
+(add-to-list 'auto-mode-alist '("emacs" . emacs-lisp-mode))
+
 ;;;; Packages
 
 ;; Package installation
