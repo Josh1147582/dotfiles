@@ -228,6 +228,7 @@
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
  "s" 'flyspell-mode
+ "a" 'auto-complete-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup)
 
