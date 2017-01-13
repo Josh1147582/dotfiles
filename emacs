@@ -238,7 +238,12 @@
 ;; System-specific configs
 (defun win-setup ()
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
-    (setq ispell-program-name "aspell"))
+    (setq ispell-program-name "aspell")
+    (defun cmd ()
+      (interactive)
+	(make-comint-in-buffer "cmd" nil "cmd" nil)
+	(switch-to-buffer "*cmd*")))
+
 
 (defun linux-setup ()
     ;; Magit
