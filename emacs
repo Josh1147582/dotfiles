@@ -70,6 +70,7 @@
  'general
  'linum-relative
  'web-mode
+ 'multi-term
  )
 
 
@@ -230,7 +231,8 @@
  "s" 'flyspell-mode
  "a" 'auto-complete-mode
  "g" 'magit-status
- "M-g" 'magit-dispatch-popup)
+ "M-g" 'magit-dispatch-popup
+ )
 
 
 ;; System-specific configs
