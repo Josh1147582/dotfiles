@@ -23,6 +23,9 @@
 ;; Auto-enable elisp when opening .emacs in dotfiles (without the .)
 (add-to-list 'auto-mode-alist '("emacs" . emacs-lisp-mode))
 
+;; Start in text-mode
+(setq initial-major-mode 'text-mode)
+
 ;;;; Packages
 
 ;; Package installation
