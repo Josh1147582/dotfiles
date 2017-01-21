@@ -74,6 +74,8 @@
  'linum-relative
  'web-mode
  'multi-term
+ 'relative-line-numbers
+ 'flymd
  )
 
 
@@ -288,7 +290,7 @@
  '(initial-scratch-message "")
  '(package-selected-packages
    (quote
-    (ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+    (flymd relative-line-numbers multi-term ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
