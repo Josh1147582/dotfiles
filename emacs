@@ -66,7 +66,7 @@
  'evil-leader
  'evil-tabs
  'powerline-evil
- 'zenburn-theme
+ 'monokai-theme
  'auto-complete
  'ac-html
  'fuzzy
@@ -280,10 +280,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-auto-show-menu t)
- '(custom-enabled-themes (quote (wombat)))
+ '(custom-enabled-themes (quote (monokai)))
  '(custom-safe-themes
    (quote
-    ("14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
+    ("c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
  '(inhibit-default-init t)
  '(inhibit-startup-buffer-menu nil)
  '(inhibit-startup-echo-area-message "josh")
@@ -291,7 +291,7 @@
  '(initial-scratch-message "")
  '(package-selected-packages
    (quote
-    (flymd relative-line-numbers multi-term ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil zenburn-theme magit iedit evil-leader))))
+    (flymd relative-line-numbers multi-term ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil magit iedit evil-leader))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
