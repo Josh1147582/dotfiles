@@ -76,6 +76,7 @@
  'multi-term
  'relative-line-numbers
  'flymd
+ 'markdown-mode
  )
 
 
