@@ -1,3 +1,10 @@
+;; TODO:
+;; Easier undo tree traversal
+;; troubleshoot spelling navigation and test it some more
+
+
+;;;; Base
+
 ;; Disable beep & flash
  (setq ring-bell-function 'ignore)
  
@@ -7,7 +14,7 @@
 ;; Never follow symlinks
 (setq vc-follow-symlinks nil)
 
-;; Leave the OS clipboard alone (use evil's "+ and "* instead)
+;;; Leave the OS clipboard alone (use evil's "+ and "* instead)
 ; Don't copy and paste to the clipboard
 (setq select-enable-clipboard nil)
 ; Don't save to the clipboard on exit
@@ -26,8 +33,15 @@
 ;; Start in text-mode
 (setq initial-major-mode 'text-mode)
 
+;; move file backups
+(setq backup-directory-alist
+      `((".*" . ,(concat user-emacs-directory "backups"))))
+(setq auto-save-file-name-transforms
+      `((".*" ,(concat user-emacs-directory "backups") t)))
+
 ;; Disable toolbar
 (tool-bar-mode -1)
+
 
 ;;;; Packages
 
@@ -82,9 +96,9 @@
  'markdown-mode
  )
 
+;;; Evil
 
-;;;; Evil
-
+;; No C-i jump
 (setq evil-want-C-i-jump nil)
 
 ;; Evil tabs
@@ -102,36 +116,34 @@
 (define-key Info-mode-map "n" nil)
 (define-key Info-mode-map "p" nil)
 
+;; Vim removing of windows
 (define-key evil-window-map (kbd "q") 'delete-window)
 (define-key evil-window-map (kbd "C-q") 'delete-window)
 
-;;;; Files
+;;; undo-tree
 
-;; move file backups
-(setq backup-directory-alist
-      `((".*" . ,(concat user-emacs-directory "backups"))))
-(setq auto-save-file-name-transforms
-      `((".*" ,(concat user-emacs-directory "backups") t)))
-
-;; Instead save undo history under .emacs.d/undo
+;; Save undo history under .emacs.d/undo
 (setq undo-tree-auto-save-history t
          undo-tree-history-directory-alist
          `(("." . ,(concat user-emacs-directory "undo"))))
    (unless (file-exists-p (concat user-emacs-directory "undo"))
 (make-directory (concat user-emacs-directory "undo")))
 
-;; Powerline
+;;; Powerline
+
 (require 'powerline)
 (powerline-evil-center-color-theme)
 (custom-set-faces
  '(powerline-evil-normal-face ((t (:background "#859900" )))))
 
-;; Recent Files
+;;; Recent Files
+
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 
-;; Web mode
+;;; Web mode
+
 (require 'web-mode)
 
 ;; 2 spaces for an indent
@@ -146,24 +158,21 @@
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode))
 
-;; Autocomplete
+;;; Autocomplete
+
 (require 'auto-complete)
 (eval-and-compile
   (require 'auto-complete nil 'noerror))
 (ac-config-default)
 (setq ac-auto-start t)
-;;(define-key ac-mode-map (kbd "TAB") 'auto-complete)
-;;;;;(setq ac-auto-start nil)
 (global-set-key (kbd "<backtab>") 'ac-previous)
-;;;;;(ac-set-trigger-key "TAB")
 (require 'ac-html)
 (setq web-mode-ac-sources-alist
   '(("css" . (ac-source-css-property))
     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
 (ac-linum-workaround)
 
-;; Spelling
-;; TODO Mess with how I want spelling to be done. Maybe enable spelling on auto-fill mode?
+;;; Spelling
 
 ;; map ]s and [s to next and previously wrong word
 (require 'general)
@@ -221,15 +230,19 @@
 				    ))
 (general-vmap "[" 'evil-change)
 
-;; Relative line numbers
+;;; Relative line numbers
+
 (require 'linum-relative)
 (setq linum-relative-current-symbol "")
 (linum-mode)
 (linum-relative-global-mode)
 
-;; flymd
+;;; flymd
+
 ; flymd.md and flymd.html are deleted upon markdown buffer killed
 (setq flymd-close-buffer-delete-temp-files t)
+
+;;; evil-leader
 
 ;; Evil leader is Space
 (global-evil-leader-mode)
@@ -250,7 +263,8 @@
  )
 
 
-;; System-specific configs
+;;;; System-specific configs
+
 (defun win-setup ()
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
     (setq ispell-program-name "aspell")
@@ -258,7 +272,6 @@
       (interactive)
 	(make-comint-in-buffer "cmd" nil "cmd" nil)
 	(switch-to-buffer "*cmd*")))
-
 
 (defun linux-setup ()
     ;; Magit
@@ -270,17 +283,6 @@
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))
       (t (message "")))
-
-
-;; TODO:
-;; Go through the tutorials, skim the manuals
-;; learning elisp
-;; Fuzzy
-;; Evil leader mode
-;; Hotkey for undo tree
-;; autocomplete
-;; recent files
-;; magit bindings
 
 
 (custom-set-variables
