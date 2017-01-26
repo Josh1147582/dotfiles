@@ -26,6 +26,9 @@
 ;; Start in text-mode
 (setq initial-major-mode 'text-mode)
 
+;; Disable toolbar
+(tool-bar-mode -1)
+
 ;;;; Packages
 
 ;; Package installation
@@ -119,7 +122,9 @@
 
 ;; Powerline
 (require 'powerline)
-(powerline-vim-theme)
+(powerline-evil-center-color-theme)
+(custom-set-faces
+ '(powerline-evil-normal-face ((t (:background "#859900" )))))
 
 ;; Recent Files
 (require 'recentf)
@@ -221,6 +226,10 @@
 (setq linum-relative-current-symbol "")
 (linum-mode)
 (linum-relative-global-mode)
+
+;; flymd
+; flymd.md and flymd.html are deleted upon markdown buffer killed
+(setq flymd-close-buffer-delete-temp-files t)
 
 ;; Evil leader is Space
 (global-evil-leader-mode)
