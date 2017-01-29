@@ -175,13 +175,6 @@
 ;;; Spelling
 
 ;; map ]s and [s to next and previously wrong word
-(require 'general)
-(general-evil-setup)
-(general-nmap "]"
-	      (general-key-dispatch 'evil-change
-				    "s" 'flyspell-goto-next-error
-				    ))
-(general-vmap "]" 'evil-change)
 
 ;; move point to previous error
 ;; based on code by hatschipuh at
@@ -224,11 +217,8 @@
             (setq arg 0))
         (forward-word)))))
 
-(general-nmap "["
-	      (general-key-dispatch 'evil-change
-				    "s" 'flyspell-goto-previous-error
-				    ))
-(general-vmap "[" 'evil-change)
+(global-set-key (kbd "C-=") 'flyspell-goto-next-error)
+(global-set-key (kbd "M-=") 'flyspell-goto-previous-error)
 
 ;;; Relative line numbers
 
@@ -256,7 +246,7 @@
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
- "s" 'flyspell-mode
+ "s" '(lambda () (interactive) (flyspell-mode) (flyspell-buffer))
  "a" 'auto-complete-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup
