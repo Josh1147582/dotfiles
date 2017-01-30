@@ -40,7 +40,9 @@
       `((".*" ,(concat user-emacs-directory "backups") t)))
 
 ;; Disable toolbar
-(tool-bar-mode -1)
+(when (display-graphic-p)
+  (tool-bar-mode -1)
+  )
 
 
 ;;;; Packages
