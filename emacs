@@ -136,7 +136,11 @@
 (require 'powerline)
 (powerline-evil-center-color-theme)
 (custom-set-faces
- '(powerline-evil-normal-face ((t (:background "#859900" )))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(powerline-evil-normal-face ((t (:background "#859900")))))
 
 ;;; Recent Files
 
@@ -248,7 +252,7 @@
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
- "s" '(lambda () (interactive) (flyspell-mode) (flyspell-buffer))
+ "s" 'flyspell-mode
  "a" 'auto-complete-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup
@@ -295,9 +299,4 @@
  '(package-selected-packages
    (quote
     (flymd relative-line-numbers multi-term ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil magit iedit evil-leader))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
