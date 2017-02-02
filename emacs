@@ -258,23 +258,24 @@
  "M-g" 'magit-dispatch-popup
  )
 
+;; Magit
+(require 'magit)
+(setq evil-magit-state 'normal)
+(require 'evil-magit)
+(global-magit-file-mode)
 
 ;;;; System-specific configs
 
 (defun win-setup ()
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
     (setq ispell-program-name "aspell")
+
     (defun cmd ()
       (interactive)
 	(make-comint-in-buffer "cmd" nil "cmd" nil)
 	(switch-to-buffer "*cmd*")))
 
-(defun linux-setup ()
-    ;; Magit
-    (require 'magit)
-    (setq evil-magit-state 'normal)
-    (require 'evil-magit)
-    (global-magit-file-mode))
+(defun linux-setup ())
 
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))
