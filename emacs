@@ -7,7 +7,18 @@
 ;;;; Base
 
 ;; Disable beep & flash
- (setq ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore)
+
+;; Disable blinking cursor
+(blink-cursor-mode 0)
+  
+;;(defun evil-eval-prev-exp ()
+  ;;(interactive)
+  ;;(evil-append 1)
+  ;;(call-interactively (global-key-binding "\C-x"))
+  ;;(call-interactively (global-key-binding "\C-e"))
+  ;;(evil-normal-state))
+
 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
