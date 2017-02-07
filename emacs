@@ -108,6 +108,7 @@
  'relative-line-numbers
  'flymd
  'markdown-mode
+ 'latex-preview-pane
  )
 
 ;;; Evil
