@@ -74,42 +74,61 @@
   (mapcar
    (lambda (package)
 	 (if (package-installed-p package)
-		 nil
+	     nil
 	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-		   (package-install package)
-		 package)))
+	       (package-install package)
+	     package)))
    packages))
 
 ;; Make sure to have downloaded archive description.
 (or (file-exists-p package-user-dir)
 	(package-refresh-contents))
 
+;; List of packages to install on all systems
+(setq required-packages
+      '(
+	iedit
+	magit
+	evil-magit
+	undo-tree
+	evil
+	evil-leader
+	evil-tabs
+	powerline-evil
+	monokai-theme
+	auto-complete
+	linum-relative
+	multi-term
+	neotree
+	evil-numbers
+	))
+
+;; List of optional packages
+(setq optional-packages
+      '(
+	flymd
+	markdown-mode
+	latex-preview-pane
+	tide
+	web-mode
+	ac-html
+	racket-mode
+	geiser
+	fuzzy
+	general))
+
+;; Check that all packages are installed
+(apply 'ensure-package-installed required-packages)
+
+;; Declare function for optional packages
+(defun optional-packages-install
+    (interactive)
+  (apply 'ensure-package-installed optional-packages))
+ 
+
 ;; Activate installed packages
 (package-initialize)
 
-;; Check that all packages are installed
-(ensure-package-installed
- 'iedit
- 'magit
- 'evil-magit
- 'undo-tree
- 'evil
- 'evil-leader
- 'evil-tabs
- 'powerline-evil
- 'monokai-theme
- 'auto-complete
- 'ac-html
- 'fuzzy
- 'general
- 'linum-relative
- 'web-mode
- 'multi-term
- 'relative-line-numbers
- 'flymd
- 'markdown-mode
- 'latex-preview-pane
- )
 
 ;;; Evil
 
@@ -142,6 +161,7 @@
 (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
 
+
 ;;; undo-tree
 
 ;; Save undo history under .emacs.d/undo
@@ -150,6 +170,7 @@
          `(("." . ,(concat user-emacs-directory "undo"))))
    (unless (file-exists-p (concat user-emacs-directory "undo"))
 (make-directory (concat user-emacs-directory "undo")))
+
 
 ;;; Powerline
 
@@ -162,11 +183,13 @@
  ;; If there is more than one, they won't work right.
  '(powerline-evil-normal-face ((t (:background "#859900")))))
 
+
 ;;; Recent Files
 
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
+
 
 ;;; Web mode
 
@@ -184,19 +207,24 @@
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode))
 
+
 ;;; Autocomplete
 
 (require 'auto-complete)
+
+;; start auto-complete
 (eval-and-compile
   (require 'auto-complete nil 'noerror))
 (ac-config-default)
 (setq ac-auto-start t)
+
 (global-set-key (kbd "<backtab>") 'ac-previous)
 (require 'ac-html)
 (setq web-mode-ac-sources-alist
   '(("css" . (ac-source-css-property))
     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
 (ac-linum-workaround)
+
 
 ;;; Spelling
 
@@ -246,6 +274,7 @@
 (global-set-key (kbd "C-=") 'flyspell-goto-next-error)
 (global-set-key (kbd "M-=") 'flyspell-goto-previous-error)
 
+
 ;;; Relative line numbers
 
 (require 'linum-relative)
@@ -253,10 +282,12 @@
 (linum-mode)
 (linum-relative-global-mode)
 
+
 ;;; flymd
 
 ; flymd.md and flymd.html are deleted upon markdown buffer killed
 (setq flymd-close-buffer-delete-temp-files t)
+
 
 ;;; evil-leader
 
@@ -279,6 +310,7 @@
  "M-g" 'magit-dispatch-popup
  )
 
+
 ;; Magit
 (require 'magit)
 (setq evil-magit-state 'normal)
@@ -300,7 +332,12 @@
 
 
 ;; tide/typescript
+
 (setq typescript-indent-level 2)
+
+
+;; geiser
+(add-to-list 'auto-mode-alist '("\\.scm\\'" . scheme-mode))
 
 ;;;; System-specific configs
 
@@ -320,22 +357,6 @@
       (t (message "")))
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ac-auto-show-menu t)
- '(custom-enabled-themes (quote (monokai)))
- '(custom-safe-themes
-   (quote
-    ("c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc" "14f0fbf6f7851bfa60bf1f30347003e2348bf7a1005570fd758133c87dafe08f" "4e753673a37c71b07e3026be75dc6af3efbac5ce335f3707b7d6a110ecb636a3" default)))
- '(inhibit-default-init t)
- '(inhibit-startup-buffer-menu nil)
- '(inhibit-startup-echo-area-message "josh")
- '(initial-buffer-choice t)
- '(initial-scratch-message "")
- '(package-selected-packages
-   (quote
-    (flymd relative-line-numbers multi-term ac-html web-mode evil-magit linum-relative general fuzzy auto-complete evil-tabs powerline-evil magit iedit evil-leader))))
-
+;;;; Custom
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
