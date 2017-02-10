@@ -285,6 +285,7 @@
 (require 'evil-magit)
 (global-magit-file-mode)
 
+
 ;; Neotree
 
 ; Set vi-like bindings in neotree-mode that don't conflict with evil
@@ -297,6 +298,9 @@
 ;Every time when the neotree window is opened, let it find current file and jump to node.
 (setq neo-smart-open t)
 
+
+;; tide/typescript
+(setq typescript-indent-level 2)
 
 ;;;; System-specific configs
 
