@@ -292,6 +292,7 @@
 (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-enter)
 (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
 (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "h") 'neotree-hidden-file-toggle)
 
 ;Every time when the neotree window is opened, let it find current file and jump to node.
 (setq neo-smart-open t)
