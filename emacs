@@ -135,6 +135,13 @@
 (define-key evil-window-map (kbd "q") 'delete-window)
 (define-key evil-window-map (kbd "C-q") 'delete-window)
 
+;; Increment and decrement
+;(define-key evil-insert-state-map "C-a" 'evil-numbers/inc-at-pt)
+;(define-key evil-insert-state-map "C-x" 'evil-numbers/dec-at-pt)
+
+(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
+
 ;;; undo-tree
 
 ;; Save undo history under .emacs.d/undo
@@ -261,7 +268,8 @@
 (evil-leader/set-key
  "d" 'diff-buffer-with-file
  "b" 'buffer-menu
- "f" '(lambda ()  (interactive) (dired '"./"))
+ ;"f" '(lambda ()  (interactive) (dired '"./"))
+ "f" 'neotree-toggle
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
@@ -276,6 +284,18 @@
 (setq evil-magit-state 'normal)
 (require 'evil-magit)
 (global-magit-file-mode)
+
+;; Neotree
+
+; Set vi-like bindings in neotree-mode that don't conflict with evil
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+
+;Every time when the neotree window is opened, let it find current file and jump to node.
+(setq neo-smart-open t)
+
 
 ;;;; System-specific configs
 
