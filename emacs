@@ -154,13 +154,9 @@
 (define-key evil-window-map (kbd "q") 'delete-window)
 (define-key evil-window-map (kbd "C-q") 'delete-window)
 
-;; Increment and decrement
-;(define-key evil-insert-state-map "C-a" 'evil-numbers/inc-at-pt)
-;(define-key evil-insert-state-map "C-x" 'evil-numbers/dec-at-pt)
-
-(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt)
-
+;; Increment and decrement (evil-numbers)
+(define-key evil-insert-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
+(define-key evil-insert-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
 
 ;;; undo-tree
 
