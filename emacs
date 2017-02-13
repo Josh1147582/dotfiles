@@ -300,7 +300,7 @@
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
- "s" '(lambda () (interactive) (if flyspell-mode (funcall-interactively 'flyspell-mode '0) (flyspell-mode) (flyspell-buffer)))
+ "s" '(lambda () (interactive) (if flyspell-mode (funcall 'flyspell-mode '0) (flyspell-mode) (flyspell-buffer)))
  "a" 'auto-complete-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup
