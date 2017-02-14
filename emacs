@@ -3,6 +3,8 @@
 ;; Test easing spelling navigation, map ]s and [s to next and previously wrong word
 ;; Replace evil-leader with general
 
+;;;; Startup
+(setq initial-scratch-message "")
 
 ;;;; Base
 
@@ -56,7 +58,6 @@
   (tool-bar-mode -1)
   )
 
-
 ;;;; Packages
 
 ;; Package installation
@@ -101,6 +102,7 @@
 	multi-term
 	neotree
 	evil-numbers
+	editorconfig
 	))
 
 ;; List of optional packages
@@ -121,7 +123,7 @@
 (apply 'ensure-package-installed required-packages)
 
 ;; Declare function for optional packages
-(defun optional-packages-install
+(defun optional-packages-install ()
     (interactive)
   (apply 'ensure-package-installed optional-packages))
  
@@ -172,19 +174,14 @@
 
 (require 'powerline)
 (powerline-evil-center-color-theme)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(powerline-evil-normal-face ((t (:background "#859900")))))
 
 
 ;;; Recent Files
 
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
+(setq recentf-max-saved-items 200
+      recentf-max-menu-items 15)
 
 
 ;;; Web mode
@@ -221,6 +218,7 @@
     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
 (ac-linum-workaround)
 
+(setq ac-auto-show-menu t)
 
 ;;; Spelling
 
@@ -331,9 +329,15 @@
 
 (setq typescript-indent-level 2)
 
+;; JavaScript
+(setq js-indent-level 2)
+
 
 ;; geiser
 (add-to-list 'auto-mode-alist '("\\.scm\\'" . scheme-mode))
+
+;; editorconfig
+(editorconfig-mode 1)
 
 ;;;; System-specific configs
 
@@ -354,5 +358,24 @@
 
 
 ;;;; Custom
-(setq custom-file "~/.emacs.d/custom.el")
+(defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;; if no custom file exists, write a default one
+(unless (file-exists-p custom-file)
+  (write-region "(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(powerline-evil-normal-face ((t (:background \"#859900\")))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (monokai)))
+ '(custom-safe-themes
+   (quote
+    (\"c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc\" default))))
+" nil custom-file))
 (load custom-file)
