@@ -95,6 +95,9 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+;; Keep track of whether or not we need to refresh package contents
+(setq packages-installed-this-session 0)
+
 ;; Function to ensure every package in installed, and ask if it isn't.
 (defun ensure-package-installed (&rest packages)
   (mapcar
@@ -102,13 +105,15 @@
 	 (if (package-installed-p package)
 	     nil
 	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-	       (package-install package)
+	       ;; If this is the 1st install this session, update before install
+	       (cond ((eq packages-installed-this-session 0)
+		      (package-refresh-contents)
+		      (setq packages-installed-this-session 1)
+		      (package-install package))
+		     (t (package-install package))
+		 nil)
 	     package)))
    packages))
-
-;; Make sure to have downloaded archive description.
-(or (file-exists-p package-user-dir)
-	(package-refresh-contents))
 
 ;; List of packages to install on all systems
 (setq required-packages
@@ -144,9 +149,6 @@
 	fuzzy
 	general))
 
-;; Update package contents
-(when (not package-archive-contents)
-    (package-refresh-contents))
 
 ;; Check that all packages are installed
 (apply 'ensure-package-installed required-packages)
@@ -215,8 +217,6 @@
 
 ;;; Web mode
 
-(require 'web-mode)
-
 ;; 2 spaces for an indent
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
@@ -241,7 +241,8 @@
 (setq ac-auto-start t)
 
 (global-set-key (kbd "<backtab>") 'ac-previous)
-(require 'ac-html)
+
+;; ac-html
 (setq web-mode-ac-sources-alist
   '(("css" . (ac-source-css-property))
     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
