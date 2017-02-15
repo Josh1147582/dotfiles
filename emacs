@@ -14,6 +14,7 @@
 ;; Disable blinking cursor
 (blink-cursor-mode 0)
   
+;; TODO finish fixing eval-last-s-exp
 ;;(defun evil-eval-prev-exp ()
   ;;(interactive)
   ;;(evil-append 1)
@@ -142,6 +143,10 @@
 	geiser
 	fuzzy
 	general))
+
+;; Update package contents
+(when (not package-archive-contents)
+    (package-refresh-contents))
 
 ;; Check that all packages are installed
 (apply 'ensure-package-installed required-packages)
