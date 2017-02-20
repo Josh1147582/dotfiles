@@ -145,7 +145,6 @@
 	web-mode
 	ac-html
 	racket-mode
-	geiser
 	fuzzy
 	general))
 
