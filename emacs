@@ -292,7 +292,7 @@
           (progn
             (message "No more miss-spelled word!")
             (setq arg 0))
-        (forward-word)))))
+        ))))
 
 (global-set-key (kbd "C-=") 'flyspell-goto-next-error)
 (global-set-key (kbd "M-=") 'flyspell-goto-previous-error)
