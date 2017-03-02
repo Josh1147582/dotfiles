@@ -186,6 +186,10 @@
 (define-key evil-window-map (kbd "q") 'delete-window)
 (define-key evil-window-map (kbd "C-q") 'delete-window)
 
+; Don't echo evil's states
+(setq evil-insert-state-message nil)
+(setq evil-visual-state-message nil)
+
 ;; Increment and decrement (evil-numbers)
 (define-key evil-insert-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 (define-key evil-insert-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
