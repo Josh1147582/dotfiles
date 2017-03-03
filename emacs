@@ -48,6 +48,8 @@
 ;; Start in text-mode
 (setq initial-major-mode 'text-mode)
 
+;; Always show matching parens
+(show-paren-mode t)
 
 ;; Backups (from https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/20824625#20824625)
 (setq version-control t     ;; Use version numbers for backups.
@@ -298,8 +300,8 @@
             (setq arg 0))
         ))))
 
-(global-set-key (kbd "C-=") 'flyspell-goto-next-error)
-(global-set-key (kbd "M-=") 'flyspell-goto-previous-error)
+(define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
+(define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
 
 
 ;;; Relative line numbers
@@ -368,6 +370,7 @@
 
 ;; geiser
 (add-to-list 'auto-mode-alist '("\\.scm\\'" . scheme-mode))
+(setq geiser-scheme-implementation 'racket)
 
 ;; editorconfig
 (editorconfig-mode 1)
