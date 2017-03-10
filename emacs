@@ -1,6 +1,5 @@
 ;; TODO:
 ;; Easier undo tree traversal
-;; Test easing spelling navigation, map ]s and [s to next and previously wrong word
 ;; Replace evil-leader with general
 
 ;;;; Startup
