@@ -67,7 +67,7 @@
   ;; emacs session.
   (when (not buffer-backed-up)
     ;; Override the default parameters for per-session backups.
-    (let ((backup-directory-alist '(("" . "~/.emacs.d/backup/per-session")))
+    (let ((backup-directory-alist '(("" . "~/.emacs.d/backups/per-session")))
           (kept-new-versions 3))
       (backup-buffer)))
   ;; Make a "per save" backup on each save.  The first save results in
@@ -78,6 +78,9 @@
 
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+;; Autosave files
+(setq auto-save-file-name-transforms
+          `((".*" , "~/.emacs.d/backups/auto-saves" t)))
 
 ;; Disable toolbar
 (when (display-graphic-p)
