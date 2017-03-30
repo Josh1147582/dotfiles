@@ -139,6 +139,8 @@
 	neotree
 	evil-numbers
 	editorconfig
+	company
+	helm
 	))
 
 ;; List of optional packages
