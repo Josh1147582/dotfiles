@@ -1,6 +1,7 @@
 ;; TODO:
 ;; Easier undo tree traversal
 ;; Replace evil-leader with general
+;; consider removing auto-complete
 
 ;;;; Startup
 (setq initial-scratch-message "")
@@ -31,6 +32,7 @@
 ;;; Leave the OS clipboard alone (use evil's "+ and "* instead)
 ; Don't copy and paste to the clipboard
 (setq select-enable-clipboard nil)
+(setq x-select-enable-clipboard nil)
 ; Don't save to the clipboard on exit
 (setq x-select-enable-clipboard-manager nil)
 
@@ -239,23 +241,23 @@
 
 ;;; Autocomplete
 
-(require 'auto-complete)
-
-;; start auto-complete
-(eval-and-compile
-  (require 'auto-complete nil 'noerror))
-(ac-config-default)
-(setq ac-auto-start t)
-
-(global-set-key (kbd "<backtab>") 'ac-previous)
-
-;; ac-html
-(setq web-mode-ac-sources-alist
-  '(("css" . (ac-source-css-property))
-    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-(ac-linum-workaround)
-
-(setq ac-auto-show-menu t)
+;(require 'auto-complete)
+;
+;;; start auto-complete
+;(eval-and-compile
+;  (require 'auto-complete nil 'noerror))
+;(ac-config-default)
+;(setq ac-auto-start t)
+;;
+;(global-set-key (kbd "<backtab>") 'ac-previous)
+;
+;;; ac-html
+;(setq web-mode-ac-sources-alist
+;  '(("css" . (ac-source-css-property))
+;    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+;(ac-linum-workaround)
+;
+;(setq ac-auto-show-menu nil)
 
 ;;; Spelling
 
@@ -376,6 +378,26 @@
 
 ;; editorconfig
 (editorconfig-mode 1)
+
+;;helm
+
+(require 'helm-config)
+
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+
+(helm-mode 1)
+(define-key helm-find-files-map "\t" 'helm-execute-persistent-action) ; make TAB run C-j's command.
+
+;; ac-helm
+;(require 'ac-helm)  ;; Not necessary if using ELPA package
+;;(global-set-key (kbd "C-:") 'ac-complete-with-helm)
+;(define-key ac-complete-mode-map (kbd "<tab>") 'ac-complete-with-helm)
+
+;; company
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;;;; System-specific configs
 
