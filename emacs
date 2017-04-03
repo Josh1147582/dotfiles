@@ -133,14 +133,15 @@
 	evil-tabs
 	powerline-evil
 	monokai-theme
-	auto-complete
+	;auto-complete
 	linum-relative
 	multi-term
 	neotree
 	evil-numbers
 	editorconfig
 	company
-	helm
+	;helm
+	ivy
 	))
 
 ;; List of optional packages
@@ -151,7 +152,7 @@
 	latex-preview-pane
 	tide
 	web-mode
-	ac-html
+	;ac-html
 	racket-mode
 	fuzzy
 	general))
@@ -340,7 +341,8 @@
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
  "s" '(lambda () (interactive) (if flyspell-mode (funcall 'flyspell-mode '0) (flyspell-mode) (flyspell-buffer)))
- "a" 'auto-complete-mode
+ ;"a" 'auto-complete-mode
+ "a" 'company-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup
  )
@@ -383,19 +385,23 @@
 
 ;;helm
 
-(require 'helm-config)
-
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-
-(helm-mode 1)
-(define-key helm-find-files-map "\t" 'helm-execute-persistent-action) ; make TAB run C-j's command.
+;; (require 'helm-config)
+;; 
+;; (global-set-key (kbd "M-x") #'helm-M-x)
+;; (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; 
+;; (helm-mode 1)
+;; (define-key helm-find-files-map "\t" 'helm-execute-persistent-action) ; make TAB run C-j's command.
 
 ;; ac-helm
 ;(require 'ac-helm)  ;; Not necessary if using ELPA package
 ;;(global-set-key (kbd "C-:") 'ac-complete-with-helm)
 ;(define-key ac-complete-mode-map (kbd "<tab>") 'ac-complete-with-helm)
+
+;; ivy
+(require 'ivy)
+(ivy-mode)
 
 ;; company
 (require 'company)
