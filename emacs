@@ -143,6 +143,8 @@
 	;helm
 	ivy
 	smooth-scrolling
+	flycheck
+	flycheck-pos-tip
 	))
 
 ;; List of optional packages
@@ -346,6 +348,7 @@
  "a" 'company-mode
  "g" 'magit-status
  "M-g" 'magit-dispatch-popup
+ "c" 'flycheck-mode
  )
 
 
@@ -412,6 +415,22 @@
 (setq scroll-margin 0
 scroll-conservatively 9999
 scroll-step 1)
+
+;; flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(setq flycheck-check-syntax-automatically '(save mode-enabled))
+(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
+(setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
+(setq flycheck-standard-error-navigation nil)
+
+(global-flycheck-mode t)
+
+;; flycheck-pos-tip: flycheck errors on a tooltip 
+(require 'flycheck-pos-tip)
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
 
 
 ;;;; System-specific configs
