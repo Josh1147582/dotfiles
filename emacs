@@ -142,6 +142,7 @@
 	company
 	;helm
 	ivy
+	smooth-scrolling
 	))
 
 ;; List of optional packages
@@ -405,6 +406,13 @@
 
 ;; company
 (require 'company)
+
+;; smooth-scrolling
+(require 'smooth-scrolling)
+(setq scroll-margin 0
+scroll-conservatively 9999
+scroll-step 1)
+
 
 ;;;; System-specific configs
 
