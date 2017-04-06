@@ -145,6 +145,7 @@
 	smooth-scrolling
 	flycheck
 	flycheck-pos-tip
+	evil-surround
 	))
 
 ;; List of optional packages
@@ -206,6 +207,21 @@
 (define-key evil-insert-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
 (define-key evil-insert-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
 
+;; scroll left and right with zs and ze
+(defun hscroll-cursor-left ()
+  (interactive "@")
+  (set-window-hscroll (selected-window) (current-column)))
+
+(defun hscroll-cursor-right ()
+  (interactive "@")
+  (set-window-hscroll (selected-window) (- (current-column) (window-width) -1)))
+
+(define-key evil-normal-state-map "zs" 'hscroll-cursor-left)
+(define-key evil-normal-state-map "ze" 'hscroll-cursor-right)
+(setq auto-hscroll-mode 't)
+(setq hscroll-margin 0
+      hscroll-step 1)
+
 ;;; undo-tree
 
 ;; Save undo history under .emacs.d/undo
@@ -219,7 +235,7 @@
 ;;; Powerline
 
 (require 'powerline)
-(powerline-evil-center-color-theme)
+(powerline-evil-vim-color-theme)
 
 
 ;;; Recent Files
@@ -432,6 +448,10 @@ scroll-step 1)
 (with-eval-after-load 'flycheck
   (flycheck-pos-tip-mode))
 
+
+;; evil-surround
+(require 'evil-surround)
+(global-evil-surround-mode 1)
 
 ;;;; System-specific configs
 
