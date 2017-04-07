@@ -1,7 +1,6 @@
 ;; TODO:
 ;; Easier undo tree traversal
 ;; Replace evil-leader with general
-;; consider removing auto-complete
 
 ;;;; Startup
 (setq initial-scratch-message "")
@@ -89,6 +88,42 @@
   (tool-bar-mode -1)
   )
 
+;; Save session including tabs
+;; http://stackoverflow.com/questions/22445670/save-and-restore-elscreen-tabs-and-split-frames
+(defun session-save ()
+    "Store the elscreen tab configuration."
+    (interactive)
+    (if (desktop-save user-emacs-directory)
+        (with-temp-file (concat user-emacs-directory ".elscreen")
+            (insert (prin1-to-string (elscreen-get-screen-to-name-alist))))))
+
+;; Load session including tabs
+(defun session-load ()
+    "Restore the elscreen tab configuration."
+    (interactive)
+    (if (desktop-read)
+        (let ((screens (reverse
+                        (read
+                         (with-temp-buffer
+                          (insert-file-contents (concat user-emacs-directory ".elscreen"))
+                          (buffer-string))))))
+            (while screens
+                (setq screen (car (car screens)))
+                (setq buffers (split-string (cdr (car screens)) ":"))
+                (if (eq screen 0)
+                    (switch-to-buffer (car buffers))
+                    (elscreen-find-and-goto-by-buffer (car buffers) t t))
+                (while (cdr buffers)
+                    (switch-to-buffer-other-window (car (cdr buffers)))
+                    (setq buffers (cdr buffers)))
+                (setq screens (cdr screens))))))
+
+;; smoother scrolling
+(setq scroll-margin 0
+scroll-conservatively 9999
+scroll-step 1)
+
+
 ;;;; Packages
 
 ;; Package installation
@@ -142,7 +177,6 @@
 	company
 	;helm
 	ivy
-	smooth-scrolling
 	flycheck
 	flycheck-pos-tip
 	evil-surround
@@ -383,6 +417,7 @@
 (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
 (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
 (evil-define-key 'normal neotree-mode-map (kbd "h") 'neotree-hidden-file-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "r") 'neotree-refresh)
 
 ;Every time when the neotree window is opened, let it find current file and jump to node.
 (setq neo-smart-open t)
@@ -396,9 +431,16 @@
 (setq js-indent-level 2)
 
 
-;; geiser
-(add-to-list 'auto-mode-alist '("\\.scm\\'" . scheme-mode))
-(setq geiser-scheme-implementation 'racket)
+;; racket-mode
+(add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
+
+; C-w prefix in racket-REPL
+(add-hook 'racket-repl-mode-hook 'racket-repl-evil-hook)
+
+(defun racket-repl-evil-hook ()
+  (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
+  (global-set-key (kbd "C-w") 'racket-repl-mode-map))
+
 
 ;; editorconfig
 (editorconfig-mode 1)
@@ -425,12 +467,6 @@
 
 ;; company
 (require 'company)
-
-;; smooth-scrolling
-(require 'smooth-scrolling)
-(setq scroll-margin 0
-scroll-conservatively 9999
-scroll-step 1)
 
 ;; flycheck
 (require 'flycheck)
