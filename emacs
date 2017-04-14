@@ -124,6 +124,10 @@ scroll-conservatively 9999
 scroll-step 1)
 
 
+;; remember cursor position
+(toggle-save-place-globally)
+
+
 ;;;; Packages
 
 ;; Package installation
@@ -180,6 +184,7 @@ scroll-step 1)
 	flycheck
 	flycheck-pos-tip
 	evil-surround
+	diminish
 	))
 
 ;; List of optional packages
@@ -488,6 +493,32 @@ scroll-step 1)
 ;; evil-surround
 (require 'evil-surround)
 (global-evil-surround-mode 1)
+
+
+;; remove mode clutter from powerline
+
+;; "after" macro definition
+(if (fboundp 'with-eval-after-load)
+    (defmacro after (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(with-eval-after-load ,feature ,@body))
+  (defmacro after (feature &rest body)
+    "After FEATURE is loaded, evaluate BODY."
+    (declare (indent defun))
+    `(eval-after-load ,feature
+       '(progn ,@body))))
+
+(require 'diminish)
+(diminish 'visual-line-mode)
+(after 'undo-tree (diminish 'undo-tree-mode))
+(after 'company (diminish 'company-mode))
+(after 'magit (diminish 'magit-auto-revert-mode))
+(diminish 'ivy-mode)
+(diminish 'editorconfig-mode)
+(diminish 'linum-relative-mode)
+(diminish 'auto-revert-mode)
+(diminish 'flycheck-mode)
 
 ;;;; System-specific configs
 
