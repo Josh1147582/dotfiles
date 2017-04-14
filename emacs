@@ -185,6 +185,7 @@ scroll-step 1)
 	flycheck-pos-tip
 	evil-surround
 	diminish
+	dtrt-indent
 	))
 
 ;; List of optional packages
