@@ -519,6 +519,12 @@ scroll-step 1)
 (diminish 'linum-relative-mode)
 (diminish 'auto-revert-mode)
 (diminish 'flycheck-mode)
+(diminish 'abbrev-mode)
+
+
+;; auto-adjust to indentation
+(require 'dtrt-indent)
+(dtrt-indent-mode 1)
 
 ;;;; System-specific configs
 
