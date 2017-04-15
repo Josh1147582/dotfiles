@@ -166,7 +166,7 @@ scroll-step 1)
 	iedit
 	magit
 	evil-magit
-	undo-tree
+	;undo-tree
 	evil
 	evil-leader
 	evil-tabs
@@ -186,6 +186,7 @@ scroll-step 1)
 	evil-surround
 	diminish
 	dtrt-indent
+	undohist
 	))
 
 ;; List of optional packages
@@ -264,12 +265,24 @@ scroll-step 1)
 
 ;;; undo-tree
 
-;; Save undo history under .emacs.d/undo
-(setq undo-tree-auto-save-history t
-         undo-tree-history-directory-alist
-         `(("." . ,(concat user-emacs-directory "undo"))))
-   (unless (file-exists-p (concat user-emacs-directory "undo"))
-(make-directory (concat user-emacs-directory "undo")))
+;; ;; Save undo history under .emacs.d/undo
+;; (setq undo-tree-auto-save-history t
+;;          undo-tree-history-directory-alist
+;;          `(("." . ,(concat user-emacs-directory "undo"))))
+;;    (unless (file-exists-p (concat user-emacs-directory "undo"))
+;; (make-directory (concat user-emacs-directory "undo")))
+
+
+;; undohist
+
+(require 'undohist)
+;; ;; Save undo history under .emacs.d/undohist
+
+(setq undohist-directory "~/.emacs.d/undohist")
+(unless (file-exists-p  "~/.emacs.d/undohist")
+  (make-directory "~/.emacs.d/undohist"))
+
+(undohist-initialize)
 
 
 ;;; Powerline
