@@ -512,6 +512,11 @@ scroll-step 1)
 (global-evil-surround-mode 1)
 
 
+;; auto-adjust to indentation
+(require 'dtrt-indent)
+(dtrt-indent-mode 1)
+
+
 ;; remove mode clutter from powerline
 
 ;; "after" macro definition
@@ -537,11 +542,8 @@ scroll-step 1)
 (diminish 'auto-revert-mode)
 (diminish 'flycheck-mode)
 (diminish 'abbrev-mode)
+(diminish 'dtrt-indent-mode)
 
-
-;; auto-adjust to indentation
-(require 'dtrt-indent)
-(dtrt-indent-mode 1)
 
 ;;;; System-specific configs
 
