@@ -187,6 +187,7 @@ scroll-step 1)
 	diminish
 	dtrt-indent
 	undohist
+	showkey
 	))
 
 ;; List of optional packages

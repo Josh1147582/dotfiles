@@ -1,0 +1,9 @@
+* Things to show off!
+    + I'm not showing [[http://orgmode.org/features.html][org-mode]] in all its glory, since I just starting using it!
+      
+** TODO Neotree
+** TODO Magit
+** TODO latex-preview-pane
+** TODO company
+** TODO flyspell
+** TODO flycheck
