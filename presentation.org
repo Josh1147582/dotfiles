@@ -2,12 +2,14 @@
     + I'm not showing [[http://orgmode.org/features.html][org-mode]] in all its glory, since I just starting using it
       
 ** Things similar to Vim
+*** TODO Basic evil things
+*** TODO powerline (airline)
 *** TODO flyspell
 *** TODO flycheck (syntastic)
 *** TODO Neotree (nerdtree)
 *** TODO company (YouCompleteMe)
-*** TODO powerline (airline)
 
 ** Things that make workflows nice
 *** TODO Magit
 *** TODO latex-preview-pane
+*** TODO flymd
