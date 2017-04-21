@@ -1,9 +1,13 @@
-* Things to show off!
-    + I'm not showing [[http://orgmode.org/features.html][org-mode]] in all its glory, since I just starting using it!
+* Things to show
+    + I'm not showing [[http://orgmode.org/features.html][org-mode]] in all its glory, since I just starting using it
       
-** TODO Neotree
-** TODO Magit
-** TODO latex-preview-pane
-** TODO company
-** TODO flyspell
-** TODO flycheck
+** Things similar to Vim
+*** TODO flyspell
+*** TODO flycheck (syntastic)
+*** TODO Neotree (nerdtree)
+*** TODO company (YouCompleteMe)
+*** TODO powerline (airline)
+
+** Things that make workflows nice
+*** TODO Magit
+*** TODO latex-preview-pane
