@@ -187,7 +187,6 @@ scroll-step 1)
 	diminish
 	dtrt-indent
 	undohist
-	showkey
 	))
 
 ;; List of optional packages
@@ -532,6 +531,19 @@ scroll-step 1)
     `(eval-after-load ,feature
        '(progn ,@body))))
 
+
+;;;;org-mode configuration
+;; Enable transient mark mode
+(transient-mark-mode 1)
+
+;; Enable org-mode
+(require 'org)
+
+;; auto-adjust to indentation
+(require 'dtrt-indent)
+(dtrt-indent-mode 1)
+
+
 (require 'diminish)
 (diminish 'visual-line-mode)
 (after 'undo-tree (diminish 'undo-tree-mode))
@@ -544,7 +556,6 @@ scroll-step 1)
 (diminish 'flycheck-mode)
 (diminish 'abbrev-mode)
 (diminish 'dtrt-indent-mode)
-
 
 ;;;; System-specific configs
 
