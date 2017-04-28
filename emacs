@@ -166,12 +166,14 @@ scroll-step 1)
 	iedit
 	magit
 	evil-magit
+	magithub
 	;undo-tree
 	evil
 	evil-leader
 	evil-tabs
 	powerline-evil
 	monokai-theme
+	challenger-deep-theme
 	;auto-complete
 	linum-relative
 	multi-term
@@ -181,6 +183,7 @@ scroll-step 1)
 	company
 	;helm
 	ivy
+	flx
 	flycheck
 	flycheck-pos-tip
 	evil-surround
@@ -426,6 +429,8 @@ scroll-step 1)
 (setq evil-magit-state 'normal)
 (require 'evil-magit)
 (global-magit-file-mode)
+(require 'magithub)
+(magithub-feature-autoinject t)
 
 
 ;; Neotree
@@ -486,6 +491,9 @@ scroll-step 1)
 ;; ivy
 (require 'ivy)
 (ivy-mode)
+
+; fuzzy
+(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
 
 ;; company
 (require 'company)
