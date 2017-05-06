@@ -415,7 +415,17 @@ scroll-step 1)
  "u" 'undo-tree-visualize
  "m" 'recentf-open-files
  "l" 'auto-fill-mode
- "s" '(lambda () (interactive) (if flyspell-mode (funcall 'flyspell-mode '0) (flyspell-mode) (flyspell-buffer)))
+ "s" '(lambda ()
+	(interactive)
+	(if (string= (buffer-local-value 'major-mode (current-buffer)) "text-mode")
+	    (if flyspell-mode
+		(funcall 'flyspell-mode '0)
+	      (flyspell-mode)
+	      (flyspell-buffer))
+	  (if flyspell-mode
+	      (funcall 'flyspell-mode '0)
+	    (flyspell-prog-mode)
+	    (flyspell-buffer))))
  ;"a" 'auto-complete-mode
  "a" 'company-mode
  "g" 'magit-status
