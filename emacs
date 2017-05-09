@@ -418,7 +418,7 @@ scroll-step 1)
  "s" '(lambda ()
 	(interactive)
 	;; use flyspell-mode when in text buffers, otherwise use flyspell-prog-mode
-	(let ((current-mode
+	(let* ((current-mode
 	       (buffer-local-value 'major-mode (current-buffer)))
 	      (flyspell-mode-to-call
 	       (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
@@ -428,7 +428,7 @@ scroll-step 1)
 	  (if flyspell-mode
 	      (funcall 'flyspell-mode '0)
 	    (funcall flyspell-mode-to-call)
-	    (flyspell-buffer)))
+	    (flyspell-buffer))))
  ;"a" 'auto-complete-mode
  "a" 'company-mode
  "g" 'magit-status
