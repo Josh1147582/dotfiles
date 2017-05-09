@@ -417,15 +417,18 @@ scroll-step 1)
  "l" 'auto-fill-mode
  "s" '(lambda ()
 	(interactive)
-	(if (string= (buffer-local-value 'major-mode (current-buffer)) "text-mode")
-	    (if flyspell-mode
-		(funcall 'flyspell-mode '0)
-	      (flyspell-mode)
-	      (flyspell-buffer))
+	;; use flyspell-mode when in text buffers, otherwise use flyspell-prog-mode
+	(let ((current-mode
+	       (buffer-local-value 'major-mode (current-buffer)))
+	      (flyspell-mode-to-call
+	       (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
+		   'flyspell-mode
+		 'flyspell-prog-mode)))
+	  ;; toggle the current flyspell mode, and eval the buffer if we turned it on
 	  (if flyspell-mode
 	      (funcall 'flyspell-mode '0)
-	    (flyspell-prog-mode)
-	    (flyspell-buffer))))
+	    (funcall flyspell-mode-to-call)
+	    (flyspell-buffer)))
  ;"a" 'auto-complete-mode
  "a" 'company-mode
  "g" 'magit-status
