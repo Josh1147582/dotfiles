@@ -13,14 +13,6 @@
 ;; Disable blinking cursor
 (blink-cursor-mode 0)
   
-;; TODO finish fixing eval-last-s-exp
-;;(defun evil-eval-prev-exp ()
-  ;;(interactive)
-  ;;(evil-append 1)
-  ;;(call-interactively (global-key-binding "\C-x"))
-  ;;(call-interactively (global-key-binding "\C-e"))
-  ;;(evil-normal-state))
-
 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -262,6 +254,16 @@ scroll-step 1)
 
 (define-key evil-normal-state-map "zs" 'hscroll-cursor-left)
 (define-key evil-normal-state-map "ze" 'hscroll-cursor-right)
+
+;; eval the last sexp while in normal mode (include the character the cursor is currently on)
+(defun evil-eval-last-sexp ()
+  (interactive)
+  (evil-append 1)
+  (eval-last-sexp nil)
+  (evil-normal-state))
+
+(define-key evil-normal-state-map "\C-x \C-e" 'evil-eval-last-sexp)
+
 (setq auto-hscroll-mode 't)
 (setq hscroll-margin 0
       hscroll-step 1)
