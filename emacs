@@ -3,7 +3,10 @@
 ;; Replace evil-leader with general
 
 ;;;; Startup
-(setq initial-scratch-message "")
+(setq inhibit-splash-screen t
+      inhibit-startup-echo-area-message t
+      initial-scratch-message ""	; I like things empty.
+      initial-major-mode 'text-mode)	; I'm usually not writing elisp.
 
 ;;;; Base
 
@@ -12,7 +15,21 @@
 
 ;; Disable blinking cursor
 (blink-cursor-mode 0)
-  
+
+;; Disable scroll bar
+(when (boundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+
+;; Smooth scrolling
+(setq auto-hscroll-mode 't)
+(setq hscroll-margin 0
+      hscroll-step 1)
+
+
+;; Line settings and indicators
+(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+(setq-default left-fringe-width nil)
+(setq-default indicate-empty-lines t)
 
 ;; All yes or no prompts are y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -36,9 +53,6 @@
 
 ;; Auto-enable elisp when opening .emacs in dotfiles (without the .)
 (add-to-list 'auto-mode-alist '("emacs" . emacs-lisp-mode))
-
-;; Start in text-mode
-(setq initial-major-mode 'text-mode)
 
 ;; Always show matching parens
 (show-paren-mode t)
@@ -119,227 +133,6 @@ scroll-step 1)
 ;; remember cursor position
 (toggle-save-place-globally)
 
-
-;;;; Packages
-
-;; Package installation
-(require 'package)
-
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-
-(setq package-enable-at-startup nil)
-(package-initialize)
-
-;; Keep track of whether or not we need to refresh package contents
-(setq packages-installed-this-session 0)
-
-;; Function to ensure every package in installed, and ask if it isn't.
-(defun ensure-package-installed (&rest packages)
-  (mapcar
-   (lambda (package)
-	 (if (package-installed-p package)
-	     nil
-	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
-	       ;; If this is the 1st install this session, update before install
-	       (cond ((eq packages-installed-this-session 0)
-		      (package-refresh-contents)
-		      (setq packages-installed-this-session 1)
-		      (package-install package))
-		     (t (package-install package))
-		 nil)
-	     package)))
-   packages))
-
-;; List of packages to install on all systems
-(setq required-packages
-      '(
-	iedit
-	magit
-	evil-magit
-	magithub
-	;undo-tree
-	evil
-	evil-leader
-	evil-tabs
-	powerline-evil
-	monokai-theme
-	challenger-deep-theme
-	;auto-complete
-	linum-relative
-	multi-term
-	neotree
-	evil-numbers
-	editorconfig
-	company
-	;helm
-	ivy
-	flx
-	flycheck
-	flycheck-pos-tip
-	evil-surround
-	diminish
-	dtrt-indent
-	undohist
-	))
-
-;; List of optional packages
-(setq optional-packages
-      '(
-	flymd
-	markdown-mode
-	latex-preview-pane
-	tide
-	web-mode
-	;ac-html
-	racket-mode
-	fuzzy
-	general))
-
-
-;; Check that all packages are installed
-(apply 'ensure-package-installed required-packages)
-
-;; Declare function for optional packages
-(defun optional-packages-install ()
-    (interactive)
-  (apply 'ensure-package-installed optional-packages))
- 
-
-;; Activate installed packages
-(package-initialize)
-
-
-;;; Evil
-
-;; No C-i jump
-(setq evil-want-C-i-jump nil)
-
-;; Evil tabs
-(global-evil-tabs-mode t)
-
-;; Default to evil mode
-(evil-mode t)
-
-;; Move all elements of evil-emacs-state-modes to evil-motion-state-modes
-(setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes (list 'magit-popup-mode))
-(delete 'magit-popup-mode evil-motion-state-modes)
-
-;; Delete info bindings for evil to take over
-(define-key Info-mode-map "g" nil)
-(define-key Info-mode-map "n" nil)
-(define-key Info-mode-map "p" nil)
-
-;; Vim removing of windows
-(define-key evil-window-map (kbd "q") 'delete-window)
-(define-key evil-window-map (kbd "C-q") 'delete-window)
-
-; Don't echo evil's states
-(setq evil-insert-state-message nil)
-(setq evil-visual-state-message nil)
-
-;; Increment and decrement (evil-numbers)
-(define-key evil-insert-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
-(define-key evil-insert-state-map (kbd "C-d") 'evil-numbers/dec-at-pt)
-
-;; scroll left and right with zs and ze
-(defun hscroll-cursor-left ()
-  (interactive "@")
-  (set-window-hscroll (selected-window) (current-column)))
-
-(defun hscroll-cursor-right ()
-  (interactive "@")
-  (set-window-hscroll (selected-window) (- (current-column) (window-width) -1)))
-
-(define-key evil-normal-state-map "zs" 'hscroll-cursor-left)
-(define-key evil-normal-state-map "ze" 'hscroll-cursor-right)
-
-;; eval the last sexp while in normal mode (include the character the cursor is currently on)
-(defun evil-eval-last-sexp ()
-  (interactive)
-  (evil-append 1)
-  (eval-last-sexp nil)
-  (evil-normal-state))
-
-(define-key evil-normal-state-map "\C-x \C-e" 'evil-eval-last-sexp)
-
-(setq auto-hscroll-mode 't)
-(setq hscroll-margin 0
-      hscroll-step 1)
-
-;;; undo-tree
-
-;; ;; Save undo history under .emacs.d/undo
-;; (setq undo-tree-auto-save-history t
-;;          undo-tree-history-directory-alist
-;;          `(("." . ,(concat user-emacs-directory "undo"))))
-;;    (unless (file-exists-p (concat user-emacs-directory "undo"))
-;; (make-directory (concat user-emacs-directory "undo")))
-
-
-;; undohist
-
-(require 'undohist)
-;; ;; Save undo history under .emacs.d/undohist
-
-(setq undohist-directory "~/.emacs.d/undohist")
-(unless (file-exists-p  "~/.emacs.d/undohist")
-  (make-directory "~/.emacs.d/undohist"))
-
-(undohist-initialize)
-
-
-;;; Powerline
-
-(require 'powerline)
-(powerline-evil-vim-color-theme)
-
-
-;;; Recent Files
-
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-saved-items 200
-      recentf-max-menu-items 15)
-
-
-;;; Web mode
-
-;; 2 spaces for an indent
-(defun my-web-mode-hook ()
-  "Hooks for Web mode."
-  (setq web-mode-markup-indent-offset 2)
-)
-(add-hook 'web-mode-hook  'my-web-mode-hook)
-
-;; Auto-enable web-mode when opening relevent files
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode))
-
-
-;;; Autocomplete
-
-;(require 'auto-complete)
-;
-;;; start auto-complete
-;(eval-and-compile
-;  (require 'auto-complete nil 'noerror))
-;(ac-config-default)
-;(setq ac-auto-start t)
-;;
-;(global-set-key (kbd "<backtab>") 'ac-previous)
-;
-;;; ac-html
-;(setq web-mode-ac-sources-alist
-;  '(("css" . (ac-source-css-property))
-;    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-;(ac-linum-workaround)
-;
-;(setq ac-auto-show-menu nil)
-
 ;;; Spelling
 
 ;; map ]s and [s to next and previously wrong word
@@ -385,86 +178,283 @@ scroll-step 1)
             (setq arg 0))
         ))))
 
-(define-key evil-normal-state-map (kbd "[s") 'flyspell-goto-previous-error)
-(define-key evil-normal-state-map (kbd "]s") 'flyspell-goto-next-error)
+
+;;;; Packages
+
+;;; use-package example:
+; (use-package foo
+; :init ; Runs before loading the package. WIll always run, even if foo isn't on this system.
+; :config ; Runs after.
+; :bind (("M-s O" . action)
+;       ("" . some-other-action))
+; :commands foo-mode ; Creates autoloads for commands: defers loading until called.
+; )
+
+;; Package installation
+(require 'package)
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
+;; Keep track of whether or not we need to refresh package contents
+(setq packages-installed-this-session 0)
+
+;; Function to ensure every package in installed, and ask if it isn't.
+(defun ensure-package-installed (&rest packages)
+  (mapcar
+   (lambda (package)
+	 (if (package-installed-p package)
+	     nil
+	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+	       ;; If this is the 1st install this session, update before install
+	       (cond ((eq packages-installed-this-session 0)
+		      (package-refresh-contents)
+		      (setq packages-installed-this-session 1)
+		      (package-install package))
+		     (t (package-install package))
+		 nil)
+	     package)))
+   packages))
+
+;; List of packages to install on all systems
+(setq required-packages
+      '(
+	iedit
+	magit
+	evil-magit
+	magithub
+	;undo-tree
+	evil
+	evil-leader
+	evil-tabs
+	powerline-evil
+	monokai-theme
+	challenger-deep-theme
+	linum-relative
+	multi-term
+	neotree
+	evil-numbers
+	editorconfig
+	company
+	ivy
+	flx
+	flycheck
+	flycheck-pos-tip
+	evil-surround
+	diminish
+	dtrt-indent
+	undohist))
+
+;; List of optional packages
+(setq optional-packages
+      '(
+	flymd
+	markdown-mode
+	latex-preview-pane
+	tide
+	web-mode
+	racket-mode
+	fuzzy
+	general))
 
 
-;;; Relative line numbers
+;; Check that all packages are installed
+(apply 'ensure-package-installed required-packages)
 
-(require 'linum-relative)
-(setq linum-relative-current-symbol "")
-(linum-mode)
-(linum-relative-global-mode)
-
-
-;;; flymd
-
-; flymd.md and flymd.html are deleted upon markdown buffer killed
-(setq flymd-close-buffer-delete-temp-files t)
+;; Declare function for optional packages
+(defun optional-packages-install ()
+    (interactive)
+  (apply 'ensure-package-installed optional-packages))
 
 
-;;; evil-leader
+;; Activate installed packages
+(package-initialize)
+
+
+(use-package recentf
+  :config 
+  (recentf-mode 1)
+  (setq recentf-max-saved-items 200
+    recentf-max-menu-items 15))
+
+
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t)
+  (setq evil-want-C-i-jump nil)
+  (setq evil-default-state 'normal)
+
+  ;; Move all elements of evil-emacs-state-modes to evil-motion-state-modes
+  (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
+  (setq evil-emacs-state-modes (list 'magit-popup-mode))
+  (delete 'magit-popup-mode evil-motion-state-modes)
+
+  ;; Delete info bindings for evil to take over
+  (define-key Info-mode-map "g" nil)
+  (define-key Info-mode-map "n" nil)
+  (define-key Info-mode-map "p" nil)
+
+  ;; Vim removing of windows
+  (define-key evil-window-map (kbd "q") 'delete-window)
+  (define-key evil-window-map (kbd "C-q") 'delete-window)
+
+                                          ; Don't echo evil's states
+  (setq evil-insert-state-message nil)
+  (setq evil-visual-state-message nil)
+
+  ;; eval the last sexp while in normal mode (include the character the cursor is currently on)
+  (defun evil-eval-last-sexp ()
+    (interactive)
+    (evil-append 1)
+    (eval-last-sexp nil)
+    (evil-normal-state))
+
+  ;; "pull" left and right with zs and ze
+  (defun hscroll-cursor-left ()
+    (interactive "@")
+    (set-window-hscroll (selected-window) (current-column)))
+
+  (defun hscroll-cursor-right ()
+    (interactive "@")
+    (set-window-hscroll (selected-window) (- (current-column) (window-width) -1)))
+
+  :bind (:map evil-normal-state-map
+              ("zs" . hscroll-cursor-left)
+              ("ze" . hscroll-cursor-right)
+              ("[s" . flyspell-goto-previous-error)
+              ("]s" . flyspell-goto-next-error)
+              ("\C-x \C-e" . evil-eval-last-sexp)))
+
+
+
+(use-package evil-tabs
+  :config 
+  (global-evil-tabs-mode t))
+
+
+
+(use-package evil-numbers
+  ;; Increment and decrement (evil-numbers)
+  :bind (("C-c C-a" . evil-numbers/inc-at-pt)
+	 ("C-c C-d" . evil-numbers/dec-at-pt)))
+
+
+(use-package undohist
+  :config
+  ;; ;; Save undo history under .emacs.d/undohist
+  (setq undohist-directory "~/.emacs.d/undohist")
+  (unless (file-exists-p  "~/.emacs.d/undohist")
+    (make-directory "~/.emacs.d/undohist"))
+
+  (undohist-initialize))
+
+
+(use-package powerline
+  :config
+  (powerline-evil-vim-color-theme))
+
+
+(use-package web-mode
+  :config
+  ;; 2 spaces for an indent
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2))
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+  ;; Auto-enable web-mode when opening relevent files
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode)))
+
+
+(use-package linum-relative
+  :config
+  (setq linum-relative-current-symbol "")
+  (linum-mode)
+  (linum-relative-global-mode))
+
+
+(use-package flymd
+  :config
+  (setq flymd-close-buffer-delete-temp-files t))
+
 
 ;; Evil leader is Space
-(global-evil-leader-mode)
-(evil-leader/set-leader "<SPC>")
+(use-package evil-leader
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "<SPC>")
 
-;; Leader keybinds
-(evil-leader/set-key
- "d" 'diff-buffer-with-file
- "b" 'buffer-menu
- ;"f" '(lambda ()  (interactive) (dired '"./"))
- "f" 'neotree-toggle
- "u" 'undo-tree-visualize
- "m" 'recentf-open-files
- "l" 'auto-fill-mode
- "s" '(lambda ()
-	(interactive)
-	;; use flyspell-mode when in text buffers, otherwise use flyspell-prog-mode
-	(let* ((current-mode
-	       (buffer-local-value 'major-mode (current-buffer)))
-	      (flyspell-mode-to-call
-	       (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
-		   'flyspell-mode
-		 'flyspell-prog-mode)))
-	  ;; toggle the current flyspell mode, and eval the buffer if we turned it on
-	  (if flyspell-mode
-	      (funcall 'flyspell-mode '0)
-	    (funcall flyspell-mode-to-call)
-	    (flyspell-buffer))))
- ;"a" 'auto-complete-mode
- "a" 'company-mode
- "g" 'magit-status
- "M-g" 'magit-dispatch-popup
- "c" 'flycheck-mode
- )
-
-
-;; Magit
-(require 'magit)
-(require 'evil-magit)
-(setq evil-magit-state 'normal)
-(evil-magit-init)
-(global-magit-file-mode)
-(require 'magithub)
-(magithub-feature-autoinject t)
+  (evil-leader/set-key
+   "d" 'diff-buffer-with-file
+   "b" 'buffer-menu
+   ;"f" '(lambda ()  (interactive) (dired '"./"))
+   "f" 'neotree-toggle
+   "u" 'undo-tree-visualize
+   "m" 'recentf-open-files
+   "l" 'auto-fill-mode
+   "s" '(lambda ()
+  	(interactive)
+  	;; use flyspell-mode when in text buffers, otherwise use flyspell-prog-mode
+  	(let* ((current-mode
+  	       (buffer-local-value 'major-mode (current-buffer)))
+  	      (flyspell-mode-to-call
+  	       (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
+  		   'flyspell-mode
+  		 'flyspell-prog-mode)))
+  	  ;; toggle the current flyspell mode, and eval the buffer if we turned it on
+  	  (if flyspell-mode
+  	      (funcall 'flyspell-mode '0)
+  	    (funcall flyspell-mode-to-call)
+  	    (flyspell-buffer))))
+   ;"a" 'auto-complete-mode
+   "a" 'company-mode
+   "g" 'magit-status
+   "M-g" 'magit-dispatch-popup
+   "c" 'flycheck-mode
+   ))
 
 
-;; Neotree
+(use-package magit
+  :config
+  (setq evil-magit-state 'normal))
 
-; Set vi-like bindings in neotree-mode that don't conflict with evil
-(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "h") 'neotree-hidden-file-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "r") 'neotree-refresh)
+(use-package evil-magit
+  :config
+  (evil-magit-init))
 
-;Every time when the neotree window is opened, let it find current file and jump to node.
-(setq neo-smart-open t)
+(use-package magithub
+  :config
+  (magithub-feature-autoinject t))
 
-; List of files to hide
-(setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class"))
+
+(use-package neotree
+  :config
+  ; Set vi-like bindings in neotree-mode that don't conflict with evil
+  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+  (evil-define-key 'normal neotree-mode-map (kbd "h") 'neotree-hidden-file-toggle)
+  (evil-define-key 'normal neotree-mode-map (kbd "r") 'neotree-refresh)
+
+  ;Every time when the neotree window is opened, let it find current file and jump to node.
+  (setq neo-smart-open t)
+
+  ; List of files to hide
+  (setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class")))
 
 
 ;; tide/typescript
@@ -475,74 +465,66 @@ scroll-step 1)
 (setq js-indent-level 2)
 
 
-;; racket-mode
-(add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
+(use-package racket-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
 
-; C-w prefix in racket-REPL
-(add-hook 'racket-repl-mode-hook 'racket-repl-evil-hook)
+  ; C-w prefix in racket-REPL
+  (add-hook 'racket-repl-mode-hook 'racket-repl-evil-hook)
 
-(defun racket-repl-evil-hook ()
-  (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
-  (global-set-key (kbd "C-w") 'racket-repl-mode-map))
+  (defun racket-repl-evil-hook ()
+    (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
+    (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
 
-;; editorconfig
-(editorconfig-mode 1)
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
 
-;;helm
 
-;; (require 'helm-config)
-;; 
-;; (global-set-key (kbd "M-x") #'helm-M-x)
-;; (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; 
-;; (helm-mode 1)
-;; (define-key helm-find-files-map "\t" 'helm-execute-persistent-action) ; make TAB run C-j's command.
+(use-package ivy
+  :config
+  (ivy-mode))
 
-;; ac-helm
-;(require 'ac-helm)  ;; Not necessary if using ELPA package
-;;(global-set-key (kbd "C-:") 'ac-complete-with-helm)
-;(define-key ac-complete-mode-map (kbd "<tab>") 'ac-complete-with-helm)
 
-;; ivy
-(require 'ivy)
-(ivy-mode)
+(use-package fuzzy
+  :config
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
-; fuzzy
-(setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
 
-;; company
-(require 'company)
+(use-package company)
 
-;; flycheck
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
 
-(setq flycheck-check-syntax-automatically '(save mode-enabled))
-(setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
-(setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
-(setq flycheck-standard-error-navigation nil)
+(use-package flycheck
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(global-flycheck-mode t)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
+  (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
+  (setq flycheck-standard-error-navigation nil)
 
-;; flycheck-pos-tip: flycheck errors on a tooltip 
-(require 'flycheck-pos-tip)
-(with-eval-after-load 'flycheck
+  (global-flycheck-mode t))
+
+
+(use-package flycheck-pos-tip
+  :after flycheck
+  :config
   (flycheck-pos-tip-mode))
 
 
-;; evil-surround
-(require 'evil-surround)
-(global-evil-surround-mode 1)
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
 
 
-;; auto-adjust to indentation
-(require 'dtrt-indent)
-(dtrt-indent-mode 1)
+(use-package dtrt-indent
+  :config 
+  (dtrt-indent-mode 1))
 
 
-;; remove mode clutter from powerline
+(use-package org)
+
 
 ;; "after" macro definition
 (if (fboundp 'with-eval-after-load)
@@ -560,14 +542,6 @@ scroll-step 1)
 ;;;;org-mode configuration
 ;; Enable transient mark mode
 (transient-mark-mode 1)
-
-;; Enable org-mode
-(require 'org)
-
-;; auto-adjust to indentation
-(require 'dtrt-indent)
-(dtrt-indent-mode 1)
-
 
 (require 'diminish)
 (diminish 'visual-line-mode)
