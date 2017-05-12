@@ -224,7 +224,8 @@ scroll-step 1)
 
 ;; Move all elements of evil-emacs-state-modes to evil-motion-state-modes
 (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-(setq evil-emacs-state-modes nil)
+(setq evil-emacs-state-modes (list 'magit-popup-mode))
+(delete 'magit-popup-mode evil-motion-state-modes)
 
 ;; Delete info bindings for evil to take over
 (define-key Info-mode-map "g" nil)
@@ -441,8 +442,9 @@ scroll-step 1)
 
 ;; Magit
 (require 'magit)
-(setq evil-magit-state 'normal)
 (require 'evil-magit)
+(setq evil-magit-state 'normal)
+(evil-magit-init)
 (global-magit-file-mode)
 (require 'magithub)
 (magithub-feature-autoinject t)
