@@ -25,7 +25,7 @@ then
 fi
 ln -s $DIR/zshrc $HOME/.zshrc
 
-for i in vimrc vim bashrc tmux.conf zshrc emacs dircolors
+for i in vimrc vim bashrc tmux.conf zshrc emacs.d dircolors
 do
 if [ -f $HOME/.$i -o -h $HOME/.$i -o -d $HOME/.$i ]
     then

@@ -8,22 +8,23 @@
       initial-scratch-message ""	; I like things empty.
       initial-major-mode 'text-mode)	; I'm usually not writing elisp.
 
-;;;; Base
+;; Base
 
-;; Disable beep & flash
-(setq ring-bell-function 'ignore)
-
-;; Disable blinking cursor
+(setq ring-bell-function 'ignore) ; Disable beep & flash
 (blink-cursor-mode 0)
 
-;; Disable scroll bar
+;; No scroll bar
 (when (boundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
-;; Smooth scrolling
-(setq auto-hscroll-mode 't)
-(setq hscroll-margin 0
-      hscroll-step 1)
+;; Disable toolbar
+(when (display-graphic-p)
+  (tool-bar-mode -1))
+
+;; smoother scrolling
+(setq scroll-margin 0
+scroll-conservatively 9999
+scroll-step 1)
 
 
 ;; Line settings and indicators
@@ -50,9 +51,6 @@
 ;; Save minibar history
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-
-;; Auto-enable elisp when opening .emacs in dotfiles (without the .)
-(add-to-list 'auto-mode-alist '("emacs" . emacs-lisp-mode))
 
 ;; Always show matching parens
 (show-paren-mode t)
@@ -88,47 +86,6 @@
 ;; Autosave files
 (setq auto-save-file-name-transforms
           `((".*" , "~/.emacs.d/backups/auto-saves" t)))
-
-;; Disable toolbar
-(when (display-graphic-p)
-  (tool-bar-mode -1)
-  )
-
-;; Save session including tabs
-;; http://stackoverflow.com/questions/22445670/save-and-restore-elscreen-tabs-and-split-frames
-(defun session-save ()
-    "Store the elscreen tab configuration."
-    (interactive)
-    (if (desktop-save user-emacs-directory)
-        (with-temp-file (concat user-emacs-directory ".elscreen")
-            (insert (prin1-to-string (elscreen-get-screen-to-name-alist))))))
-
-;; Load session including tabs
-(defun session-load ()
-    "Restore the elscreen tab configuration."
-    (interactive)
-    (if (desktop-read)
-        (let ((screens (reverse
-                        (read
-                         (with-temp-buffer
-                          (insert-file-contents (concat user-emacs-directory ".elscreen"))
-                          (buffer-string))))))
-            (while screens
-                (setq screen (car (car screens)))
-                (setq buffers (split-string (cdr (car screens)) ":"))
-                (if (eq screen 0)
-                    (switch-to-buffer (car buffers))
-                    (elscreen-find-and-goto-by-buffer (car buffers) t t))
-                (while (cdr buffers)
-                    (switch-to-buffer-other-window (car (cdr buffers)))
-                    (setq buffers (cdr buffers)))
-                (setq screens (cdr screens))))))
-
-;; smoother scrolling
-(setq scroll-margin 0
-scroll-conservatively 9999
-scroll-step 1)
-
 
 ;; remember cursor position
 (toggle-save-place-globally)
@@ -236,7 +193,6 @@ scroll-step 1)
 	;undo-tree
 	evil
 	evil-leader
-	evil-tabs
 	powerline-evil
 	monokai-theme
 	challenger-deep-theme
@@ -280,6 +236,16 @@ scroll-step 1)
 ;; Activate installed packages
 (package-initialize)
 
+(add-to-list 'load-path (expand-file-name "plugins" user-emacs-directory))
+
+(require 'diminish)
+(diminish 'visual-line-mode)
+(diminish 'abbrev-mode)
+
+
+(use-package autorevert
+  :diminish auto-revert-mode)
+
 
 (use-package recentf
   :config 
@@ -289,7 +255,6 @@ scroll-step 1)
 
 
 (use-package evil
-  :ensure t
   :config
   (evil-mode t)
   (setq evil-want-C-i-jump nil)
@@ -329,18 +294,24 @@ scroll-step 1)
     (interactive "@")
     (set-window-hscroll (selected-window) (- (current-column) (window-width) -1)))
 
+   ;; Horizontal scrolling
+   (setq auto-hscroll-mode 't)
+   (setq hscroll-margin 0
+         hscroll-step 1)
+
   :bind (:map evil-normal-state-map
-              ("zs" . hscroll-cursor-left)
-              ("ze" . hscroll-cursor-right)
-              ("[s" . flyspell-goto-previous-error)
-              ("]s" . flyspell-goto-next-error)
-              ("\C-x \C-e" . evil-eval-last-sexp)))
-
-
-
-(use-package evil-tabs
-  :config 
-  (global-evil-tabs-mode t))
+         ("zs" . hscroll-cursor-left)
+         ("ze" . hscroll-cursor-right)
+         ("[s" . flyspell-goto-previous-error)
+         ("]s" . flyspell-goto-next-error)
+         ("\C-x \C-e" . evil-eval-last-sexp)
+         :map Info-mode-map
+         ("g" . nil)
+         ("n" . nil)
+         ("p" . nil)
+         :map evil-window-map
+         ("q" . delete-window)
+         ("C-q" . delete-window)))
 
 
 
@@ -348,6 +319,10 @@ scroll-step 1)
   ;; Increment and decrement (evil-numbers)
   :bind (("C-c C-a" . evil-numbers/inc-at-pt)
 	 ("C-c C-d" . evil-numbers/dec-at-pt)))
+
+
+(use-package undo-tree
+  :diminish undo-tree-mode)
 
 
 (use-package undohist
@@ -360,9 +335,10 @@ scroll-step 1)
   (undohist-initialize))
 
 
-(use-package powerline
-  :config
-  (powerline-evil-vim-color-theme))
+;(use-package powerline
+;  :config
+;  (powerline-evil-vim-color-theme))
+(require 'init-powerline)
 
 
 (use-package web-mode
@@ -380,6 +356,7 @@ scroll-step 1)
 
 
 (use-package linum-relative
+  :diminish linum-relative-mode
   :config
   (setq linum-relative-current-symbol "")
   (linum-mode)
@@ -399,7 +376,9 @@ scroll-step 1)
 
   (evil-leader/set-key
    "d" 'diff-buffer-with-file
-   "b" 'buffer-menu
+   ;"b" 'buffer-menu
+   "b" 'ivy-switch-buffer
+   "C-b" 'buffer-menu
    ;"f" '(lambda ()  (interactive) (dired '"./"))
    "f" 'neotree-toggle
    "u" 'undo-tree-visualize
@@ -428,6 +407,7 @@ scroll-step 1)
 
 
 (use-package magit
+  :diminish magit-auto-revert-mode
   :config
   (setq evil-magit-state 'normal))
 
@@ -478,24 +458,28 @@ scroll-step 1)
 
 
 (use-package editorconfig
+  :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
 
 
 (use-package ivy
+  :diminish ivy-mode
   :config
   (ivy-mode))
 
 
-(use-package fuzzy
+(use-package flx
   :config
   (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
 
-(use-package company)
+(use-package company
+  :diminish company-mode)
 
 
 (use-package flycheck
+  :diminish flycheck-mode
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -519,42 +503,13 @@ scroll-step 1)
 
 
 (use-package dtrt-indent
+  :diminish dtrt-indent-mode
   :config 
   (dtrt-indent-mode 1))
 
 
 (use-package org)
 
-
-;; "after" macro definition
-(if (fboundp 'with-eval-after-load)
-    (defmacro after (feature &rest body)
-      "After FEATURE is loaded, evaluate BODY."
-      (declare (indent defun))
-      `(with-eval-after-load ,feature ,@body))
-  (defmacro after (feature &rest body)
-    "After FEATURE is loaded, evaluate BODY."
-    (declare (indent defun))
-    `(eval-after-load ,feature
-       '(progn ,@body))))
-
-
-;;;;org-mode configuration
-;; Enable transient mark mode
-(transient-mark-mode 1)
-
-(require 'diminish)
-(diminish 'visual-line-mode)
-(after 'undo-tree (diminish 'undo-tree-mode))
-(after 'company (diminish 'company-mode))
-(after 'magit (diminish 'magit-auto-revert-mode))
-(diminish 'ivy-mode)
-(diminish 'editorconfig-mode)
-(diminish 'linum-relative-mode)
-(diminish 'auto-revert-mode)
-(diminish 'flycheck-mode)
-(diminish 'abbrev-mode)
-(diminish 'dtrt-indent-mode)
 
 ;;;; System-specific configs
 
