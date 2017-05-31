@@ -1,4 +1,5 @@
 ;;;; Startup
+
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
       initial-scratch-message ""	; I like things empty.
@@ -133,6 +134,7 @@ scroll-step 1)
 
 
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+(package-initialize)
 (require 'packages)
 
 

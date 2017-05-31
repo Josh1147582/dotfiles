@@ -14,7 +14,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 (setq package-enable-at-startup nil)
-(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -260,19 +259,20 @@
    "c" 'flycheck-mode
    ))
 
+(if (not (eq system-type 'windows-nt))
+    (lambda ()
+      ((use-package magit
+	 :diminish magit-auto-revert-mode
+	 :config
+	 (setq evil-magit-state 'normal))
 
-(use-package magit
-  :diminish magit-auto-revert-mode
-  :config
-  (setq evil-magit-state 'normal))
+       (use-package evil-magit
+	 :config
+         (evil-magit-init))
 
-(use-package evil-magit
-  :config
-  (evil-magit-init))
-
-(use-package magithub
-  :config
-  (magithub-feature-autoinject t))
+       (use-package magithub
+         :config
+         (magithub-feature-autoinject t)))))
 
 
 (use-package neotree
