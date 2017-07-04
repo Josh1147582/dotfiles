@@ -49,7 +49,7 @@
 	magit
 	evil-magit
 	magithub
-	;undo-tree
+	undo-tree
 	evil
 	evil-leader
 	powerline-evil
@@ -68,7 +68,8 @@
 	evil-surround
 	diminish
 	dtrt-indent
-	undohist))
+	undohist
+	))
 
 ;; List of optional packages
 (setq optional-packages
@@ -80,7 +81,9 @@
 	web-mode
 	racket-mode
 	fuzzy
-	general))
+	general
+	haskell-mode
+	))
 
 
 ;; Check that all packages are installed
@@ -374,5 +377,10 @@
 
 
 (use-package org)
+
+(use-package haskell-mode
+  :config
+  (setq haskell-interactive-popup-errors nil)
+  (define-key haskell-mode-map (kbd "C-c C-c") 'inferior-haskell-load-file))
 
 (provide 'packages)
