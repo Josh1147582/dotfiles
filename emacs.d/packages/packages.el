@@ -267,7 +267,7 @@
   	    (flyspell-buffer))))
    ;"a" 'auto-complete-mode
    "a" 'company-mode
-   "g" 'magit-status
+   "g" '(lambda () (interactive) (evil-magit-init) (magit-status))
    "M-g" 'magit-dispatch-popup
    "c" 'flycheck-mode
    ))
@@ -275,13 +275,9 @@
 (if (not (eq system-type 'windows-nt))
     (lambda ()
       ((use-package magit
-	 :diminish magit-auto-revert-mode
-	 :config
-	 (setq evil-magit-state 'normal))
+	 :diminish magit-auto-revert-mode)
 
-       (use-package evil-magit
-	 :config
-         (evil-magit-init))
+       (use-package evil-magit)
 
        (use-package magithub
          :config
