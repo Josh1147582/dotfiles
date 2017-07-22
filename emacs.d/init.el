@@ -134,7 +134,6 @@ scroll-step 1)
 
 
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
-(package-initialize)
 (require 'packages)
 
 

@@ -8,7 +8,13 @@
 ; )
 
 ;; Package installation
+
 (require 'package)
+;; Create the package install directory if it doesn't exist
+(setq package-user-dir (format "%selpa_%s/"
+                               user-emacs-directory emacs-major-version)) ; default = ~/.emacs.d/elpa/
+(package-initialize)
+
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
