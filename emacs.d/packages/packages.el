@@ -32,12 +32,12 @@
 (setq packages-installed-this-session 0)
 
 ;; Function to ensure every package in installed, and ask if it isn't.
-(defun ensure-package-installed (&rest packages)
+(defun ensure-package-installed (prompt &rest packages)
   (mapcar
    (lambda (package)
 	 (if (package-installed-p package)
 	     nil
-	   (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+	   (if (or prompt (y-or-n-p (format "Package %s is missing. Install it? " package)))
 	       ;; If this is the 1st install this session, update before install
 	       (cond ((eq packages-installed-this-session 0)
 		      (package-refresh-contents)
@@ -51,6 +51,8 @@
 ;; List of packages to install on all systems
 (setq required-packages
       '(
+	use-package
+	bind-key
 	iedit
 	magit
 	evil-magit
@@ -93,16 +95,13 @@
 
 
 ;; Check that all packages are installed
-(apply 'ensure-package-installed required-packages)
+(apply 'ensure-package-installed t required-packages)
 
 ;; Declare function for optional packages
 (defun optional-packages-install ()
     (interactive)
-  (apply 'ensure-package-installed optional-packages))
+  (apply 'ensure-package-installed nil optional-packages))
 
-
-;; Activate installed packages
-(package-initialize)
 
 (require 'diminish)
 (diminish 'visual-line-mode)
