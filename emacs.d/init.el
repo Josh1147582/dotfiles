@@ -1,5 +1,6 @@
 ;;;; Startup
 
+
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
       initial-scratch-message ""	; I like things empty.
@@ -147,6 +148,9 @@ scroll-step 1)
 (defun win-setup ()
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
     (setq ispell-program-name "aspell")
+
+    (if (file-directory-p "C:/MinGW/msys/1.0/bin")
+        (add-to-list 'exec-path "C:/MinGW/msys/1.0/bin"))
 
     (defun cmd ()
       (interactive)
