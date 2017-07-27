@@ -87,6 +87,11 @@ scroll-step 1)
 ;; remember cursor position
 (toggle-save-place-globally)
 
+;; Search all buffers
+(defun grep-search-all-buffers (regexp)
+  (interactive "sRegexp: ")
+  (multi-occur-in-matching-buffers "." regexp t))
+
 ;;; Spelling
 
 ;; map ]s and [s to next and previously wrong word

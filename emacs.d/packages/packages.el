@@ -77,6 +77,7 @@
 	diminish
 	dtrt-indent
 	undohist
+	evil-ediff
 	))
 
 ;; List of optional packages
@@ -383,5 +384,9 @@
   :config
   (setq haskell-interactive-popup-errors nil)
   (define-key haskell-mode-map (kbd "C-c C-c") 'inferior-haskell-load-file))
+
+(use-package evil-ediff
+  :config
+  (add-hook 'ediff-load-hook 'evil-ediff-init))
 
 (provide 'packages)
