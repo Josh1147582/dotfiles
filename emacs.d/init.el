@@ -53,6 +53,9 @@ scroll-step 1)
 ;; Always show matching parens
 (show-paren-mode t)
 
+;; Save Window layout history
+(winner-mode)
+
 ;; Backups (from https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files/20824625#20824625)
 (setq version-control t     ;; Use version numbers for backups.
       kept-new-versions 10  ;; Number of newest versions to keep.

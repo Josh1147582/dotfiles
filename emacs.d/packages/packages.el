@@ -140,7 +140,11 @@
   (define-key evil-window-map (kbd "q") 'delete-window)
   (define-key evil-window-map (kbd "C-q") 'delete-window)
 
-                                          ; Don't echo evil's states
+  ; Add window recovery to C-w
+  (define-key evil-window-map (kbd "u") 'winner-undo)
+  (define-key evil-window-map (kbd "U") 'winner-redo)
+
+  ; Don't echo evil's states
   (setq evil-insert-state-message nil)
   (setq evil-visual-state-message nil)
 
