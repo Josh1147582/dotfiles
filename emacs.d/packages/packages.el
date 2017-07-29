@@ -259,7 +259,8 @@
    ;"f" '(lambda ()  (interactive) (dired '"./"))
    "f" 'neotree-toggle
    "u" 'undo-tree-visualize
-   "m" 'recentf-open-files
+   ;"m" 'recentf-open-files
+   "m" 'ivy-switch-buffer ; includes recentf data
    "l" 'auto-fill-mode
    "s" '(lambda ()
   	(interactive)
@@ -340,7 +341,8 @@
 (use-package ivy
   :diminish ivy-mode
   :config
-  (ivy-mode))
+  (ivy-mode)
+  (setq ivy-use-virtual-buffers t))
 
 
 (use-package flx
