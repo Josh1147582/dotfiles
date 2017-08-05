@@ -78,6 +78,9 @@
 	dtrt-indent
 	undohist
 	evil-ediff
+        rainbow-delimiters
+        rainbow-identifiers
+        rainbow-mode
 	))
 
 ;; List of optional packages
@@ -108,10 +111,60 @@
 (diminish 'visual-line-mode)
 (diminish 'abbrev-mode)
 
+;;; Flyspell 
+
+;; map ]s and [s to next and previously wrong word
+
+;; move point to previous error
+;; based on code by hatschipuh at
+;; http://emacs.stackexchange.com/a/14912/2017
+(defun flyspell-goto-previous-error (arg)
+  "Go to arg previous spelling error."
+  (interactive "p")
+  (while (not (= 0 arg))
+    (let ((pos (point))
+          (min (point-min)))
+      (if (and (eq (current-buffer) flyspell-old-buffer-error)
+               (eq pos flyspell-old-pos-error))
+          (progn
+            (if (= flyspell-old-pos-error min)
+                ;; goto beginning of buffer
+                (progn
+                  (message "Restarting from end of buffer")
+                  (goto-char (point-max)))
+              (backward-word 1))
+            (setq pos (point))))
+      ;; seek the next error
+      (while (and (> pos min)
+                  (let ((ovs (overlays-at pos))
+                        (r '()))
+                    (while (and (not r) (consp ovs))
+                      (if (flyspell-overlay-p (car ovs))
+                          (setq r t)
+                        (setq ovs (cdr ovs))))
+                    (not r)))
+        (backward-word 1)
+        (setq pos (point)))
+      ;; save the current location for next invocation
+      (setq arg (1- arg))
+      (setq flyspell-old-pos-error pos)
+      (setq flyspell-old-buffer-error (current-buffer))
+      (goto-char pos)
+      (if (= pos min)
+          (progn
+            (message "No more miss-spelled word!")
+            (setq arg 0))
+        ))))
+
+;; Add folds to programming modes
+(add-hook 'prog-mode-hook
+            'hs-minor-mode)
+(add-hook 'hs-minor-mode-hook
+          (lambda ()
+            (diminish 'hs-minor-mode)))
 
 (use-package autorevert
   :diminish auto-revert-mode)
-
 
 (use-package recentf
   :config 
@@ -394,5 +447,17 @@
 (use-package evil-ediff
   :config
   (add-hook 'ediff-load-hook 'evil-ediff-init))
+
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package rainbow-identifiers
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+
+(use-package rainbow-mode
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
 
 (provide 'packages)
