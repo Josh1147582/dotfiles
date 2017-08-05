@@ -95,6 +95,7 @@
 	fuzzy
 	general
 	haskell-mode
+	emojify
 	))
 
 
@@ -457,7 +458,12 @@
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
 
 (use-package rainbow-mode
+  :diminish rainbow-mode
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
+
+(use-package emojify
+  :config
+  (add-hook 'after-init-hook #'global-emojify-mode))
 
 (provide 'packages)
