@@ -97,6 +97,13 @@ scroll-step 1)
   (interactive "sRegexp: ")
   (multi-occur-in-matching-buffers "." regexp t))
 
+;; Tags
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+    (format "\"%s\" -f TAGS -e -R %s" tags-generator (directory-file-name dir-name))))
+
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (require 'packages)
 
@@ -107,15 +114,20 @@ scroll-step 1)
     (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
     (setq ispell-program-name "aspell")
 
+    ;; Add MinGW if it exists
     (if (file-directory-p "C:/MinGW/msys/1.0/bin")
         (add-to-list 'exec-path "C:/MinGW/msys/1.0/bin"))
+
+    ;; Add tags
+    (setq tags-generator (expand-file-name "ctags.exe" user-emacs-directory))
 
     (defun cmd ()
       (interactive)
 	(make-comint-in-buffer "cmd" nil "cmd" nil)
 	(switch-to-buffer "*cmd*")))
 
-(defun linux-setup ())
+(defun linux-setup ()
+  (setq tage-generator "ctags")
 
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))

@@ -18,7 +18,8 @@
   '((t (:foreground "#CEBFF3" :background "#3A2E58")))
   "Powerline second segment inactive face.")
 (defface my-pl-segment3-active
-  '((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  ;'((t (:foreground "#CEBFF3" :background "#3A2E58")))
+  '((t (:foreground "#CEBFF3" :background "#3A2E80")))
   "Powerline third segment active face.")
 (defface my-pl-segment3-inactive
   '((t (:foreground "#CEBFF3" :background "#3A2E58")))
