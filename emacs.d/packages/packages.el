@@ -164,8 +164,10 @@
           (lambda ()
             (diminish 'hs-minor-mode)))
 
+
 (use-package autorevert
   :diminish auto-revert-mode)
+
 
 (use-package recentf
   :config
@@ -184,19 +186,6 @@
   (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
   (setq evil-emacs-state-modes (list 'magit-popup-mode))
   (delete 'magit-popup-mode evil-motion-state-modes)
-
-  ;; Delete info bindings for evil to take over
-  (define-key Info-mode-map "g" nil)
-  (define-key Info-mode-map "n" nil)
-  (define-key Info-mode-map "p" nil)
-
-  ;; Vim removing of windows
-  (define-key evil-window-map (kbd "q") 'delete-window)
-  (define-key evil-window-map (kbd "C-q") 'delete-window)
-
-  ;; Add window recovery to C-w
-  (define-key evil-window-map (kbd "u") 'winner-undo)
-  (define-key evil-window-map (kbd "U") 'winner-redo)
 
   ;; Don't echo evil's states
   (setq evil-insert-state-message nil)
@@ -256,6 +245,8 @@
          :map evil-window-map
               ("q" . delete-window)
               ("C-q" . delete-window)
+              ("u" . winner-undo)
+              ("U" . winner-redo)
          :map evil-operator-state-map
               ("lw" . evil-little-word)))
 
@@ -320,7 +311,6 @@
   (setq flymd-close-buffer-delete-temp-files t))
 
 
-;; Evil leader is Space
 (use-package evil-leader
   :config
   (global-evil-leader-mode)
@@ -339,24 +329,26 @@
     "l" 'auto-fill-mode
     "s" '(lambda ()
            (interactive)
-           ;; use flyspell-mode when in text buffers, otherwise use flyspell-prog-mode
+           ;; use flyspell-mode when in text buffers
+           ;; otherwise use flyspell-prog-mode
            (let* ((current-mode
                    (buffer-local-value 'major-mode (current-buffer)))
                   (flyspell-mode-to-call
                    (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
                        'flyspell-mode
                      'flyspell-prog-mode)))
-             ;; toggle the current flyspell mode, and eval the buffer if we turned it on
+             ;; toggle the current flyspell mode, and
+             ;; eval the buffer if we turned it on
              (if flyspell-mode
                  (funcall 'flyspell-mode '0)
                (funcall flyspell-mode-to-call)
                (flyspell-buffer))))
-                                        ;"a" 'auto-complete-mode
     "a" 'company-mode
     "g" '(lambda () (interactive) (evil-magit-init) (magit-status))
     "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
     ))
+
 
 (if (not (eq system-type 'windows-nt))
     (lambda ()
@@ -373,22 +365,22 @@
 (use-package neotree
   :config
   ;; Set vi-like bindings in neotree-mode that don't conflict with evil
-  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "h") 'neotree-hidden-file-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "r") 'neotree-refresh)
+  (evil-define-key 'normal neotree-mode-map
+    (kbd "q") 'neotree-hide
+    (kbd "RET") 'neotree-enter
+    (kbd "h") 'neotree-hidden-file-toggle
+    (kbd "r") 'neotree-refresh)
 
   ;; Every time when the neotree window is opened, let it find current file and jump to node.
   (setq neo-smart-open t)
 
-                                        ; List of files to hide
+  ;; List of files to hide
   (setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class")))
 
 
 ;; tide/typescript
 (setq typescript-indent-level 2)
+
 
 ;; JavaScript
 (setq js-indent-level 2)
@@ -460,27 +452,33 @@
 
 (use-package org)
 
+
 (use-package haskell-mode
   :config
   (setq haskell-interactive-popup-errors nil)
   (define-key haskell-mode-map (kbd "C-c C-c") 'inferior-haskell-load-file))
 
+
 (use-package evil-ediff
   :config
   (add-hook 'ediff-load-hook 'evil-ediff-init))
+
 
 (use-package rainbow-delimiters
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+
 (use-package rainbow-identifiers
   :config
   (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+
 
 (use-package rainbow-mode
   :diminish rainbow-mode
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
+
 
 (use-package emojify
   :config

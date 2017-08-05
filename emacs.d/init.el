@@ -116,7 +116,8 @@ scroll-step 1)
 
     ;; Add MinGW if it exists
     (if (file-directory-p "C:/MinGW/msys/1.0/bin")
-        (add-to-list 'exec-path "C:/MinGW/msys/1.0/bin"))
+      (setenv "PATH" (concat (getenv "PATH") "C:/MinGW/msys/1.0/bin")))
+      ;; (add-to-list 'exec-path "C:/MinGW/msys/1.0/bin"))
 
     ;; Add tags
     (setq tags-generator (expand-file-name "ctags.exe" user-emacs-directory))
