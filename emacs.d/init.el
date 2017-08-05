@@ -127,7 +127,7 @@ scroll-step 1)
 	(switch-to-buffer "*cmd*")))
 
 (defun linux-setup ()
-  (setq tage-generator "ctags")
+  (setq tage-generator "ctags"))
 
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))
