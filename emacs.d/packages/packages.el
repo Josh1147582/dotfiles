@@ -92,9 +92,8 @@
         tide
         web-mode
         racket-mode
-        fuzzy
-        general
         haskell-mode
+        realgud
         emojify
         ))
 
@@ -263,7 +262,7 @@
 
 (use-package undohist
   :config
-  ;; ;; Save undo history under .emacs.d/undohist
+  ;; Save undo history under .emacs.d/undohist
   (setq undohist-directory "~/.emacs.d/undohist")
   (unless (file-exists-p  "~/.emacs.d/undohist")
     (make-directory "~/.emacs.d/undohist"))
