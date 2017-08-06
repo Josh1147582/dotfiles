@@ -21,6 +21,8 @@
   (tool-bar-mode -1))
 
 ;; smoother scrolling
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
+(setq mouse-wheel-progressive-speed nil)            ; don't accelerate scrolling
 (setq scroll-margin 0
 scroll-conservatively 9999
 scroll-step 1)

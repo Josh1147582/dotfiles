@@ -250,11 +250,18 @@
               ("lw" . evil-little-word)))
 
 
-(use-package evil-numbers
-  ;; Increment and decrement (evil-numbers)
-  :bind (("C-c C-a" . evil-numbers/inc-at-pt)
-         ("C-c C-d" . evil-numbers/dec-at-pt)))
+(defun hail (x)
+  (use-package x))
 
+(hail 'hydra)
+
+(use-package evil-numbers
+  :config
+  ;; Increment and decrement (evil-numbers)
+  (defhydra hydra-numbers (global-map "C-x")
+  "modify numbers"
+  ("a" evil-numbers/inc-at-pt "increment")
+  ("x" evil-numbers/dec-at-pt "decrement")))
 
 (use-package undo-tree
   :diminish undo-tree-mode)
