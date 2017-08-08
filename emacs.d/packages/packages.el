@@ -81,6 +81,7 @@
         rainbow-delimiters
         rainbow-identifiers
         rainbow-mode
+        hydra
         ))
 
 ;; List of optional packages
@@ -175,6 +176,11 @@
         recentf-max-menu-items 15))
 
 
+(defun hail (x)
+  (use-package x))
+(hail 'hydra)
+
+
 (use-package evil
   :config
   (evil-mode t)
@@ -231,6 +237,10 @@
   (setq hscroll-margin 0
         hscroll-step 1)
 
+  (defhydra hydra-window (global-map "C-w")
+  "modify numbers"
+  ("u" winner-undo "undo window layout")
+  ("U" winner-redo "redo window layout"))
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
               ("ze" . hscroll-cursor-right)
@@ -244,16 +254,9 @@
          :map evil-window-map
               ("q" . delete-window)
               ("C-q" . delete-window)
-              ("u" . winner-undo)
-              ("U" . winner-redo)
          :map evil-operator-state-map
               ("lw" . evil-little-word)))
 
-
-(defun hail (x)
-  (use-package x))
-
-(hail 'hydra)
 
 (use-package evil-numbers
   :config
@@ -396,7 +399,7 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
 
-                                        ; C-w prefix in racket-REPL
+  ;; C-w prefix in racket-REPL
   (add-hook 'racket-repl-mode-hook 'racket-repl-evil-hook)
 
   (defun racket-repl-evil-hook ()
