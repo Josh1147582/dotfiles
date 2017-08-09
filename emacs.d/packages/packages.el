@@ -319,6 +319,23 @@
   :config
   (setq flymd-close-buffer-delete-temp-files t))
 
+(defun flyspell-toggle-correct-mode ()
+  "Decide whether to use flyspell-mode or flyspell-prog-mode, then properly toggle."
+  (interactive)
+  ;; use flyspell-mode when in text buffers
+  ;; otherwise use flyspell-prog-mode
+  (let* ((current-mode
+          (buffer-local-value 'major-mode (current-buffer)))
+         (flyspell-mode-to-call
+          (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
+              'flyspell-mode
+            'flyspell-prog-mode)))
+    ;; toggle the current flyspell mode, and
+    ;; eval the buffer if we turned it on
+    (if flyspell-mode
+        (funcall 'flyspell-mode '0)
+      (funcall flyspell-mode-to-call)
+      (flyspell-buffer))))
 
 (use-package evil-leader
   :config
@@ -336,26 +353,15 @@
     ;"m" 'recentf-open-files
     "m" 'ivy-switch-buffer ; includes recentf data
     "l" 'auto-fill-mode
-    "s" '(lambda ()
-           (interactive)
-           ;; use flyspell-mode when in text buffers
-           ;; otherwise use flyspell-prog-mode
-           (let* ((current-mode
-                   (buffer-local-value 'major-mode (current-buffer)))
-                  (flyspell-mode-to-call
-                   (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
-                       'flyspell-mode
-                     'flyspell-prog-mode)))
-             ;; toggle the current flyspell mode, and
-             ;; eval the buffer if we turned it on
-             (if flyspell-mode
-                 (funcall 'flyspell-mode '0)
-               (funcall flyspell-mode-to-call)
-               (flyspell-buffer))))
+    "s" 'flyspell-toggle-correct-mode
     "a" 'company-mode
     "g" '(lambda () (interactive) (evil-magit-init) (magit-status))
     "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
+    "w" '(lambda () (interactive) 
+           (variable-pitch-mode)
+           (visual-line-mode)
+           (flyspell-toggle-correct-mode))
     ))
 
 
