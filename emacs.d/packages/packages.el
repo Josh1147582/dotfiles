@@ -280,7 +280,18 @@
   (undohist-initialize))
 
 
-(require 'init-powerline)
+(if (display-graphic-p)
+    ;; pretty powerline in X
+    (require 'init-powerline)
+
+  ;; basic powerline in terminal
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-evil-vim-color-theme))
+
+  (use-package powerline-evil
+    :ensure t))
 
 
 (use-package web-mode
@@ -358,7 +369,7 @@
     "g" '(lambda () (interactive) (evil-magit-init) (magit-status))
     "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
-    "w" '(lambda () (interactive) 
+    "w" '(lambda () (interactive)
            (variable-pitch-mode)
            (visual-line-mode)
            (flyspell-toggle-correct-mode))
