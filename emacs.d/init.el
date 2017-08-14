@@ -4,8 +4,8 @@
 
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
-      initial-scratch-message ""	; I like things empty.
-      initial-major-mode 'text-mode)	; I'm usually not writing elisp.
+      initial-scratch-message ""
+      initial-major-mode 'text-mode)
 
 ;; Base
 
@@ -21,12 +21,9 @@
   (tool-bar-mode -1))
 
 ;; smoother scrolling
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ; one line at a time
-(setq mouse-wheel-progressive-speed nil)            ; don't accelerate scrolling
 (setq scroll-margin 0
 scroll-conservatively 9999
 scroll-step 1)
-
 
 ;; Line settings and indicators
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
@@ -51,7 +48,8 @@ scroll-step 1)
 
 ;; Save minibar history
 (savehist-mode 1)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(setq savehist-additional-variables
+      '(kill-ring search-ring regexp-search-ring))
 
 ;; Always show matching parens
 (show-paren-mode t)
@@ -104,10 +102,14 @@ scroll-step 1)
   "Create tags file."
   (interactive "DDirectory: ")
   (shell-command
-    (format "\"%s\" -f TAGS -e -R %s" tags-generator (directory-file-name dir-name))))
+   (format "\"%s\" -f TAGS -e -R %s"
+           tags-generator (directory-file-name dir-name))))
 
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
 (require 'packages)
+
+;; Buffer-based completion
+(global-set-key (kbd "C-SPC") 'dabbrev-completion)
 
 
 ;;;; System-specific configs

@@ -241,6 +241,7 @@
   "modify numbers"
   ("u" winner-undo "undo window layout")
   ("U" winner-redo "redo window layout"))
+
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
               ("ze" . hscroll-cursor-right)
@@ -262,9 +263,10 @@
   :config
   ;; Increment and decrement (evil-numbers)
   (defhydra hydra-numbers (global-map "C-x")
-  "modify numbers"
-  ("a" evil-numbers/inc-at-pt "increment")
-  ("x" evil-numbers/dec-at-pt "decrement")))
+    "modify numbers"
+    ("a" evil-numbers/inc-at-pt "increment")
+    ("x" evil-numbers/dec-at-pt "decrement")))
+
 
 (use-package undo-tree
   :diminish undo-tree-mode)
@@ -292,7 +294,6 @@
 
   (use-package powerline-evil
     :ensure t))
-
 
 (use-package web-mode
   :config
@@ -509,5 +510,11 @@
 (use-package emojify
   :config
   (add-hook 'after-init-hook #'global-emojify-mode))
+
+(use-package eyebrowse
+  :config
+  (eyebrowse-mode t)
+  (eyebrowse-setup-evil-keys)
+  (setq eyebrowse-new-workspace t))
 
 (provide 'packages)
