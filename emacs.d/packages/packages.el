@@ -28,160 +28,30 @@
 (eval-when-compile
   (require 'use-package))
 
-;; Keep track of whether or not we need to refresh package contents
-(setq packages-installed-this-session 0)
-
-;; Function to ensure every package in installed, and ask if it isn't.
-(defun ensure-package-installed (prompt &rest packages)
-  (mapcar
-   (lambda (package)
-     (if (package-installed-p package)
-         nil
-       (if (or prompt (y-or-n-p (format "Package %s is missing. Install it? " package)))
-           ;; If this is the 1st install this session, update before install
-           (cond ((eq packages-installed-this-session 0)
-                  (package-refresh-contents)
-                  (setq packages-installed-this-session 1)
-                  (package-install package))
-                 (t (package-install package))
-                 nil)
-         package)))
-   packages))
-
-;; List of packages to install on all systems
-(setq required-packages
-      '(
-        use-package
-        bind-key
-        iedit
-        magit
-        evil-magit
-        magithub
-        undo-tree
-        evil
-        evil-leader
-        powerline-evil
-        monokai-theme
-        challenger-deep-theme
-        linum-relative
-        multi-term
-        neotree
-        evil-numbers
-        editorconfig
-        company
-        ivy
-        flx
-        flycheck
-        flycheck-pos-tip
-        evil-surround
-        diminish
-        dtrt-indent
-        undohist
-        evil-ediff
-        rainbow-delimiters
-        rainbow-identifiers
-        rainbow-mode
-        hydra
-        ))
-
-;; List of optional packages
-(setq optional-packages
-      '(
-        flymd
-        markdown-mode
-        latex-preview-pane
-        tide
-        web-mode
-        racket-mode
-        haskell-mode
-        realgud
-        emojify
-        ))
 
 
-;; Check that all packages are installed
-(apply 'ensure-package-installed t required-packages)
+;;;; Required packages
 
-;; Declare function for optional packages
-(defun optional-packages-install ()
-  (interactive)
-  (apply 'ensure-package-installed nil optional-packages))
+(use-package diminish
+  :ensure t)
 
-
-(require 'diminish)
 (diminish 'visual-line-mode)
 (diminish 'abbrev-mode)
-
-;;; Flyspell
-
-;; map ]s and [s to next and previously wrong word
-
-;; move point to previous error
-;; based on code by hatschipuh at
-;; http://emacs.stackexchange.com/a/14912/2017
-(defun flyspell-goto-previous-error (arg)
-  "Go to arg previous spelling error."
-  (interactive "p")
-  (while (not (= 0 arg))
-    (let ((pos (point))
-          (min (point-min)))
-      (if (and (eq (current-buffer) flyspell-old-buffer-error)
-               (eq pos flyspell-old-pos-error))
-          (progn
-            (if (= flyspell-old-pos-error min)
-                ;; goto beginning of buffer
-                (progn
-                  (message "Restarting from end of buffer")
-                  (goto-char (point-max)))
-              (backward-word 1))
-            (setq pos (point))))
-      ;; seek the next error
-      (while (and (> pos min)
-                  (let ((ovs (overlays-at pos))
-                        (r '()))
-                    (while (and (not r) (consp ovs))
-                      (if (flyspell-overlay-p (car ovs))
-                          (setq r t)
-                        (setq ovs (cdr ovs))))
-                    (not r)))
-        (backward-word 1)
-        (setq pos (point)))
-      ;; save the current location for next invocation
-      (setq arg (1- arg))
-      (setq flyspell-old-pos-error pos)
-      (setq flyspell-old-buffer-error (current-buffer))
-      (goto-char pos)
-      (if (= pos min)
-          (progn
-            (message "No more miss-spelled word!")
-            (setq arg 0))
-        ))))
-
-;; Add folds to programming modes
-(add-hook 'prog-mode-hook
-          'hs-minor-mode)
-(add-hook 'hs-minor-mode-hook
-          (lambda ()
-            (diminish 'hs-minor-mode)))
-
 
 (use-package autorevert
   :diminish auto-revert-mode)
 
+(use-package bind-key
+  :ensure t)
 
-(use-package recentf
-  :config
-  (recentf-mode 1)
-  (setq recentf-max-saved-items 200
-        recentf-max-menu-items 15))
+(use-package iedit
+  :ensure t)
 
-
-(defun hail (x)
-  (use-package x))
-(hail 'hydra)
-
+(use-package hydra
+  :ensure t)
 
 (use-package evil
+  :ensure t
   :config
   (evil-mode t)
   (setq evil-want-C-i-jump nil)
@@ -258,8 +128,8 @@
          :map evil-operator-state-map
               ("lw" . evil-little-word)))
 
-
 (use-package evil-numbers
+  :ensure t
   :config
   ;; Increment and decrement (evil-numbers)
   (defhydra hydra-numbers (global-map "C-x")
@@ -267,12 +137,12 @@
     ("a" evil-numbers/inc-at-pt "increment")
     ("x" evil-numbers/dec-at-pt "decrement")))
 
-
 (use-package undo-tree
+  :ensure t
   :diminish undo-tree-mode)
 
-
 (use-package undohist
+  :ensure t
   :config
   ;; Save undo history under .emacs.d/undohist
   (setq undohist-directory "~/.emacs.d/undohist")
@@ -280,7 +150,6 @@
     (make-directory "~/.emacs.d/undohist"))
 
   (undohist-initialize))
-
 
 (if (display-graphic-p)
     ;; pretty powerline in X
@@ -295,21 +164,8 @@
   (use-package powerline-evil
     :ensure t))
 
-(use-package web-mode
-  :config
-  ;; 2 spaces for an indent
-  (defun my-web-mode-hook ()
-    "Hooks for Web mode."
-    (setq web-mode-markup-indent-offset 2))
-  (add-hook 'web-mode-hook  'my-web-mode-hook)
-
-  ;; Auto-enable web-mode when opening relevent files
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode)))
-
-
 (use-package linum-relative
+  :ensure t
   :diminish linum-relative-mode
   :config
   (setq linum-relative-current-symbol "")
@@ -317,39 +173,20 @@
   (linum-relative-global-mode)
   (defun linum-update-window-scale-fix (win)
     "fix linum for scaled text"
-    (set-window-margins win
-                        (ceiling (* (if (boundp 'text-scale-mode-step)
-                                        (expt text-scale-mode-step
-                                              text-scale-mode-amount) 1)
-                                    (if (car (window-margins))
-                                        (car (window-margins)) 1)
-                                    ))))
-  (advice-add #'linum-update-window :after #'linum-update-window-scale-fix))
+    (set-window-margins
+     win
+     (ceiling (* (if (boundp 'text-scale-mode-step)
+                     (expt text-scale-mode-step
+                           text-scale-mode-amount) 1)
+                 (if (car (window-margins))
+                     (car (window-margins)) 1)
+                 ))))
 
-
-(use-package flymd
-  :config
-  (setq flymd-close-buffer-delete-temp-files t))
-
-(defun flyspell-toggle-correct-mode ()
-  "Decide whether to use flyspell-mode or flyspell-prog-mode, then properly toggle."
-  (interactive)
-  ;; use flyspell-mode when in text buffers
-  ;; otherwise use flyspell-prog-mode
-  (let* ((current-mode
-          (buffer-local-value 'major-mode (current-buffer)))
-         (flyspell-mode-to-call
-          (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
-              'flyspell-mode
-            'flyspell-prog-mode)))
-    ;; toggle the current flyspell mode, and
-    ;; eval the buffer if we turned it on
-    (if flyspell-mode
-        (funcall 'flyspell-mode '0)
-      (funcall flyspell-mode-to-call)
-      (flyspell-buffer))))
+  (advice-add #'linum-update-window
+              :after #'linum-update-window-scale-fix))
 
 (use-package evil-leader
+  :ensure t
   :config
   (global-evil-leader-mode)
   (evil-leader/set-leader "<SPC>")
@@ -367,7 +204,8 @@
     "l" 'auto-fill-mode
     "s" 'flyspell-toggle-correct-mode
     "a" 'company-mode
-    "g" '(lambda () (interactive) (evil-magit-init) (magit-status))
+    ;"g" '(lambda () (interactive) (evil-magit-init) (magit-status))
+    "g" 'magit-status
     "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
     "w" '(lambda () (interactive)
@@ -376,20 +214,8 @@
            (flyspell-toggle-correct-mode))
     ))
 
-
-(if (not (eq system-type 'windows-nt))
-    (lambda ()
-      ((use-package magit
-         :diminish magit-auto-revert-mode)
-
-       (use-package evil-magit)
-
-       (use-package magithub
-         :config
-         (magithub-feature-autoinject t)))))
-
-
 (use-package neotree
+  :ensure t
   :config
   ;; Set vi-like bindings in neotree-mode that don't conflict with evil
   (evil-define-key 'normal neotree-mode-map
@@ -404,14 +230,146 @@
   ;; List of files to hide
   (setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class")))
 
+(use-package editorconfig
+  :ensure t
+  :diminish editorconfig-mode
+  :config
+  (editorconfig-mode 1))
 
-;; tide/typescript
-(setq typescript-indent-level 2)
+
+(use-package ivy
+  :ensure t
+  :diminish ivy-mode
+  :config
+  (ivy-mode)
+  (setq ivy-use-virtual-buffers t))
 
 
-;; JavaScript
-(setq js-indent-level 2)
+(use-package flx
+  :ensure t
+  :config
+  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
 
+(use-package company
+  :ensure t
+  :diminish company-mode)
+
+(use-package flycheck
+  :ensure t
+  :diminish flycheck-mode
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
+  (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
+  (setq flycheck-standard-error-navigation nil)
+
+  (global-flycheck-mode t))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :after flycheck
+  :config
+  (flycheck-pos-tip-mode))
+
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
+
+(use-package dtrt-indent
+  :ensure t
+  :diminish dtrt-indent-mode
+  :config
+  (dtrt-indent-mode 1))
+
+(use-package org
+  :ensure t)
+
+(use-package evil-ediff
+  :ensure t
+  :config
+  (add-hook 'ediff-load-hook 'evil-ediff-init))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package rainbow-identifiers
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
+
+(use-package rainbow-mode
+  :ensure t
+  :diminish rainbow-mode
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
+
+(use-package eyebrowse
+  :ensure t
+  :config
+  (eyebrowse-mode t)
+  (eyebrowse-setup-evil-keys)
+  (setq eyebrowse-new-workspace t))
+
+(use-package monokai-theme
+  :ensure t)
+
+;; OS specific
+(use-package magit
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :diminish magit-auto-revert-mode)
+
+(use-package evil-magit
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :demand
+  :config
+  (evil-magit-init))
+
+(use-package magithub
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :demand
+  (magithub-feature-autoinject t))
+
+(use-package multi-term
+  :if (not (eq system-type 'windows-nt))
+  :ensure t)
+
+
+;;;; Optional packages
+
+(use-package flymd
+  :config
+  (setq flymd-close-buffer-delete-temp-files t))
+
+(use-package web-mode
+  :config
+  ;; 2 spaces for an indent
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2))
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+  ;; Auto-enable web-mode when opening relevent files
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode)))
+
+(use-package js
+  :config
+  (setq js-indent-level 2))
+
+(use-package tide
+  :config
+  (setq typescript-indent-level 2))
 
 (use-package racket-mode
   :config
@@ -424,97 +382,128 @@
     (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
-
-(use-package editorconfig
-  :diminish editorconfig-mode
-  :config
-  (editorconfig-mode 1))
-
-
-(use-package ivy
-  :diminish ivy-mode
-  :config
-  (ivy-mode)
-  (setq ivy-use-virtual-buffers t))
-
-
-(use-package flx
-  :config
-  (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))))
-
-
-(use-package company
-  :diminish company-mode)
-
-
-(use-package flycheck
-  :diminish flycheck-mode
-  :config
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
-  (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
-  (setq flycheck-standard-error-navigation nil)
-
-  (global-flycheck-mode t))
-
-
-(use-package flycheck-pos-tip
-  :after flycheck
-  :config
-  (flycheck-pos-tip-mode))
-
-
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
-
-
-(use-package dtrt-indent
-  :diminish dtrt-indent-mode
-  :config
-  (dtrt-indent-mode 1))
-
-
-(use-package org)
-
-
 (use-package haskell-mode
   :config
   (setq haskell-interactive-popup-errors nil)
   (define-key haskell-mode-map (kbd "C-c C-c") 'inferior-haskell-load-file))
 
-
-(use-package evil-ediff
-  :config
-  (add-hook 'ediff-load-hook 'evil-ediff-init))
-
-
-(use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
-
-(use-package rainbow-identifiers
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-identifiers-mode))
-
-
-(use-package rainbow-mode
-  :diminish rainbow-mode
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-mode))
-
-
 (use-package emojify
   :config
   (add-hook 'after-init-hook #'global-emojify-mode))
 
-(use-package eyebrowse
+(use-package latex-preview-pane)
+
+(use-package realgud)
+
+;; List of optional packages
+(defvar optional-packages
+      '(
+        flymd
+        markdown-mode
+        latex-preview-pane
+        tide
+        web-mode
+        racket-mode
+        haskell-mode
+        realgud
+        emojify
+        ))
+
+(defvar packages-installed-this-session 0)
+(defun ensure-package-installed (prompt package)
+  "Ensure a package is installed, and (optionally) ask if it isn't."
+  (if (package-installed-p package)
+      nil
+    (if (or prompt (y-or-n-p (format "Package %s is missing. Install it? " package)))
+        ;; If this is the 1st install this session, update before install
+        (cond ((eq packages-installed-this-session 0)
+               (package-refresh-contents)
+               (setq packages-installed-this-session 1)
+               (package-install package))
+              (t (package-install package))
+              nil)
+      package)))
+
+(defun optional-packages-install ()
+  "Ask to install any optional packages."
+  (interactive)
+  (mapcar (lambda (package) (ensure-package-installed nil package)) optional-packages))
+
+
+;;;; Builtin configs
+
+(use-package flyspell
   :config
-  (eyebrowse-mode t)
-  (eyebrowse-setup-evil-keys)
-  (setq eyebrowse-new-workspace t))
+  ;; move point to previous error
+  ;; based on code by hatschipuh at
+  ;; http://emacs.stackexchange.com/a/14912/2017
+  (defun flyspell-goto-previous-error (arg)
+    "Go to arg previous spelling error."
+    (interactive "p")
+    (while (not (= 0 arg))
+      (let ((pos (point))
+            (min (point-min)))
+        (if (and (eq (current-buffer) flyspell-old-buffer-error)
+                 (eq pos flyspell-old-pos-error))
+            (progn
+              (if (= flyspell-old-pos-error min)
+                  ;; goto beginning of buffer
+                  (progn
+                    (message "Restarting from end of buffer")
+                    (goto-char (point-max)))
+                (backward-word 1))
+              (setq pos (point))))
+        ;; seek the next error
+        (while (and (> pos min)
+                    (let ((ovs (overlays-at pos))
+                          (r '()))
+                      (while (and (not r) (consp ovs))
+                        (if (flyspell-overlay-p (car ovs))
+                            (setq r t)
+                          (setq ovs (cdr ovs))))
+                      (not r)))
+          (backward-word 1)
+          (setq pos (point)))
+        ;; save the current location for next invocation
+        (setq arg (1- arg))
+        (setq flyspell-old-pos-error pos)
+        (setq flyspell-old-buffer-error (current-buffer))
+        (goto-char pos)
+        (if (= pos min)
+            (progn
+              (message "No more miss-spelled word!")
+              (setq arg 0))))))
+
+  (defun flyspell-toggle-correct-mode ()
+    "Decide whether to use flyspell-mode or flyspell-prog-mode, then properly toggle."
+    (interactive)
+    ;; use flyspell-mode when in text buffers
+    ;; otherwise use flyspell-prog-mode
+    (let* ((current-mode
+            (buffer-local-value 'major-mode (current-buffer)))
+           (flyspell-mode-to-call
+            (if (or (string= current-mode "text-mode") (string= current-mode "markdown-mode"))
+                'flyspell-mode
+              'flyspell-prog-mode)))
+      ;; toggle the current flyspell mode, and
+      ;; eval the buffer if we turned it on
+      (if flyspell-mode
+          (funcall 'flyspell-mode '0)
+        (funcall flyspell-mode-to-call)
+        (flyspell-buffer)))))
+
+(use-package hideshow
+  :config
+  (add-hook 'prog-mode-hook
+            'hs-minor-mode)
+  (add-hook 'hs-minor-mode-hook
+            (lambda ()
+              (diminish 'hs-minor-mode))))
+
+(use-package recentf
+  :config
+  (recentf-mode 1)
+  (setq recentf-max-saved-items 200
+        recentf-max-menu-items 15))
 
 (provide 'packages)
