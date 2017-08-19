@@ -1,3 +1,5 @@
+;; TODO Move global settings out of custom.el (like normal mode powerline color)
+
 ;;;; Startup
 
 ;(package-initialize)
@@ -129,10 +131,13 @@ scroll-step 1)
     (defun cmd ()
       (interactive)
 	(make-comint-in-buffer "cmd" nil "cmd" nil)
-	(switch-to-buffer "*cmd*")))
+	(switch-to-buffer "*cmd*"))
+
+    (setq org-default-notes-file "~/../../Owncloud/org/organizer.org"))
 
 (defun linux-setup ()
-  (setq tage-generator "ctags"))
+  (setq tage-generator "ctags")
+  (setq org-default-notes-file "~/Owncloud/org/organizer.org"))
 
 (cond ((eq system-type 'windows-nt) (win-setup))
       ((eq system-type 'gnu/linux) (linux-setup))
