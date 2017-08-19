@@ -153,16 +153,18 @@
 
 (if (display-graphic-p)
     ;; pretty powerline in X
-    (require 'init-powerline)
+    (require 'init-powerline))
 
-  ;; basic powerline in terminal
-  (use-package powerline
-    :ensure t
-    :config
-    (powerline-evil-vim-color-theme))
+;; basic powerline in terminal
+(use-package powerline
+  :if (not (display-graphic-p))
+  :ensure t
+  :config
+  (powerline-evil-vim-color-theme))
 
-  (use-package powerline-evil
-    :ensure t))
+(use-package powerline-evil
+  :if (not (display-graphic-p))
+  :ensure t)
 
 (use-package linum-relative
   :ensure t
