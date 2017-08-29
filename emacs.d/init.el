@@ -1,5 +1,3 @@
-;; TODO Move global settings out of custom.el (like normal mode powerline color)
-
 ;;;; Startup
 
 ;(package-initialize)
@@ -149,17 +147,7 @@ scroll-step 1)
 
 ;; if no custom file exists, write a default one
 (unless (file-exists-p custom-file)
-  (write-region "(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(powerline-evil-normal-face ((t (:background \"#859900\")))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  (write-region "(custom-set-variables
  '(custom-enabled-themes (quote (monokai)))
  '(custom-safe-themes
    (quote

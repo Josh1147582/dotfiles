@@ -166,6 +166,8 @@
   :if (not (display-graphic-p))
   :ensure t)
 
+(set-face-background 'powerline-evil-normal-face "#859900")
+
 (use-package linum-relative
   :ensure t
   :diminish linum-relative-mode
