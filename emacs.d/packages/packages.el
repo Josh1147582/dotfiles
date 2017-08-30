@@ -294,7 +294,12 @@
   :ensure t
   )
 
+;; Specified to get (org-timeline)
+(use-package org-agenda
+  :after org)
+
 (use-package org-preview-html
+  :after org
   :ensure t)
 
 (use-package evil-ediff
