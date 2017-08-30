@@ -291,6 +291,10 @@
   (dtrt-indent-mode 1))
 
 (use-package org
+  :ensure t
+  )
+
+(use-package org-preview-html
   :ensure t)
 
 (use-package evil-ediff
