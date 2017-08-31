@@ -20,3 +20,8 @@ alias update='sudo pacman -Syu'
 
 # Android dev
 export ANDROID_HOME=/opt/android-sdk
+# go
+export GOPATH=/home/josh/go
+
+# Use ccache when compiling
+export PATH="/usr/lib/ccache/bin/:$PATH"
