@@ -42,7 +42,7 @@ setopt -o sharehistory
 setopt HIST_IGNORE_DUPS
 
 # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_IGNORE_ALL_DUPS 
+setopt HIST_IGNORE_ALL_DUPS
 
 setopt appendhistory autocd extendedglob nomatch
 

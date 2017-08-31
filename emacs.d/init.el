@@ -22,8 +22,8 @@
 
 ;; smoother scrolling
 (setq scroll-margin 0
-scroll-conservatively 9999
-scroll-step 1)
+      scroll-conservatively 9999
+      scroll-step 1)
 
 ;; Line settings and indicators
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))

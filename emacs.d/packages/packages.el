@@ -58,13 +58,13 @@
   (setq evil-default-state 'normal)
 
   ;; Move all elements of evil-emacs-state-modes to evil-motion-state-modes
-  (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes))
-  (setq evil-emacs-state-modes (list 'magit-popup-mode))
+  (setq evil-motion-state-modes (append evil-emacs-state-modes evil-motion-state-modes)
+        evil-emacs-state-modes (list 'magit-popup-mode))
   (delete 'magit-popup-mode evil-motion-state-modes)
 
   ;; Don't echo evil's states
-  (setq evil-insert-state-message nil)
-  (setq evil-visual-state-message nil)
+  (setq evil-insert-state-message nil
+        evil-visual-state-message nil)
 
   ;; Little words (camelCase)
   (evil-define-motion evil-little-word (count)
@@ -108,9 +108,9 @@
         hscroll-step 1)
 
   (defhydra hydra-window (global-map "C-w")
-  "modify numbers"
-  ("u" winner-undo "undo window layout")
-  ("U" winner-redo "redo window layout"))
+    "modify numbers"
+    ("u" winner-undo "undo window layout")
+    ("U" winner-redo "redo window layout"))
 
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
@@ -197,22 +197,18 @@
 
   (evil-leader/set-key
     "d" 'diff-buffer-with-file
-    ;"b" 'buffer-menu
     "v" 'ivy-switch-buffer
     "b" 'buffer-menu
-    ;"f" '(lambda ()  (interactive) (dired '"./"))
     "f" 'neotree-toggle
     "u" 'undo-tree-visualize
-    ;"m" 'recentf-open-files
-    "m" 'ivy-switch-buffer ; includes recentf data
     "l" 'auto-fill-mode
     "s" 'flyspell-toggle-correct-mode
     "a" 'company-mode
-    ;"g" '(lambda () (interactive) (evil-magit-init) (magit-status))
     "g" 'magit-status
     "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
     "w" '(lambda () (interactive)
+           ;; "writing" mode
            (variable-pitch-mode)
            (visual-line-mode)
            (flyspell-toggle-correct-mode))
@@ -240,14 +236,12 @@
   :config
   (editorconfig-mode 1))
 
-
 (use-package ivy
   :ensure t
   :diminish ivy-mode
   :config
   (ivy-mode)
   (setq ivy-use-virtual-buffers t))
-
 
 (use-package flx
   :ensure t
@@ -277,12 +271,10 @@
   :config
   (flycheck-pos-tip-mode))
 
-
 (use-package evil-surround
   :ensure t
   :config
   (global-evil-surround-mode 1))
-
 
 (use-package dtrt-indent
   :ensure t
