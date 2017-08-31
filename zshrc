@@ -95,6 +95,9 @@ bindkey "^s" history-incremental-search-forward
 bindkey ";5C" forward-word
 bindkey ";5D" backward-word
 
+# Editor defaults
+export EDITOR=emacs
+export VISUAL=emacs
 
 # Vim and vi bindings
 
