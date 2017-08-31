@@ -108,9 +108,19 @@
         hscroll-step 1)
 
   (defhydra hydra-window (global-map "C-w")
-    "modify numbers"
-    ("u" winner-undo "undo window layout")
-    ("U" winner-redo "redo window layout"))
+    "window layout"
+    ("u" winner-undo "undo")
+    ("U" winner-redo "redo"))
+
+  ;; Make K select manpage or engine-mode (m for man, g for google?)
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
+  (defhydra hydra-lookup-menu ()
+    "Choose lookup"
+    ("g" engine/search-google "Google" :color blue)
+    ("m" evil-lookup "man" :color blue))
+  (define-key evil-normal-state-map "K" 'hydra-lookup-menu/body)
+  (define-key evil-visual-state-map "K" 'hydra-lookup-menu/body)
 
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
