@@ -151,13 +151,13 @@
 
   (undohist-initialize))
 
-(if (display-graphic-p)
+(if (or (display-graphic-p) (daemonp))
     ;; pretty powerline in X
     (require 'init-powerline))
 
 ;; basic powerline in terminal
 (use-package powerline
-  :if (not (display-graphic-p))
+  :if (not (or (display-graphic-p) (daemonp)))
   :ensure t
   :config
   (powerline-evil-vim-color-theme))
@@ -362,7 +362,10 @@
   ;; 2 spaces for an indent
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
-    (setq web-mode-markup-indent-offset 2))
+    (setq web-mode-markup-indent-offset 2
+          web-mode-enable-auto-closing t
+          web-mode-enable-auto-pairing t)
+    )
   (add-hook 'web-mode-hook  'my-web-mode-hook)
 
   ;; Auto-enable web-mode when opening relevent files
