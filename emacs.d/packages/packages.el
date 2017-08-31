@@ -284,6 +284,8 @@
 
 (use-package org
   :ensure t
+  :config
+  (setq org-log-done 'time)
   )
 
 ;; Specified to get (org-timeline)
