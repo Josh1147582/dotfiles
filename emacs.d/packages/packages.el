@@ -398,7 +398,8 @@
 (use-package haskell-mode
   :config
   (setq haskell-interactive-popup-errors nil)
-  (define-key haskell-mode-map (kbd "C-c C-c") 'inferior-haskell-load-file))
+  (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-file)
+  (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload))
 
 (use-package emojify
   :config
