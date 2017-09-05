@@ -50,6 +50,9 @@
 (use-package hydra
   :ensure t)
 
+(use-package engine-mode
+  :ensure t)
+
 (use-package evil
   :ensure t
   :config
