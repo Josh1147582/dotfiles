@@ -1,3 +1,5 @@
+;; TODO Move prettify lists into their own file.
+
 ;;;; Startup
 
 ;(package-initialize)
