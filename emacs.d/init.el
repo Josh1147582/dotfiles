@@ -150,7 +150,7 @@
 ;; if no custom file exists, write a default one
 (unless (file-exists-p custom-file)
   (write-region "(custom-set-faces
- '(linum-relative-current-face ((t (:inherit linum :background "dim gray" :foreground "white" :underline nil)))))
+ '(linum-relative-current-face ((t (:inherit linum :background \"dim gray\" :foreground \"white\" :underline nil)))))
 (custom-set-variables
  '(custom-enabled-themes (quote (solarized-light)))
  '(custom-safe-themes
