@@ -426,8 +426,6 @@
 
 (use-package latex-preview-pane)
 
-(use-package realgud)
-
 ;; List of optional packages
 (defvar optional-packages
       '(
@@ -442,20 +440,19 @@
         emojify
         ))
 
-(defvar packages-installed-this-session 0)
+(defvar packages-installed-this-session nil)
 (defun ensure-package-installed (prompt package)
   "Ensure a package is installed, and (optionally) ask if it isn't."
-  (if (package-installed-p package)
-      nil
-    (if (or prompt (y-or-n-p (format "Package %s is missing. Install it? " package)))
-        ;; If this is the 1st install this session, update before install
-        (cond ((eq packages-installed-this-session 0)
-               (package-refresh-contents)
-               (setq packages-installed-this-session 1)
-               (package-install package))
-              (t (package-install package))
-              nil)
-      package)))
+  (if (not (package-installed-p package))
+      (if (or prompt (y-or-n-p (format "Package %s is missing. Install it? " package)))
+	  ;; If this is the 1st install this session, update before install
+	  (cond ((not packages-installed-this-session)
+		 (package-refresh-contents)
+		 (setq packages-installed-this-session t)
+		 (package-install package))
+		(t (package-install package))
+		nil)
+	package)))
 
 (defun optional-packages-install ()
   "Ask to install any optional packages."
@@ -464,6 +461,8 @@
 
 
 ;;;; Builtin configs
+
+(defvar gdb-many-windows t)
 
 
 (global-prettify-symbols-mode)
@@ -622,7 +621,6 @@
                        ("..." . ?…)) prettify-symbols-alist))))
 
 (setq python--prettify-symbols-alist
-  (append
    '(("def" .      #x2131)
      ("not" .      #x2757)
      ("return" .   #x27fc)
@@ -634,7 +632,7 @@
      ("not in" . ?∉)
      ("in" . ?∈)
      ("is not" . ?≢)
-     ("is" . ?≡)) python--prettify-symbols-alist))
+     ("is" . ?≡)))
 
 (use-package flyspell
   :config
