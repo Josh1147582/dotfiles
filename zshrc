@@ -49,13 +49,6 @@ setopt HIST_IGNORE_ALL_DUPS
 
 setopt appendhistory autocd extendedglob nomatch
 
-bindkey -e
-
-zstyle :compinstall filename '/home/josh/.zshrc'
-
-autoload -Uz compinit
-compinit -u
-
 # List of word delimeters
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
