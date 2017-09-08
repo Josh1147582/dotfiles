@@ -149,8 +149,10 @@
 
 ;; if no custom file exists, write a default one
 (unless (file-exists-p custom-file)
-  (write-region "(custom-set-variables
- '(custom-enabled-themes (quote (monokai)))
+  (write-region "(custom-set-faces
+ '(linum-relative-current-face ((t (:inherit linum :background "dim gray" :foreground "white" :underline nil)))))
+(custom-set-variables
+ '(custom-enabled-themes (quote (solarized-light)))
  '(custom-safe-themes
    (quote
     (\"c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc\" default))))

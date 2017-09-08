@@ -44,8 +44,6 @@ map <space> <leader>
 
 """ Visual
 
-colorscheme torte " set black color scheme
-
 syntax enable " enable syntax processing
 
 set nocursorline " don't highlight current line

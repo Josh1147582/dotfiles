@@ -20,14 +20,17 @@ then
     # Syntax highlighting bundle.
     antigen bundle zsh-users/zsh-syntax-highlighting
 
+    antigen bundle zsh-users/zsh-autosuggestions
+
     # Load the theme.
-    antigen theme bira
+    antigen theme lambda
 
     # Tell antigen that you're done.
     antigen apply
 
 fi
 
+bindkey '^ ' autosuggest-accept
 
 # History
 

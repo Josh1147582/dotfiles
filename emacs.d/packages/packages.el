@@ -164,19 +164,12 @@
 
   (undohist-initialize))
 
-(if (or (display-graphic-p) (daemonp))
-    ;; pretty powerline in X
-    (require 'init-powerline))
-
-;; basic powerline in terminal
 (use-package powerline
-  :if (not (or (display-graphic-p) (daemonp)))
   :ensure t
   :config
-  (powerline-evil-vim-color-theme))
+  (powerline-evil-vim-theme))
 
 (use-package powerline-evil
-  :if (not (display-graphic-p))
   :ensure t)
 
 (set-face-background 'powerline-evil-normal-face "#859900")
@@ -329,8 +322,7 @@
           font-lock-type-face
           font-lock-function-name-face
           font-lock-variable-name-face
-          font-lock-keyword-face
-          font-lock-string-face)))
+          font-lock-keyword-face)))
 
 
 (use-package rainbow-mode
