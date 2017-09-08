@@ -91,6 +91,11 @@ bindkey "^s" history-incremental-search-forward
 bindkey ";5C" forward-word
 bindkey ";5D" backward-word
 
+# cdls
+function cd {
+    builtin cd "$@" && ls -F
+}
+
 # Editor defaults
 export EDITOR=emacs
 export VISUAL=emacs
