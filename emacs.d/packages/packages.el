@@ -444,6 +444,13 @@
 (use-package solarized-theme
   :ensure t)
 
+(use-package solaire-mode
+  :ensure t
+  :config
+  ;; highlight the minibuffer when it is activated
+  (set-face-attribute 'solaire-minibuffer-face nil :inherit 'solaire-default-face :background "blanched almond")
+  (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer))
+
 ;; OS specific
 (use-package magit
   :if (not (eq system-type 'windows-nt))
