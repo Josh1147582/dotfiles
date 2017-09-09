@@ -133,6 +133,8 @@
 	(make-comint-in-buffer "cmd" nil "cmd" nil)
 	(switch-to-buffer "*cmd*"))
 
+    (setq default-directory "~/../../")
+
     (setq org-default-notes-file "~/../../Owncloud/org/organizer.org"))
 
 (defun linux-setup ()

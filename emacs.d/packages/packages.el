@@ -358,20 +358,21 @@
 
 (use-package company
   :ensure t
-  :diminish company-mode)
+  :diminish company-mode
+  :config
+  (add-hook 'prog-mode-hook 'company-mode)
+)
 
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
   :config
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
-  (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
-  (setq flycheck-standard-error-navigation nil)
-
-  (global-flycheck-mode t))
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(idle-change new-line save mode-enabled))
+  ;; (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
+  ;; (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
+  ;; (setq flycheck-standard-error-navigation nil)
+)
 
 (use-package flycheck-pos-tip
   :ensure t
@@ -440,7 +441,7 @@
   (eyebrowse-setup-evil-keys)
   (setq eyebrowse-new-workspace t))
 
-(use-package monokai-theme
+(use-package solarized-theme
   :ensure t)
 
 ;; OS specific
@@ -512,7 +513,11 @@
   :config
   (setq haskell-interactive-popup-errors nil)
   (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-file)
-  (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload))
+  (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload)
+
+  (if (eq system-type 'windows-nt)
+      (setq haskell-process-type 'stack-ghci)))
+
 
 (use-package emojify
   :config
