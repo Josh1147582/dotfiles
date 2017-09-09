@@ -165,14 +165,67 @@
   (undohist-initialize))
 
 (use-package powerline
-  :ensure t
-  :config
-  (powerline-evil-vim-theme))
-
-(use-package powerline-evil
   :ensure t)
 
-(set-face-background 'powerline-evil-normal-face "#859900")
+(use-package powerline-evil
+  :ensure t
+  :config
+  (defun powerline-center-evil-theme ()
+    "Setup a mode-line with major, evil, and minor modes centered."
+    (interactive)
+    (setq-default mode-line-format
+		  '("%e"
+		    (:eval
+		     (let* ((active (powerline-selected-window-active))
+			    (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+			    (mode-line (if active 'mode-line 'mode-line-inactive))
+			    (face1 (if active 'powerline-active1 'powerline-inactive1))
+			    (face2 (if active 'powerline-active2 'powerline-inactive2))
+			    (separator-left (intern (format "powerline-%s-%s"
+							    (powerline-current-separator)
+							    (car powerline-default-separator-dir))))
+			    (separator-right (intern (format "powerline-%s-%s"
+							     (powerline-current-separator)
+							     (cdr powerline-default-separator-dir))))
+			    (lhs (list (powerline-raw "%*" mode-line 'l)
+				       (powerline-buffer-id mode-line-buffer-id 'l)
+				       (powerline-raw " ")
+				       (funcall separator-left mode-line face1)
+				       (powerline-narrow face1 'l)
+				       (powerline-vc face1)))
+			    (rhs (list (funcall separator-right face1 mode-line)
+				       (powerline-raw mode-line-misc-info mode-line 'r)
+					;(powerline-raw global-mode-string face1 'r)
+				       (powerline-raw "%2l" mode-line 'r)
+				       (powerline-raw ":" mode-line)
+				       (powerline-raw "%2c" mode-line 'r)
+					;(powerline-raw " ")
+					;(powerline-raw "%6p" mode-line 'r)
+				       (powerline-hud face2 face1)))
+			    (center (append (list (powerline-raw " " face1)
+						  (funcall separator-left face1 face2)
+						  (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
+						    (powerline-raw erc-modified-channels-object face2 'l))
+						  (powerline-major-mode face2 'l)
+						  (powerline-process face2)
+						  (powerline-raw " " face2))
+					    (if (split-string (format-mode-line minor-mode-alist))
+						(append (if evil-mode
+							    (list (funcall separator-right face2 face1)
+								  (powerline-raw evil-mode-line-tag face1 'l)
+								  (powerline-raw " " face1)
+								  (funcall separator-left face1 face2)))
+							(list (powerline-minor-modes face2 'l)
+							      (powerline-raw " " face2)
+							      (funcall separator-right face2 face1)))
+					      (list (powerline-raw evil-mode-line-tag face2)
+						    (funcall separator-right face2 face1))))))
+		       (concat (powerline-render lhs)
+			       (powerline-fill-center face1 (/ (powerline-width center) 2.0))
+			       (powerline-render center)
+			       (powerline-fill face1 (powerline-width rhs))
+			       (powerline-render rhs)))))))
+  (powerline-center-evil-theme))
 
 (use-package linum-relative
   :ensure t
