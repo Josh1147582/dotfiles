@@ -153,10 +153,11 @@
 (unless (file-exists-p custom-file)
   (write-region "(custom-set-faces
  '(linum-relative-current-face ((t (:inherit linum :background \"dim gray\" :foreground \"white\" :underline nil)))))
+ '(show-paren-match ((t (:background \"light gray\" :foreground \"#d33682\" :weight bold))))
 (custom-set-variables
  '(custom-enabled-themes (quote (solarized-light)))
  '(custom-safe-themes
    (quote
-    (\"c7a9a68bd07e38620a5508fef62ec079d274475c8f92d75ed0c33c45fbe306bc\" default))))
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
 " nil custom-file))
 (load custom-file)
