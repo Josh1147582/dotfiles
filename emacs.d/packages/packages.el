@@ -397,9 +397,24 @@
   (setq org-log-done 'time)
   )
 
-;; Specified to get (org-timeline)
 (use-package org-agenda
-  :after org)
+  :after org
+  :init
+  ;; Rip org-timeline
+  (defun org-timeline ()
+    (interactive)
+
+    (if (not (derived-mode-p 'org-mode))
+	(message "Not in Org buffer.")
+      (org-agenda nil "t" 'buffer)))
+  :config
+  (setq org-agenda-custom-commands
+	'(("t" "Events" agenda "display deadlines and exclude scheduled"
+	   ((org-agenda-span 'year)
+	    (org-agenda-time-grid nil)
+	    (org-agenda-show-all-dates nil)
+	    (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
+	    (org-deadline-warning-days 7))))))
 
 (use-package org-preview-html
   :after org
@@ -426,7 +441,6 @@
           font-lock-function-name-face
           font-lock-variable-name-face
           font-lock-keyword-face)))
-
 
 (use-package rainbow-mode
   :ensure t
@@ -544,6 +558,8 @@
         haskell-mode
         realgud
         emojify
+	auctex
+	company-auctex
         ))
 
 (defvar packages-installed-this-session nil)
