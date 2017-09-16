@@ -406,15 +406,16 @@
 
     (if (not (derived-mode-p 'org-mode))
 	(message "Not in Org buffer.")
-      (org-agenda nil "t" 'buffer)))
-  :config
-  (setq org-agenda-custom-commands
-	'(("t" "Events" agenda "display deadlines and exclude scheduled"
+      (let ((org-agenda-custom-commands
+	'(("z" "" agenda ""
 	   ((org-agenda-span 'year)
 	    (org-agenda-time-grid nil)
 	    (org-agenda-show-all-dates nil)
 	    (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
 	    (org-deadline-warning-days 7))))))
+
+	(org-agenda nil "z" 'buffer))))
+  (global-set-key "\C-ct" 'org-timeline))
 
 (use-package org-preview-html
   :after org
