@@ -152,12 +152,12 @@
 ;; if no custom file exists, write a default one
 (unless (file-exists-p custom-file)
   (write-region "(custom-set-faces
- '(linum-relative-current-face ((t (:inherit linum :background \"dim gray\" :foreground \"white\" :underline nil)))))
- '(show-paren-match ((t (:background \"light gray\" :foreground \"#d33682\" :weight bold))))
+ '(linum-relative-current-face ((t (:inherit linum :background \"dim gray\" :foreground \"white\" :underline nil))))
+ '(show-paren-match ((t (:background \"light gray\" :foreground \"#d33682\" :weight bold)))))
 (custom-set-variables
  '(custom-enabled-themes (quote (solarized-light)))
  '(custom-safe-themes
    (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+    (\"d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879\" default))))
 " nil custom-file))
 (load custom-file)
