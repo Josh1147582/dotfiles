@@ -138,7 +138,7 @@
     (setq org-default-notes-file "~/../../Owncloud/org/organizer.org"))
 
 (defun linux-setup ()
-  (setq tage-generator "ctags")
+  (setq tags-generator "ctags")
   (setq org-default-notes-file "~/Owncloud/org/organizer.org"))
 
 (cond ((eq system-type 'windows-nt) (win-setup))

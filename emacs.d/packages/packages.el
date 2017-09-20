@@ -395,6 +395,11 @@
   :ensure t
   :config
   (setq org-log-done 'time)
+  (defun org->odt->pdf ()
+    "Someday I'll learn how to properly format the LaTeX to PDF output."
+    (interactive)
+    (org-odt-export-to-odt)
+    (shell-command (concat "libreoffice --headless --convert-to pdf \"" (file-name-sans-extension (buffer-name)) ".odt\"")))
   )
 
 (use-package org-agenda
