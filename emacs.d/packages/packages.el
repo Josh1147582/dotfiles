@@ -400,6 +400,7 @@
     (interactive)
     (org-odt-export-to-odt)
     (shell-command (concat "libreoffice --headless --convert-to pdf \"" (file-name-sans-extension (buffer-name)) ".odt\"")))
+  (setq org-html-table-default-attributes '(:border "2" :cellspacing "0" :cellpadding "6" :rules "all" :frame "border"))
   )
 
 (use-package org-agenda
