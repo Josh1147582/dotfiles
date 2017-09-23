@@ -100,6 +100,7 @@
   (multi-occur-in-matching-buffers "." regexp t))
 
 ;; Tags
+(defvar tags-generator (expand-file-name "ctags" user-emacs-directory))
 (defun create-tags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
@@ -125,8 +126,7 @@
       (setenv "PATH" (concat (getenv "PATH") "C:/MinGW/msys/1.0/bin")))
       ;; (add-to-list 'exec-path "C:/MinGW/msys/1.0/bin"))
 
-    ;; Add tags
-    (setq tags-generator (expand-file-name "ctags.exe" user-emacs-directory))
+    (setq tags-generator (concat tags-generator ".exe"))
 
     (defun cmd ()
       (interactive)
@@ -138,7 +138,6 @@
     (setq org-default-notes-file "~/../../Owncloud/org/organizer.org"))
 
 (defun linux-setup ()
-  (setq tags-generator "ctags")
   (setq org-default-notes-file "~/Owncloud/org/organizer.org"))
 
 (cond ((eq system-type 'windows-nt) (win-setup))
