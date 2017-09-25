@@ -409,19 +409,16 @@
   ;; Rip org-timeline
   (defun org-timeline ()
     (interactive)
-
-    (if (not (derived-mode-p 'org-mode))
-	(message "Not in Org buffer.")
       (let ((org-agenda-custom-commands
 	'(("z" "" agenda ""
 	   ((org-agenda-span 'year)
-	    (org-agenda-time-grid nil)
+	    ;(org-agenda-time-grid nil)
 	    (org-agenda-show-all-dates nil)
-	    (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
+	    ;; (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
 	    (org-deadline-warning-days 7))))))
 
-	(org-agenda nil "z" 'buffer))))
-  (global-set-key "\C-ct" 'org-timeline))
+	(org-agenda nil "z" 'buffer)))
+  (define-key org-mode-map "\C-ct" 'org-timeline))
 
 (use-package org-preview-html
   :after org
@@ -471,6 +468,18 @@
   ;; highlight the minibuffer when it is activated
   (set-face-attribute 'solaire-minibuffer-face nil :inherit 'solaire-default-face :background "blanched almond")
   (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer))
+
+(use-package evil-goggles
+  :ensure t
+  :diminish evil-goggles-mode
+  :config
+  (evil-goggles-mode)
+
+  ;; optionally use diff-mode's faces; as a result, deleted text
+  ;; will be highlighed with `diff-removed` face which is typically
+  ;; some red color (as defined by the color theme)
+  ;; other faces such as `diff-added` will be used for other actions
+  (evil-goggles-use-diff-faces))
 
 ;; OS specific
 (use-package magit
