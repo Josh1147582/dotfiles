@@ -307,7 +307,7 @@
     "d" 'diff-buffer-with-file
     "v" 'ivy-switch-buffer
     "b" 'buffer-menu
-    "f" 'neotree-toggle
+    "f" 'treemacs-toggle
     "u" 'undo-tree-visualize
     "l" 'auto-fill-mode
     "s" 'flyspell-toggle-correct-mode
@@ -322,21 +322,14 @@
            (flyspell-toggle-correct-mode))
     ))
 
-(use-package neotree
+(use-package treemacs
   :ensure t
-  :config
-  ;; Set vi-like bindings in neotree-mode that don't conflict with evil
-  (evil-define-key 'normal neotree-mode-map
-    (kbd "q") 'neotree-hide
-    (kbd "RET") 'neotree-enter
-    (kbd "h") 'neotree-hidden-file-toggle
-    (kbd "r") 'neotree-refresh)
+  :bind (:map treemacs-mode-map
+	      ("." . treemacs-toggle-show-dotfiles)))
 
-  ;; Every time when the neotree window is opened, let it find current file and jump to node.
-  (setq neo-smart-open t)
-
-  ;; List of files to hide
-  (setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "~$" "^#.*#$" "\\.elc$" "\\.class")))
+(use-package treemacs-evil
+  :after treemacs
+  :ensure t)
 
 (use-package editorconfig
   :ensure t
