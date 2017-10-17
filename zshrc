@@ -5,6 +5,8 @@ source ~/.zshrc.local
 if [ -h ~/.antigen.zsh ]
 then
 
+    save_aliases=$(alias -L)
+
     source ~/.antigen.zsh
 
     # Load oh-my-zsh's library.
@@ -27,6 +29,9 @@ then
 
     # Tell antigen that you're done.
     antigen apply
+
+    unalias -m '*'
+    eval $save_aliases; unset save_aliases
 
 fi
 
