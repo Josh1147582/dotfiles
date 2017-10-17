@@ -9,14 +9,14 @@ export DEVKITARM=${DEVKITPRO}/devkitARM
 # local bin in PATH
 export PATH=$HOME/bin:$PATH
 
+# clang in PATH
+export PATH=/usr/lib/ccache/bin/:$PATH
+
 # DOOM config
 alias doom='dosbox -conf .dosbox/dosbox-0.74-doom.conf'
 
 # Better fonts, proper GTK theming in Swing
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
-
-# pacman aliases
-alias update='sudo pacman -Syu'
 
 # Android dev
 export ANDROID_HOME=/opt/android-sdk
@@ -32,4 +32,6 @@ export ALTERNATE_EDITOR=""
 export EDITOR="emacsclient -t"                  # $EDITOR should open in terminal
 export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI with non-daemon as alternate
 
-alias emacs='emacsclient -c -a emacs'
+alias emacs='emacsclient -c'
+
+alias beep='paplay /usr/share/sounds/gnome/default/alerts/glass.ogg'
