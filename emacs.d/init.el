@@ -1,4 +1,5 @@
-;; TODO Move prettify lists into their own file.
+;; TODO Have special rules for windows like help and repl windows.
+;; Where they're positioned, whether or not they're focused, etc.
 
 ;;;; Startup
 
@@ -19,8 +20,7 @@
   (scroll-bar-mode -1))
 
 ;; Disable toolbar
-(when (display-graphic-p)
-  (tool-bar-mode -1))
+(tool-bar-mode -1)
 
 ;; smoother scrolling
 (setq scroll-margin 0
@@ -114,6 +114,8 @@
 ;; Buffer-based completion
 (global-set-key (kbd "C-SPC") 'dabbrev-completion)
 
+(setq-default show-trailing-whitespace t)
+(add-hook 'buffer-menu-mode-hook (lambda () (setq show-trailing-whitespace nil)))
 
 ;;;; System-specific configs
 

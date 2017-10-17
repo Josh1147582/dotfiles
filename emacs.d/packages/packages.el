@@ -40,9 +40,6 @@
 (use-package autorevert
   :diminish auto-revert-mode)
 
-(use-package bind-key
-  :ensure t)
-
 (use-package iedit
   :ensure t)
 
@@ -410,6 +407,7 @@
     (org-odt-export-to-odt)
     (shell-command (concat "libreoffice --headless --convert-to pdf \"" (file-name-sans-extension (buffer-name)) ".odt\"")))
   (setq org-html-table-default-attributes '(:border "2" :cellspacing "0" :cellpadding "6" :rules "all" :frame "border"))
+  (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
   )
 
 (use-package org-agenda
