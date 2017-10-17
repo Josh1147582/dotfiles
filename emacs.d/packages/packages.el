@@ -92,6 +92,14 @@
     (eval-last-sexp nil)
     (evil-normal-state))
 
+  ;; select recently pasted text
+  ;; from https://emacs.stackexchange.com/a/21093
+  (defun my/evil-select-pasted ()
+  (interactive)
+  (let ((start-marker (evil-get-marker ?[))
+        (end-marker (evil-get-marker ?])))
+        (evil-visual-select start-marker end-marker)))
+
   ;; "pull" left and right with zs and ze
   (defun hscroll-cursor-left ()
     (interactive "@")
@@ -375,10 +383,7 @@
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (setq flycheck-check-syntax-automatically '(idle-change new-line save mode-enabled))
-  ;; (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers))
-  ;; (setq flycheck-checkers (delq 'html-tidy flycheck-checkers))
-  ;; (setq flycheck-standard-error-navigation nil)
-)
+  (setq flycheck-checkers (delq 'emacs-lisp-checkdoc flycheck-checkers)))
 
 (use-package flycheck-pos-tip
   :ensure t
@@ -393,8 +398,8 @@
 
 (use-package dtrt-indent
   :ensure t
-  :diminish dtrt-indent-mode
   :config
+  (setq global-mode-string (delq 'dtrt-indent-mode-line-info global-mode-string))
   (dtrt-indent-mode 1))
 
 (use-package org
@@ -405,27 +410,46 @@
     "Someday I'll learn how to properly format the LaTeX to PDF output."
     (interactive)
     (org-odt-export-to-odt)
-    (shell-command (concat "libreoffice --headless --convert-to pdf \"" (file-name-sans-extension (buffer-name)) ".odt\"")))
+    (shell-command
+     (concat
+      "libreoffice --headless --convert-to pdf \"" (file-name-sans-extension (buffer-name)) ".odt\""
+      " && echo Done")))
   (setq org-html-table-default-attributes '(:border "2" :cellspacing "0" :cellpadding "6" :rules "all" :frame "border"))
+
+  (setq org-latex-minted-options
+    '("breaklines"))
+
   (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
   )
 
+(use-package evil-org
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+	    (lambda ()
+	      (evil-org-set-key-theme '(textobjects insert navigation additional todo))))
+  (setq evil-org-special-o/O nil))
+
 (use-package org-agenda
   :after org
-  :init
+  :after evil
+  :config
   ;; Rip org-timeline
   (defun org-timeline ()
     (interactive)
       (let ((org-agenda-custom-commands
 	'(("z" "" agenda ""
 	   ((org-agenda-span 'year)
-	    ;(org-agenda-time-grid nil)
+	    ;; (org-agenda-time-grid nil)
 	    (org-agenda-show-all-dates nil)
 	    ;; (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
 	    (org-deadline-warning-days 7))))))
 
 	(org-agenda nil "z" 'buffer)))
-  (define-key org-mode-map "\C-ct" 'org-timeline))
+  ;; Not sure if this can be placed in a :bind statement
+  (evil-define-key 'motion org-agenda-mode-map (kbd "RET") '(lambda () (interactive) (org-agenda-switch-to t))))
 
 (use-package org-preview-html
   :after org
@@ -497,15 +521,8 @@
 (use-package evil-magit
   :if (not (eq system-type 'windows-nt))
   :ensure t
-  :demand
   :config
   (evil-magit-init))
-
-(use-package magithub
-  :if (not (eq system-type 'windows-nt))
-  :ensure t
-  :demand
-  (magithub-feature-autoinject t))
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
@@ -558,14 +575,17 @@
     (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
-(use-package haskell-mode
+(use-package intero
   :config
-  (setq haskell-interactive-popup-errors nil)
-  (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-file)
-  (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload)
+  (add-hook 'haskell-mode-hook 'intero-mode))
 
-  (if (eq system-type 'windows-nt)
-      (setq haskell-process-type 'stack-ghci)))
+; (use-package haskell-mode
+;   :config
+;   (setq haskell-interactive-popup-errors nil)
+;   (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-file)
+;   (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload)
+;
+;   (setq haskell-process-type 'stack-ghci))
 
 
 (use-package emojify
@@ -573,6 +593,12 @@
   (add-hook 'after-init-hook #'global-emojify-mode))
 
 (use-package latex-preview-pane)
+
+(use-package slime
+  :config
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup))
+(use-package slime-company)
 
 ;; List of optional packages
 (defvar optional-packages
@@ -583,11 +609,13 @@
         tide
         web-mode
         racket-mode
-        haskell-mode
+        intero
         realgud
         emojify
 	auctex
 	company-auctex
+	slime
+	slime-company
         ))
 
 (defvar packages-installed-this-session nil)
@@ -614,6 +642,7 @@
 
 (defvar gdb-many-windows t)
 
+(global-eldoc-mode -1)
 
 (use-package flyspell
   :config
