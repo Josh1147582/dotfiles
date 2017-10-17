@@ -29,7 +29,6 @@
   (require 'use-package))
 
 
-
 ;;;; Required packages
 
 (use-package diminish
@@ -297,15 +296,17 @@
   (advice-add #'linum-update-window
               :after #'linum-update-window-scale-fix))
 
-(use-package evil-leader
+(use-package bind-map
   :ensure t
+  :after evil
   :config
-  (global-evil-leader-mode)
-  (evil-leader/set-leader "<SPC>")
-
-  (evil-leader/set-key
-    "d" 'diff-buffer-with-file
-    "v" 'ivy-switch-buffer
+  (bind-map
+   my-base-leader-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :evil-states (normal motion visual)
+   :bindings
+   ("d" 'diff-buffer-with-file
     "b" 'buffer-menu
     "f" 'treemacs-toggle
     "u" 'undo-tree-visualize
@@ -313,14 +314,29 @@
     "s" 'flyspell-toggle-correct-mode
     "a" 'company-mode
     "g" 'magit-status
-    "M-g" 'magit-dispatch-popup
     "c" 'flycheck-mode
     "w" '(lambda () (interactive)
-           ;; "writing" mode
-           (variable-pitch-mode)
-           (visual-line-mode)
-           (flyspell-toggle-correct-mode))
-    ))
+	   ;; "writing" mode
+	   (variable-pitch-mode)
+	   (visual-line-mode)
+	   (flyspell-toggle-correct-mode))
+    "p" 'my/evil-select-pasted
+    "/" 'swiper
+    "v" 'ivy-switch-buffer
+    "1" 'eyebrowse-switch-to-window-config-1
+    "2" 'eyebrowse-switch-to-window-config-2
+    "3" 'eyebrowse-switch-to-window-config-3
+    "4" 'eyebrowse-switch-to-window-config-4
+    "5" 'eyebrowse-switch-to-window-config-5))
+
+  (bind-map
+   my-org-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (org-mode)
+   :bindings
+   ("t" 'org-toggle-latex-fragment
+    "o" 'org-timeline)))
 
 (use-package treemacs
   :ensure t
