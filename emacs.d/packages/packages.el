@@ -716,6 +716,7 @@
   :config
   (recentf-mode 1)
   (setq recentf-max-saved-items 200
-        recentf-max-menu-items 15))
+        recentf-max-menu-items 15)
+  (add-to-list 'recentf-exclude ".*.emacs\\.d/elpa.*"))
 
 (provide 'packages)
