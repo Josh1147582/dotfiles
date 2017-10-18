@@ -343,6 +343,15 @@
    ("t" 'org-toggle-latex-fragment
     "o" 'org-timeline)))
 
+  (bind-map
+   my-elisp-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (emacs-lisp-mode)
+   :bindings
+   ("el" 'evil-eval-last-sexp
+    "eb" 'eval-buffer))
+
 (use-package treemacs
   :ensure t
   :bind (:map treemacs-mode-map
