@@ -142,6 +142,7 @@
          :map evil-window-map
               ("q" . delete-window)
               ("C-q" . delete-window)
+	      ("x" . kill-buffer-and-window)
          :map evil-operator-state-map
               ("lw" . evil-little-word)))
 
@@ -301,6 +302,8 @@
   (advice-add #'linum-update-window
               :after #'linum-update-window-scale-fix))
 
+;; TODO see if I can replace bind-map with hydra. I forget things
+;; often, so a popup for some chords would be nice.
 (use-package bind-map
   :ensure t
   :after evil
@@ -341,7 +344,7 @@
    :major-modes (org-mode)
    :bindings
    ("t" 'org-toggle-latex-fragment
-    "o" 'org-timeline)))
+    "o" 'org-timeline))
 
   (bind-map
    my-elisp-map
@@ -350,7 +353,23 @@
    :major-modes (emacs-lisp-mode)
    :bindings
    ("el" 'evil-eval-last-sexp
+    "er" 'eval-region
     "eb" 'eval-buffer))
+
+  (defun evil-slime-eval-last-expression ()
+    (interactive)
+    (evil-append 1)
+    (slime-eval-last-expression)
+    (evil-normal-state))
+
+  (bind-map
+   my-slime-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (lisp-mode)
+   :bindings
+   ("el" 'evil-slime-eval-last-expression
+    "er" 'slime-eval-region)))
 
 (use-package treemacs
   :ensure t
@@ -521,6 +540,17 @@
   ;; other faces such as `diff-added` will be used for other actions
   (evil-goggles-use-diff-faces))
 
+;; TODO Finish up special rules for windows like help and repl windows.
+;; Where they're positioned, whether or not they're focused, etc.
+(use-package shackle
+  :ensure t
+  :init
+  (shackle-mode)
+  (setq shackle-rules '(("*Python*" :align t :size 0.2)
+			("*Help*" :align t :size 0.4 :select t)
+			("\\`\\*intero:.*:repl\\*\\'" :regexp t :align t :size 0.4))))
+
+
 ;; OS specific
 (use-package magit
   :if (not (eq system-type 'windows-nt))
@@ -604,6 +634,9 @@
 (use-package latex-preview-pane)
 
 (use-package slime
+  :init
+  (setq auto-mode-alist (cons '("\\.cl$" . common-lisp-mode) auto-mode-alist))
+  (add-hook 'lisp-mode-hook 'slime-mode)
   :config
   (setq inferior-lisp-program "sbcl")
   (slime-setup))

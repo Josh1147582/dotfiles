@@ -1,5 +1,3 @@
-;; TODO Have special rules for windows like help and repl windows.
-;; Where they're positioned, whether or not they're focused, etc.
 
 ;;;; Startup
 
