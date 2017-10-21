@@ -1,1 +1,0 @@
-/home/josh/Owncloud/Tech/configs/i3-arch

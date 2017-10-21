@@ -1,0 +1,450 @@
+# solarized light
+set $baseA3 #fdf6e3
+set $baseA2 #eee8d5
+set $baseA1 #93a1a1
+set $baseA0 #839496
+set $baseB0 #657b83
+set $baseB1 #586e75
+set $baseB2 #073642
+set $baseB3 #002b36
+set $custom #e1cab3
+
+set_from_resource	  $color15_i3wmthemer	    color15
+set_from_resource	  $color14_i3wmthemer	    color14
+set_from_resource	  $color13_i3wmthemer	    color13
+set_from_resource	  $color12_i3wmthemer	    color12
+set_from_resource	  $color11_i3wmthemer	    color11
+set_from_resource	  $color10_i3wmthemer	    color10
+set_from_resource	  $color09_i3wmthemer		  color9
+set_from_resource	  $color08_i3wmthemer		  color8
+set_from_resource	  $color07_i3wmthemer		  color7
+set_from_resource 	$color06_i3wmthemer		  color6
+set_from_resource 	$color05_i3wmthemer 	    color5
+set_from_resource 	$color04_i3wmthemer 	    color4
+set_from_resource 	$color03_i3wmthemer 	    color3
+set_from_resource 	$color02_i3wmthemer 	    color2
+set_from_resource 	$color01_i3wmthemer 	    color1
+set_from_resource	  $color00_i3wmthemer		  color0
+set_from_resource	  $foreground_i3wmthemer	foreground
+set_from_resource	  $background_i3wmthemer	background
+
+
+
+# from https://github.com/Airblader/dotfiles-manjaro/blob/master/.i3/config
+
+set_from_resource $darkred     color1  #000000
+set_from_resource $red         color9  #000000
+set_from_resource $darkgreen   color2  #000000
+set_from_resource $green       color10 #000000
+set_from_resource $darkyellow  color3  #000000
+set_from_resource $yellow      color11 #000000
+set_from_resource $darkblue    color4  #000000
+set_from_resource $blue        color12 #000000
+set_from_resource $darkmagenta color5  #000000
+set_from_resource $magenta     color13 #000000
+set_from_resource $darkcyan    color6  #000000
+set_from_resource $cyan        color14 #000000
+set_from_resource $darkwhite   color7  #000000
+set_from_resource $white       color15 #000000
+# Use custom colors for black
+set $black       #282828
+set $darkblack   #1d2021
+set $transparent #00000000
+
+set $height 34
+
+set $ws1  "1:  "
+set $ws2  "2:  "
+set $ws3  "3:  "
+set $ws4  "4:  "
+set $ws5  "5:  "
+set $ws6  "6:  "
+set $ws7  "7:  "
+set $ws8  "8:  "
+set $ws9  "9:  "
+set $ws10 "10:  "
+
+#set $default_gaps_inner 0
+#set $default_gaps_outer 0
+#gaps inner $default_gaps_inner
+#gaps outer $default_gaps_outer
+
+workspace $ws1 gaps inner 0
+workspace $ws1 gaps outer 0
+workspace $ws9 gaps inner 0
+workspace $ws9 gaps outer 0
+workspace $ws10 gaps inner 0
+workspace $ws10 gaps outer 0
+
+#workspace_auto_back_and_forth yes
+force_display_urgency_hint 0 ms
+focus_on_window_activation urgent
+
+floating_minimum_size -1 x -1
+floating_maximum_size -1 x -1
+
+font pango:Hack, FontAwesome 12
+
+# dark
+# #                       BORDER      BACKGROUND  TEXT        INDICATOR   CHILD_BORDER
+# client.focused          $black      $black      $white      $darkblack  $darkblack
+# client.unfocused        $black      $black      $darkwhite  $darkblack  $darkblack
+# client.focused_inactive $black      $black      $white      $darkblack  $darkblack
+# client.urgent           $darkred    $darkred    $black      $darkred    $darkred
+# client.background       $black
+
+# solarized-light
+# clientclass 			border  backgr. text 	indicator
+client.focused 			$green	$green	$baseB3 $blue
+client.focused_inactive		$cyan	$cyan	$baseB2 $violet
+client.unfocused  		$baseA2 $baseA2 $baseB1 $baseA1
+#client.urgent 	 		$orange $orange $baseB3 $red
+client.urgent 	 		$yellow $yellow $baseB3 $orange
+
+client.background #fdf6e3
+
+bindsym $mod+d exec --no-startup-id zsh -c 'rofi -show run'
+
+bindsym $mod+Tab workspace back_and_forth
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+plus scratchpad show
+
+
+set $mode_gaps gaps
+set $mode_gaps_outer outer gaps
+set $mode_gaps_inner inner gaps
+bindsym $mod+Shift+g mode "$mode_gaps"
+mode "$mode_gaps" {
+    bindsym o      mode "$mode_gaps_outer"
+    bindsym i      mode "$mode_gaps_inner"
+
+    bindsym 0      mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
+    bindsym d      mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+    bindsym plus  gaps inner current plus 5
+    bindsym minus gaps inner current minus 5
+    bindsym 0     mode "default", gaps inner current set 0
+    bindsym d     mode "default", gaps inner current set $default_gaps_inner
+
+    bindsym Shift+plus  gaps inner all plus 5
+    bindsym Shift+minus gaps inner all minus 5
+    bindsym Shift+0     mode "default", gaps inner all set 0
+    bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+    bindsym plus  gaps outer current plus 5
+    bindsym minus gaps outer current minus 5
+    bindsym 0     mode "default", gaps outer current set 0
+    bindsym d     mode "default", gaps outer current set $default_gaps_outer
+
+    bindsym Shift+plus  gaps outer all plus 5
+    bindsym Shift+minus gaps outer all minus 5
+    bindsym Shift+0     mode "default", gaps outer all set 0
+    bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+
+# fix graphics glitch
+new_window none
+#for_window [class=(?i)termite] border pixel 3
+
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+
+for_window [class="(?i)gsimplecal"] floating enable, move position mouse, move down $height px
+for_window [class="(?i)qemu-system"] floating enable
+for_window [class="(?i)VirtualBox" title="(?i)Manager"] floating enable
+for_window [class="(?i)blueman"] floating enable
+
+#for_window [instance="sun-awt-X11-XFramePeer"] floating enable
+for_window [instance="__scratchpad"] floating enable
+for_window [instance="__nmtui"] floating enable
+for_window [class="(?i)recordmydesktop"] floating enable
+
+for_window [class="(?i)pavucontrol"] floating enable, move position mouse
+for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height px
+
+#assign [class="(?i)chrome"]                       $ws1
+assign [class="(?i)eclipse" window_type="splash"] $ws3
+assign [class="(?i)eclipse" window_type="normal"] $ws3
+assign [class="(?i)thunderbird"]                  $ws9
+
+## MINE 
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+
+# exec --no-startup-id /usr/lib/gnome-session/gnome-session/binary
+
+set $mod Mod4
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec gnome-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+g split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+Shift+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+q layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+bindsym $mod+t workspace next
+bindsym $mod+Shift+T workspace prev
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+
+# power/lock options
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id ~/.i3/i3exit lock, mode "default"
+    bindsym e exec --no-startup-id ~/.i3/i3exit logout, mode "default"
+    bindsym s exec --no-startup-id ~/.i3/i3exit suspend, mode "default"
+    bindsym h exec --no-startup-id ~/.i3/i3exit hibernate, mode "default"
+    bindsym r exec --no-startup-id ~/.i3/i3exit reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id ~/.i3/i3exit shutdown, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "$mode_system"
+# exit i3 (logs you out of your X session)
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# i3bar likes primary output
+#exec --no-startup-id xrandr --output eDP1 --primary
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+
+    i3bar_command i3bar
+
+    #font pango:Hack, FontAwesome 11
+    font pango:DejaVu Sans Mono 12
+    #status_command i3status -c ~/.i3/i3status
+    status_command py3status -c ~/.i3/i3status
+    #tray_output primary
+
+
+    # solarized-light
+    colors {
+
+        # solarized (clean)
+	###################
+
+        separator $blue
+ 	background $baseA3
+	statusline $baseB2
+
+ 	# workclass 			border  backgr. text
+ 	focused_workspace		$green  $green  $baseA3
+ 	active_workspace		$cyan   $cyan   $baseA2
+ 	inactive_workspace		$baseA2 $baseA2 $baseB1
+ 	urgent_workspace		$orange $orange $baseB3
+ 	#urgent_workspace		$yellow $yellow $baseB3
+    }
+    # dark
+    # colors {
+    #     statusline         #FFFFFF
+    #     background         $black
+    #     separator          $transparent
+    #
+    #     #                  BORDER       BACKGROUND   TEXT
+    #     focused_workspace  $transparent $transparent #FFFFFF
+    #     inactive_workspace $transparent $transparent $darkred
+    #     active_workspace   $transparent $transparent $darkred
+    #     urgent_workspace   $darkred     $darkred     $transparent
+    #     binding_mode       $darkred     $darkred     $transparent
+    # }
+}
+# applets
+exec --no-startup-id nm-applet
+#exec --no-startup-id pasystray
+exec --no-startup-id owncloud
+exec --no-startup-id xfce4-clipman
+
+# default screen brightness
+exec --no-startup-id xbacklight -set 11
+
+# Screen brightness controls
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5 # increase screen brightness
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5 # decrease screen brightness
+
+# Touchpad controls
+bindsym XF86TouchpadToggle exec --no-startup-id /home/josh/.i3/toggletouchpad.sh # toggle touchpad
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle # mute sound
+
+# Browser
+bindsym $mod+w exec chromium
+
+# Background
+exec --no-startup-id feh --bg-scale ~/Owncloud/Backgrounds/gnulinux_yinyang_wallpaper_by_dablim-d71ljd7.png
+
+# Emacs daemon
+# exec --no-startup-id emacs --daemon
+# (Now starting through systemd)
+
+# File browser
+bindsym $mod+f exec --no-startup-id nautilus
+
+# Compton
+bindsym $mod+c exec --no-startup-id .i3/togglecompton.sh
+
+exec --no-startup-id compton -bCG
+
+
+# redshift
+exec --no-startup-id redshift -t 6500:3500
+
+# screenshots
+bindsym --release Control+Shift+4 exec --no-startup-id xfce4-screenshooter -r -s ~/Pictures
+bindsym Control+Shift+3 exec --no-startup-id xfce4-screenshooter -f -s ~/Pictures
+bindsym Control+Shift+2 exec --no-startup-id xfce4-screenshooter -w -s ~/Pictures
+
+
+# set menu to super
+exec --no-startup-id xmodmap -e "keycode 135 = Super_R"  
+
+# disable touchpad while typing
+exec --no-startup-id syndaemon -i .2 -d
+
+# border size
+new_window pixel 3
+
+for_window [class="Gsimplecal"] floating enable
+for_window [class="Gsimplecal"] move absolute position 1625px 900px
+
+# exec --no-startup-id dbus-send \
+#     --session \
+#         --print-reply=literal \
+#             --dest=org.gnome.SessionManager \
+#                 "/org/gnome/SessionManager" \
+#                     org.gnome.SessionManager.RegisterClient \
+#                         "string:i3" \
+#                             "string:$DESKTOP_AUTOSTART_ID"
