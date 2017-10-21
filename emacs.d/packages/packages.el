@@ -448,17 +448,12 @@
     '("breaklines"))
 
   (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-  )
 
-(use-package evil-org
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-	    (lambda ()
-	      (evil-org-set-key-theme '(textobjects insert navigation additional todo))))
-  (setq evil-org-special-o/O nil))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((gnuplot . t)))
+  (global-set-key (kbd "C-c c") 'org-capture)
+  )
 
 (use-package org-agenda
   :after org
@@ -683,8 +678,6 @@
 ;;;; Builtin configs
 
 (defvar gdb-many-windows t)
-
-(global-eldoc-mode -1)
 
 (use-package flyspell
   :config
