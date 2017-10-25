@@ -129,11 +129,16 @@
   (define-key evil-normal-state-map "K" 'hydra-lookup-menu/body)
   (define-key evil-visual-state-map "K" 'hydra-lookup-menu/body)
 
+  ;; These go out here, because undefining keybinds is hard
+  (define-key global-map "\C-j" nil)
+  (define-key evil-normal-state-map "\C-j" 'flyspell-goto-next-error)
+
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
               ("ze" . hscroll-cursor-right)
               ("[s" . flyspell-goto-previous-error)
               ("]s" . flyspell-goto-next-error)
+              ("\C-k" . flyspell-goto-previous-error)
               ("\C-x \C-e" . evil-eval-last-sexp)
          :map Info-mode-map
               ("g" . nil)
@@ -142,9 +147,7 @@
          :map evil-window-map
               ("q" . delete-window)
               ("C-q" . delete-window)
-	      ("x" . kill-buffer-and-window)
-         :map evil-operator-state-map
-              ("lw" . evil-little-word)))
+	      ("x" . kill-buffer-and-window)))
 
 (use-package evil-numbers
   :ensure t
@@ -286,8 +289,7 @@
   :diminish linum-relative-mode
   :config
   (setq linum-relative-current-symbol "")
-  (linum-mode)
-  (linum-relative-global-mode)
+  (add-hook 'prog-mode-hook 'linum-relative-mode)
   (defun linum-update-window-scale-fix (win)
     "fix linum for scaled text"
     (set-window-margins
@@ -326,8 +328,7 @@
     "w" '(lambda () (interactive)
 	   ;; "writing" mode
 	   (variable-pitch-mode)
-	   (visual-line-mode)
-	   (flyspell-toggle-correct-mode))
+	   (visual-line-mode))
     "p" 'my/evil-select-pasted
     "/" 'swiper
     "v" 'ivy-switch-buffer
@@ -737,7 +738,10 @@
       (if flyspell-mode
           (funcall 'flyspell-mode '0)
         (funcall flyspell-mode-to-call)
-        (flyspell-buffer)))))
+        (flyspell-buffer))))
+
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
 (use-package hideshow
   :config
