@@ -1,6 +1,6 @@
 ;;; use-package example:
 ;; (use-package foo
-;; :init ; Runs before loading the package. WIll always run, even if foo isn't on this system.
+;; :init ; Runs before loading the package. Will always run, even if foo isn't on this system.
 ;; :config ; Runs after.
 ;; :bind (("M-s O" . action)
 ;;       ("" . some-other-action))
@@ -43,8 +43,10 @@
 (use-package iedit
   :ensure t)
 
-(use-package hydra
-  :ensure t)
+(defmacro hail (p)
+  (list 'use-package p ':ensure 't))
+
+(hail hydra)
 
 (use-package engine-mode
   :ensure t)
@@ -344,8 +346,11 @@
    :evil-keys ("SPC")
    :major-modes (org-mode)
    :bindings
-   ("t" 'org-toggle-latex-fragment
-    "o" 'org-timeline))
+   (;"ol" 'org-toggle-latex-fragment
+    "ol" 'org-variable-toggle-latex-fragment
+    "ot" 'org-timeline
+    "oa" 'org-archive-subtree
+    "t" 'org-todo))
 
   (bind-map
    my-elisp-map
@@ -370,7 +375,8 @@
    :major-modes (lisp-mode)
    :bindings
    ("el" 'evil-slime-eval-last-expression
-    "er" 'slime-eval-region)))
+    "er" 'slime-eval-region
+    "eb" 'slime-compile-and-load-file)))
 
 (use-package treemacs
   :ensure t
@@ -449,6 +455,16 @@
     '("breaklines"))
 
   (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+
+  (defun org-variable-toggle-latex-fragment ()
+    "Toggle LaTeX fragment, taking into account the current zoom size of the buffer."
+    (interactive)
+    (if (boundp 'text-scale-mode-amount)
+	(let ((org-format-latex-options (plist-put org-format-latex-options :scale text-scale-mode-amount)))
+	  (org-toggle-latex-fragment))
+      (org-toggle-latex-fragment)))
+  (face-attribute 'default :font)
+
 
   (org-babel-do-load-languages
    'org-babel-load-languages
