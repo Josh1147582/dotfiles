@@ -306,8 +306,6 @@
   (advice-add #'linum-update-window
               :after #'linum-update-window-scale-fix))
 
-;; TODO see if I can replace bind-map with hydra. I forget things
-;; often, so a popup for some chords would be nice.
 (use-package bind-map
   :ensure t
   :after evil
@@ -334,11 +332,17 @@
     "p" 'my/evil-select-pasted
     "/" 'swiper
     "v" 'ivy-switch-buffer
+    ;; TODO find a better way to display this
+    ;; TODO add button to kill this: maybe k1, k2, etc.?
     "1" 'eyebrowse-switch-to-window-config-1
     "2" 'eyebrowse-switch-to-window-config-2
     "3" 'eyebrowse-switch-to-window-config-3
     "4" 'eyebrowse-switch-to-window-config-4
-    "5" 'eyebrowse-switch-to-window-config-5))
+    "5" 'eyebrowse-switch-to-window-config-5
+    "6" 'eyebrowse-switch-to-window-config-6
+    "7" 'eyebrowse-switch-to-window-config-7
+    "8" 'eyebrowse-switch-to-window-config-8
+    "9" 'eyebrowse-switch-to-window-config-9))
 
   (bind-map
    my-org-map
@@ -562,6 +566,23 @@
 			("*Help*" :align t :size 0.4 :select t)
 			("\\`\\*intero:.*:repl\\*\\'" :regexp t :align t :size 0.4))))
 
+
+(use-package which-key
+  :ensure t
+  :config
+  (setq which-key-idle-delay 0.5)
+  (which-key-mode)
+  ;(which-key-setup-minibuffer)
+  (which-key-setup-side-window-bottom)
+  (setq i 1)
+  (while (< i 10)
+    (let ((cell (cons (cons (number-to-string i) nil) '(lambda (cs) t))))
+      (add-to-list 'which-key-replacement-alist cell))
+    (setq i (+ i 1)))
+  (makunbound 'i)
+
+  (which-key-add-key-based-replacements
+  "SPC d" "Diff buffer w/ file"))
 
 ;; OS specific
 (use-package magit
