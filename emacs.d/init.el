@@ -147,14 +147,27 @@
       (t (message "")))
 
 
+;;;; Default face customizations
+
+(set-face-attribute 'default nil :height 120 :family "Ubuntu Mono")
+(set-face-attribute 'evil-goggles-delete-face nil :inherit 'diff-removed)
+(set-face-attribute 'evil-goggles-paste-face nil :inherit 'diff-added)
+(set-face-attribute 'evil-goggles-undo-redo-add-face nil :inherit 'diff-added)
+(set-face-attribute 'evil-goggles-undo-redo-change-face nil :inherit 'diff-changed)
+(set-face-attribute 'evil-goggles-undo-redo-remove-face nil :inherit 'diff-removed)
+(set-face-attribute 'evil-goggles-yank-face nil :inherit 'diff-changed)
+(set-face-attribute 'linum-relative-current-face nil :inherit 'linum :background "dim gray" :foreground "white" :underline nil)
+(set-face-attribute 'mode-line-buffer-id-inactive nil :inherit 'mode-line-buffer-id :background "#fdf6e3")
+(set-face-attribute 'show-paren-match nil :background "light gray" :foreground "#d33682" :weight 'bold)
+
+
 ;;;; Custom
+
 (defconst custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 ;; if no custom file exists, write a default one
 (unless (file-exists-p custom-file)
-  (write-region "(custom-set-faces
- '(linum-relative-current-face ((t (:inherit linum :background \"dim gray\" :foreground \"white\" :underline nil))))
- '(show-paren-match ((t (:background \"light gray\" :foreground \"#d33682\" :weight bold)))))
+  (write-region "(custom-set-faces)
 (custom-set-variables
  '(custom-enabled-themes (quote (solarized-light)))
  '(custom-safe-themes

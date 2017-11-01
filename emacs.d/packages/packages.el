@@ -483,7 +483,8 @@
 
 	(org-agenda nil "z" 'buffer)))
   ;; Not sure if this can be placed in a :bind statement
-  (evil-define-key 'motion org-agenda-mode-map (kbd "RET") '(lambda () (interactive) (org-agenda-switch-to t))))
+  (evil-define-key 'motion org-agenda-mode-map (kbd "RET") '(lambda () (interactive) (org-agenda-switch-to t)))
+  (setq org-agenda-files (quote ("~/Owncloud/org/organizer.org"))))
 
 (use-package org-preview-html
   :commands org-preview-html/preview
@@ -556,7 +557,6 @@
   (setq shackle-rules '(("*Python*" :align t :size 0.2)
 			("*Help*" :align t :size 0.4 :select t)
 			("\\`\\*intero:.*:repl\\*\\'" :regexp t :align t :size 0.4))))
-
 
 (use-package which-key
   :ensure t
@@ -736,6 +736,8 @@
 ;;;; Builtin configs
 
 (defvar gdb-many-windows t)
+
+(setq tramp-syntax (quote default))
 
 (use-package flyspell
   :config
