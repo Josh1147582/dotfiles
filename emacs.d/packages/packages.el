@@ -192,7 +192,7 @@
 							     (cdr powerline-default-separator-dir))))
 			    (lhs (list (powerline-raw "%*" mode-line 'l)
 				       (powerline-buffer-id mode-line-buffer-id 'l)
-				       (powerline-raw " ")
+				       (powerline-raw " " mode-line)
 				       (funcall separator-left mode-line face1)
 				       (powerline-narrow face1 'l)
 				       (powerline-vc face1)))
@@ -287,7 +287,11 @@
   :diminish linum-relative-mode
   :config
   (setq linum-relative-current-symbol "")
+  (if (not (or (display-graphic-p) (daemonp)))
+      (setq linum-relative-format "%3s "))
+
   (add-hook 'prog-mode-hook 'linum-relative-mode)
+
   (defun linum-update-window-scale-fix (win)
     "fix linum for scaled text"
     (set-window-margins
@@ -475,7 +479,7 @@
 	    ;; (org-agenda-time-grid nil)
 	    (org-agenda-show-all-dates nil)
 	    ;; (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
-	    (org-deadline-warning-days 7))))))
+	    (org-deadline-warning-days 0))))))
 
 	(org-agenda nil "z" 'buffer)))
   ;; Not sure if this can be placed in a :bind statement
@@ -574,17 +578,19 @@
 
 ;; OS specific
 (use-package magit
-  :if (not (eq system-type 'windows-nt))
-  :ensure t
-  :defer t
-  :diminish magit-auto-revert-mode)
-
-(use-package evil-magit
   :commands magit-status
   :if (not (eq system-type 'windows-nt))
   :ensure t
+  :defer t
+  :diminish magit-auto-revert-mode
+  :after evil-magit
   :config
   (evil-magit-init))
+
+(use-package evil-magit
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :defer t)
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
