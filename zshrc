@@ -105,10 +105,13 @@ function cd {
 export EDITOR=emacs
 export VISUAL=emacs
 
+# Terminal Emacs
+alias emacs-term='\emacs -nw --color=no'
+
 # Vim and vi bindings
 
 # alias for vim muscle memory when quitting
-#alias :q='exit'
+alias :q='exit'
 
 # vi bindings
 #bindkey -v

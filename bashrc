@@ -20,9 +20,11 @@ alias hg='history | grep'
 # Use vim as the default text editor
 export VISUAL=vim
 
-# local folder in PATH 
+# local folder in PATH
 export PATH=$HOME/bin:$PATH
 
+# Terminal Emacs
+alias emacs-term='\emacs -nw --color=no'
 
 # alias for vim muscle memory when quitting
 alias :q='exit'
