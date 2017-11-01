@@ -29,6 +29,7 @@
 
 (diminish 'visual-line-mode)
 (diminish 'abbrev-mode)
+(diminish 'eldoc-mode)
 
 (use-package autorevert
   :diminish auto-revert-mode)
