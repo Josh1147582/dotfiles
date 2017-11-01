@@ -1,12 +1,3 @@
-;;; use-package example:
-;; (use-package foo
-;; :init ; Runs before loading the package. Will always run, even if foo isn't on this system.
-;; :config ; Runs after.
-;; :bind (("M-s O" . action)
-;;       ("" . some-other-action))
-;; :commands foo-mode ; Creates autoloads for commands: defers loading until called.
-;; )
-
 ;; Package installation
 
 (require 'package)
@@ -313,6 +304,7 @@
 (use-package bind-map
   :ensure t
   :after evil
+  :after evil-numbers
   :config
   (bind-map
    my-base-leader-map
@@ -336,6 +328,7 @@
     "p" 'my/evil-select-pasted
     "/" 'swiper
     "v" 'ivy-switch-buffer
+    "n" 'hydra-numbers/body
     ;; TODO find a better way to display this
     ;; TODO add button to kill this: maybe k1, k2, etc.?
     "1" 'eyebrowse-switch-to-window-config-1
@@ -349,44 +342,14 @@
     "9" 'eyebrowse-switch-to-window-config-9))
 
   (bind-map
-   my-org-map
-   :keys ("M-m")
-   :evil-keys ("SPC")
-   :major-modes (org-mode)
-   :bindings
-   (;"ol" 'org-toggle-latex-fragment
-    "ol" 'org-variable-toggle-latex-fragment
-    "ot" 'org-timeline
-    "oa" 'org-archive-subtree
-    "od" 'org-deadline
-    "os" 'org-schedule
-    "t" 'org-todo))
-
-  (bind-map
-   my-elisp-map
-   :keys ("M-m")
-   :evil-keys ("SPC")
-   :major-modes (emacs-lisp-mode)
-   :bindings
-   ("el" 'evil-eval-last-sexp
-    "er" 'eval-region
-    "eb" 'eval-buffer))
-
-  (defun evil-slime-eval-last-expression ()
-    (interactive)
-    (evil-append 1)
-    (slime-eval-last-expression)
-    (evil-normal-state))
-
-  (bind-map
-   my-slime-map
-   :keys ("M-m")
-   :evil-keys ("SPC")
-   :major-modes (lisp-mode)
-   :bindings
-   ("el" 'evil-slime-eval-last-expression
-    "er" 'slime-eval-region
-    "eb" 'slime-compile-and-load-file)))
+    my-elisp-map
+    :keys ("M-m")
+    :evil-keys ("SPC")
+    :major-modes (emacs-lisp-mode)
+    :bindings
+    ("el" 'evil-eval-last-sexp
+     "er" 'eval-region
+     "eb" 'eval-buffer)))
 
 (use-package treemacs
   :ensure t
@@ -449,6 +412,7 @@
 
 (use-package org
   :commands org-mode
+  :after bind-map
   :ensure t
   :config
   (setq org-log-done 'time)
@@ -476,12 +440,25 @@
       (org-toggle-latex-fragment)))
   (face-attribute 'default :font)
 
+  ;; I might experiemnt with gnuplot and notes in the future.
+  ;; (org-babel-do-load-languages
+  ;;  'org-babel-load-languages
+  ;;  '((gnuplot . t)))
+  ;; (global-set-key (kbd "C-c c") 'org-capture)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((gnuplot . t)))
-  (global-set-key (kbd "C-c c") 'org-capture)
-  )
+  (bind-map
+   my-org-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (org-mode)
+   :bindings
+   (;"ol" 'org-toggle-latex-fragment
+    "ol" 'org-variable-toggle-latex-fragment
+    "ot" 'org-timeline
+    "oa" 'org-archive-subtree
+    "od" 'org-deadline
+    "os" 'org-schedule
+    "t" 'org-todo)))
 
 (use-package org-agenda
   :commands org-agenda org-timeline
@@ -596,12 +573,13 @@
 
 ;; OS specific
 (use-package magit
-  :commands magit-status
   :if (not (eq system-type 'windows-nt))
   :ensure t
+  :defer t
   :diminish magit-auto-revert-mode)
 
 (use-package evil-magit
+  :commands magit-status
   :if (not (eq system-type 'windows-nt))
   :ensure t
   :config
@@ -609,6 +587,10 @@
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
+  :ensure t)
+
+(use-package esup
+  :commands esup
   :ensure t)
 
 ;; global-prettify-symbols doesn't play nice on Windows
@@ -677,14 +659,33 @@
   :commands latex-preview-pane-mode)
 
 (use-package slime
+  :after bind-key
   :commands slime slime-mode
   :init
   (setq auto-mode-alist (cons '("\\.cl$" . common-lisp-mode) auto-mode-alist))
   (add-hook 'lisp-mode-hook 'slime-mode)
   :config
   (setq inferior-lisp-program "sbcl")
-  (slime-setup))
-(use-package slime-company)
+  (slime-setup)
+
+  (defun evil-slime-eval-last-expression ()
+    (interactive)
+    (evil-append 1)
+    (slime-eval-last-expression)
+    (evil-normal-state))
+
+  (bind-map
+   my-slime-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (lisp-mode)
+   :bindings
+   ("el" 'evil-slime-eval-last-expression
+    "er" 'slime-eval-region
+    "eb" 'slime-compile-and-load-file)))
+
+(use-package slime-company
+  :after slime)
 
 ;; TODO learn/configure auctex
 
