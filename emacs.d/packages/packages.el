@@ -164,7 +164,9 @@
 
 (use-package undo-tree
   :ensure t
-  :diminish undo-tree-mode)
+  :diminish undo-tree-mode
+  :init
+  (setq undo-tree-enable-undo-in-region nil))
 
 (use-package undohist
   :ensure t
@@ -356,6 +358,8 @@
     "ol" 'org-variable-toggle-latex-fragment
     "ot" 'org-timeline
     "oa" 'org-archive-subtree
+    "od" 'org-deadline
+    "os" 'org-schedule
     "t" 'org-todo))
 
   (bind-map
