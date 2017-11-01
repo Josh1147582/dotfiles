@@ -31,6 +31,8 @@
 
 ;;;; Required packages
 
+(setq use-package-verbose t)
+
 (use-package diminish
   :ensure t)
 
@@ -442,6 +444,7 @@
   (dtrt-indent-mode 1))
 
 (use-package org
+  :commands org-mode
   :ensure t
   :config
   (setq org-log-done 'time)
@@ -477,6 +480,7 @@
   )
 
 (use-package org-agenda
+  :commands org-agenda org-timeline
   :after org
   :after evil
   :config
@@ -496,6 +500,7 @@
   (evil-define-key 'motion org-agenda-mode-map (kbd "RET") '(lambda () (interactive) (org-agenda-switch-to t))))
 
 (use-package org-preview-html
+  :commands org-preview-html/preview
   :after org
   :ensure t)
 
@@ -569,12 +574,13 @@
 
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.5)
   (which-key-mode)
   ;(which-key-setup-minibuffer)
   (which-key-setup-side-window-bottom)
-  (setq i 1)
+  (defvar i 1)
   (while (< i 10)
     (let ((cell (cons (cons (number-to-string i) nil) '(lambda (cs) t))))
       (add-to-list 'which-key-replacement-alist cell))
@@ -586,6 +592,7 @@
 
 ;; OS specific
 (use-package magit
+  :commands magit-status
   :if (not (eq system-type 'windows-nt))
   :ensure t
   :diminish magit-auto-revert-mode)
@@ -628,18 +635,16 @@
   (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.handlebars\\'" . web-mode)))
 
-(use-package js
-  :config
-  (setq js-indent-level 2))
+(setq js-indent-level 2)
 
 (use-package tide
+  :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
 
 (use-package racket-mode
+  :mode "\\.scm\\'"
   :config
-  (add-to-list 'auto-mode-alist '("\\.scm\\'" . racket-mode))
-
   ;; C-w prefix in racket-REPL
   (add-hook 'racket-repl-mode-hook 'racket-repl-evil-hook)
 
@@ -648,25 +653,27 @@
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
 (use-package intero
+  :commands intero-mode
   :config
-  (add-hook 'haskell-mode-hook 'intero-mode))
-
-; (use-package haskell-mode
-;   :config
-;   (setq haskell-interactive-popup-errors nil)
-;   (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-load-file)
-;   (define-key haskell-mode-map (kbd "C-c C-p") 'haskell-process-reload)
-;
-;   (setq haskell-process-type 'stack-ghci))
-
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  (bind-map
+   my-haskell-map
+   :keys ("M-m")
+   :evil-keys ("SPC")
+   :major-modes (haskell-mode)
+   :bindings
+   ("l" 'intero-repl-load
+    "r" 'intero-repl)))
 
 (use-package emojify
   :config
   (add-hook 'after-init-hook #'global-emojify-mode))
 
-(use-package latex-preview-pane)
+(use-package latex-preview-pane
+  :commands latex-preview-pane-mode)
 
 (use-package slime
+  :commands slime slime-mode
   :init
   (setq auto-mode-alist (cons '("\\.cl$" . common-lisp-mode) auto-mode-alist))
   (add-hook 'lisp-mode-hook 'slime-mode)
@@ -675,22 +682,23 @@
   (slime-setup))
 (use-package slime-company)
 
+;; TODO learn/configure auctex
+
 ;; List of optional packages
 (defvar optional-packages
       '(
         flymd
-        markdown-mode
-        latex-preview-pane
-        tide
         web-mode
+        tide
         racket-mode
         intero
-        realgud
         emojify
-	auctex
-	company-auctex
+        latex-preview-pane
 	slime
 	slime-company
+        markdown-mode
+	auctex
+	company-auctex
         ))
 
 (defvar packages-installed-this-session nil)

@@ -3,6 +3,8 @@
 
 ;(package-initialize)
 
+(setq gc-cons-threshold (* 500 100000))
+
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
       initial-scratch-message ""
@@ -160,3 +162,5 @@
     (\"d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879\" default))))
 " nil custom-file))
 (load custom-file)
+
+(setq gc-cons-threshold (* 800 100))
