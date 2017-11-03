@@ -114,8 +114,8 @@
 ;; Buffer-based completion
 (global-set-key (kbd "C-SPC") 'dabbrev-completion)
 
-(setq-default show-trailing-whitespace t)
-(add-hook 'buffer-menu-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+(add-hook 'text-mode-hook (lambda () (setq show-trailing-whitespace t)))
+(add-hook 'prog-mode-hook (lambda () (setq show-trailing-whitespace t)))
 
 ;;;; System-specific configs
 

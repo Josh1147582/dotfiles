@@ -434,8 +434,6 @@
   (setq org-latex-minted-options
     '("breaklines"))
 
-  (add-hook 'calendar-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-
   (defun org-variable-toggle-latex-fragment ()
     "Toggle LaTeX fragment, taking into account the current zoom size of the buffer."
     (interactive)
