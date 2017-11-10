@@ -700,7 +700,7 @@
   :ensure t
   :diminish smartparens-mode
   :config
-  (smartparens-global-strict-mode))
+  (smartparens-global-mode))
 
 (use-package evil-smartparens
   :ensure t
@@ -751,6 +751,15 @@
 (defvar gdb-many-windows t)
 
 (setq tramp-syntax (quote default))
+
+(setq prolog-program-name "swipl")
+(bind-map
+  my-prolog-map
+  :keys ("M-m")
+  :evil-keys ("SPC")
+  :major-modes (prolog-mode)
+  :bindings
+  ("l" 'prolog-consult-buffer))
 
 (use-package flyspell
   :config

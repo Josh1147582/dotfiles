@@ -19,6 +19,9 @@
 (when (boundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 
+;; Title bar displays buffer
+(setq frame-title-format "%b - Emacs")
+
 ;; Disable toolbar
 (tool-bar-mode -1)
 
