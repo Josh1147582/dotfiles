@@ -103,7 +103,7 @@ client.urgent 	 		$yellow $yellow $baseB3 $orange
 
 client.background #fdf6e3
 
-bindsym $mod+d exec --no-startup-id zsh -c 'rofi -show run'
+bindsym $mod+d exec --no-startup-id zsh -c 'rofi -matching fuzzy -show run '
 
 bindsym $mod+Tab workspace back_and_forth
 
