@@ -696,19 +696,6 @@
 (use-package auctex
   :defer t)
 
-(use-package smartparens
-  :ensure t
-  :diminish smartparens-mode
-  :config
-  (smartparens-global-mode))
-
-(use-package evil-smartparens
-  :ensure t
-  :after smartparens
-  :diminish evil-smartparens-mode
-  :config
-  (add-hook 'smartparens-enabled-hook 'evil-smartparens-mode))
-
 ;; List of optional packages
 (defvar optional-packages
       '(
