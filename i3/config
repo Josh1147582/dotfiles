@@ -386,7 +386,7 @@ exec --no-startup-id owncloud
 exec --no-startup-id xfce4-clipman
 
 # default screen brightness
-exec --no-startup-id xbacklight -set 11
+exec --no-startup-id xbacklight -set 12
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5 # increase screen brightness
