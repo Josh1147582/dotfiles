@@ -108,7 +108,7 @@
   "Create tags file."
   (interactive "DDirectory: ")
   (shell-command
-   (format "\"%s\" -f %s/TAGS -e -R %s"
+   (format "\"%s\" -f \"%s/TAGS\" -e -R %s"
            tags-generator (directory-file-name dir-name) (directory-file-name dir-name))))
 
 (add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
