@@ -6,5 +6,5 @@ then
     pkill compton
 else
     echo Starting compton
-    compton -bcG
+    compton -bcG  --backend glx --vsync opengl-swc
 fi
