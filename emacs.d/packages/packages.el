@@ -826,4 +826,13 @@
         recentf-max-menu-items 15)
   (add-to-list 'recentf-exclude ".*.emacs\\.d/elpa.*"))
 
+(use-package dired
+  :bind (:map dired-mode-map
+	      ("SPC" . nil)))
+
+(use-package buff-menu
+  :bind (:map Buffer-menu-mode-map
+	      ("SPC" . nil)))
+
+
 (provide 'packages)
