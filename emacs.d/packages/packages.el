@@ -1,5 +1,8 @@
 ;; Package installation
 
+;; TODO add "]]" or some other binding for doc-view-previous/next-page
+;; in doc-view-mode.
+
 (require 'package)
 ;; Create the package install directory if it doesn't exist
 (setq package-user-dir (format "%selpa_%s/"
@@ -597,6 +600,13 @@
 (use-package esup
   :commands esup
   :ensure t)
+
+(use-package highlight-indent-guides
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'column))
 
 ;; global-prettify-symbols doesn't play nice on Windows
 (if (not (eq system-type 'windows-nt))
