@@ -105,7 +105,7 @@ client.background #fdf6e3
 
 bindsym $mod+d exec --no-startup-id zsh -c 'rofi -matching fuzzy -show run '
 
-bindsym $mod+Tab workspace back_and_forth
+#bindsym $mod+Tab workspace back_and_forth
 
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+Shift+plus scratchpad show
@@ -268,8 +268,8 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
-bindsym $mod+t workspace next
-bindsym $mod+Shift+T workspace prev
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
