@@ -104,6 +104,7 @@
 
 ;; Tags
 (defvar tags-generator (expand-file-name "ctags" user-emacs-directory))
+;; TODO different tags things for Windows and Linux
 (defun create-tags (dir-name)
   "Create tags file."
   (interactive "DDirectory: ")
