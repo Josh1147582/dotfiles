@@ -750,6 +750,8 @@
 (setq tramp-syntax (quote default))
 
 (setq prolog-program-name "swipl")
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+
 (bind-map
   my-prolog-map
   :keys ("M-m")
@@ -757,6 +759,17 @@
   :major-modes (prolog-mode)
   :bindings
   ("l" 'prolog-consult-buffer))
+
+(use-package doc-view
+  :defer t
+  :config
+  (evil-define-key 'motion doc-view-mode-map
+    (kbd "k") 'doc-view-previous-line-or-previous-page
+    (kbd "j") 'doc-view-next-line-or-next-page
+    (kbd "C-b") 'doc-view-previous-page
+    (kbd "C-f") 'doc-view-next-page)
+)
+
 
 (use-package flyspell
   :config
