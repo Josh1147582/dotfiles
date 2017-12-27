@@ -464,6 +464,7 @@
     "oa" 'org-archive-subtree
     "od" 'org-deadline
     "os" 'org-schedule
+    "op" 'org-priority
     "t" 'org-todo)))
 
 (use-package org-agenda
