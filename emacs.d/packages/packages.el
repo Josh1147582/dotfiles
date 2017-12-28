@@ -139,6 +139,10 @@
               ("]s" . flyspell-goto-next-error)
               ("\C-k" . flyspell-goto-previous-error)
               ("\C-x \C-e" . evil-eval-last-sexp)
+              ("j" . evil-next-visual-line)
+              ("k" . evil-previous-visual-line)
+              ("gj" . evil-next-line)
+              ("gk" . evil-previous-line)
          :map Info-mode-map
               ("g" . nil)
               ("n" . nil)
