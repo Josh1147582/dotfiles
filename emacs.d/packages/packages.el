@@ -613,6 +613,13 @@
   :config
   (setq highlight-indent-guides-method 'column))
 
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :init
+  (setq evil-collection-setup-minibuffer t)
+  (evil-collection-init))
+
 ;; global-prettify-symbols doesn't play nice on Windows
 (if (not (eq system-type 'windows-nt))
     (global-prettify-symbols-mode))
