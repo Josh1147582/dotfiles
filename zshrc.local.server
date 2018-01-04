@@ -6,3 +6,5 @@ alias zork='sudo ttyecho -n /dev/tty7'
 
 export PATH=$PATH:$HOME/bin
 export PATH=$PATH:/home/josh/.local/bin
+
+export EDITOR='emacs-term'

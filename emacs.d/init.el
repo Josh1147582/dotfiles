@@ -23,7 +23,8 @@
 (setq frame-title-format "%b - Emacs")
 
 ;; Disable toolbar
-(tool-bar-mode -1)
+(if (fboundp 'tool-bar-mode)
+      (tool-bar-mode -1))
 
 ;; smoother scrolling
 (setq scroll-margin 0
