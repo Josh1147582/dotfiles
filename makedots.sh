@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 DIR=$(pwd)
 
@@ -50,3 +50,16 @@ then
     rm -i $HOME/.antigen.zsh
 fi
 ln -s $DIR/antigen/antigen.zsh $HOME/.antigen.zsh
+
+# Xmonad
+if [ -h $HOME/.xmonad ]
+then
+    rm -i $HOME/.xmonad
+fi
+ln -s $DIR/xmonad $HOME/.xmonad
+
+if [ -h $HOME/.xmobarrc ]
+then
+    rm -i $HOME/.xmobarrc
+fi
+ln -s $DIR/xmonad/xmobarrc $HOME/.xmobarrc
