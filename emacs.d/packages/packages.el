@@ -7,11 +7,20 @@
 ;; Create the package install directory if it doesn't exist
 (setq package-user-dir (format "%selpa_%s/"
                                user-emacs-directory emacs-major-version)) ; default = ~/.emacs.d/elpa/
-(package-initialize)
 
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+
+(package-initialize)
 
 (setq package-enable-at-startup nil)
 
@@ -50,6 +59,8 @@
 
 (use-package evil
   :ensure t
+  :init
+  (defvar evil-want-integration nil)
   :config
   (evil-mode t)
   (setq evil-want-C-i-jump nil)
@@ -143,14 +154,16 @@
               ("k" . evil-previous-visual-line)
               ("gj" . evil-next-line)
               ("gk" . evil-previous-line)
-         :map Info-mode-map
-              ("g" . nil)
-              ("n" . nil)
-              ("p" . nil)
+         ; :map Info-mode-map
+         ;      ("g" . nil)
+         ;      ("n" . nil)
+         ;      ("p" . nil)
          :map evil-window-map
               ("q" . delete-window)
               ("C-q" . delete-window)
-	      ("x" . kill-buffer-and-window)))
+	      ("x" . kill-buffer-and-window)
+          :map Buffer-menu-mode-map
+	      ("SPC" . nil)))
 
 (use-package evil-numbers
   :ensure t
@@ -588,15 +601,13 @@
   :if (not (eq system-type 'windows-nt))
   :ensure t
   :defer t
-  :diminish magit-auto-revert-mode
-  :after evil-magit
-  :config
-  (evil-magit-init))
+  :diminish magit-auto-revert-mode)
 
 (use-package evil-magit
   :if (not (eq system-type 'windows-nt))
   :ensure t
-  :defer t)
+  :config
+  (evil-magit-init))
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
@@ -865,9 +876,6 @@
   :bind (:map dired-mode-map
 	      ("SPC" . nil)))
 
-(use-package buff-menu
-  :bind (:map Buffer-menu-mode-map
-	      ("SPC" . nil)))
 
 
 (provide 'packages)
