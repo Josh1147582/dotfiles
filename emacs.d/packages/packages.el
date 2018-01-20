@@ -143,6 +143,8 @@
   (define-key global-map "\C-j" nil)
   (define-key evil-normal-state-map "\C-j" 'flyspell-goto-next-error)
 
+  (evil-define-key 'normal package-menu-mode-map "q" 'quit-window)
+
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
               ("ze" . hscroll-cursor-right)
@@ -162,7 +164,7 @@
               ("q" . delete-window)
               ("C-q" . delete-window)
 	      ("x" . kill-buffer-and-window)
-          :map Buffer-menu-mode-map
+         :map Buffer-menu-mode-map
 	      ("SPC" . nil)))
 
 (use-package evil-numbers
@@ -629,6 +631,7 @@
   :after evil
   :init
   (setq evil-collection-setup-minibuffer t)
+  :config
   (evil-collection-init))
 
 ;; global-prettify-symbols doesn't play nice on Windows
