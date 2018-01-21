@@ -6,5 +6,5 @@ then
     pkill compton
 else
     echo Starting compton
-    compton --config ~/.i3/compton.conf
+    compton -b --config ~/.i3/compton.conf
 fi
