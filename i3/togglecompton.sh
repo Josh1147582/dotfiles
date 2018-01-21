@@ -6,5 +6,5 @@ then
     pkill compton
 else
     echo Starting compton
-    compton -bcG  --backend glx --vsync opengl-swc
+    compton --config ~/.i3/compton.conf
 fi
