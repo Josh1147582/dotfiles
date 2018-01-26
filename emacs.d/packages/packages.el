@@ -732,6 +732,10 @@
 (use-package auctex
   :defer t)
 
+(use-package atomic-chrome
+  :config
+  (atomic-chrome-start-server))
+
 ;; List of optional packages
 (defvar optional-packages
       '(
@@ -747,6 +751,7 @@
         markdown-mode
 	auctex
 	company-auctex
+        atomic-chrome
         ))
 
 (defvar packages-installed-this-session nil)

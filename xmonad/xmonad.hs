@@ -60,7 +60,12 @@ main = do
            , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
            })
         -- pulseaudio
-
+        , ((0, xF86XK_AudioRaiseVolume),
+               spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5%")
+        , ((0, xF86XK_AudioLowerVolume),
+               spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle5%")
+        , ((0, xF86XK_AudioMute),
+               spawn "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle")
 
         -- brightness
         , ((0, xF86XK_MonBrightnessUp),
@@ -72,7 +77,6 @@ main = do
                spawn "xbacklight -set 2"
              else
                spawn "xbacklight -inc 5")
-
         , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5")
            -- Another option for brightness configuration: never let it reach 0.
            {-|
