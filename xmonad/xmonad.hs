@@ -41,7 +41,9 @@ startup :: X ()
 startup = do
   spawn "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
   spawn "owncloud"
-  spawn "trayer --transparent true --alpha 0 --tint 0x00000000 --SetDockType true --expand true --edge top --align right --width 15 --height 18"
+  spawn "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
+  -- spawn "trayer --transparent true --alpha 0 --tint 0x00000000 --SetDockType true --expand true --edge top --align right --width 15 --height 18"
+  -- spawn "stalonetray -geometry 1x1+1900 -bg '#000000' --kludges use_icons_hints --grow-gravity NE --icon-gravity NE -i 20 -t false"
   spawn "xfce4-clipman"
   spawn "xbacklight -set 12"
   spawn "compton"

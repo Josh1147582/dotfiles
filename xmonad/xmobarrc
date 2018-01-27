@@ -4,7 +4,7 @@ Config {
      font = "xft:SFNS Display:size=11,FontAwesome:size=11"
    , bgColor =      "black"
    , fgColor =      "#A8A8A8"
-   , position =     Top
+   , position = TopW L 90
    , border =       BottomB
    , borderColor =  "#646464"
 
@@ -83,9 +83,8 @@ Config {
                                        , "-o"	, "⚇ <left>% (<timeleft>)"
                                        -- AC "on" status
                                        , "-O"	, "⚡ <left>% (<timeleft>)"
-                                       , "-o"	, "Little o <left>% (<timeleft>)"
                                        -- charged status
-                                       , "-i"	, "💯"
+                                       , "-i"	, "<left>%"
                              ] 50
 
         -- time and date indicator
