@@ -6,7 +6,7 @@ import XMonad.Util.Run(spawnPipe, hPutStrLn, runProcessWithInput)
 
 -- Layouts
 import XMonad.Layout.Spacing(smartSpacing)
-import XMonad.Layout.Tabbed(simpleTabbed)
+import XMonad.Layout.Tabbed
 import XMonad.Layout.NoBorders
 
 -- Shutdown commands and keys
@@ -23,11 +23,11 @@ main = do
   xmproc <- spawnPipe "xmobar"
   xmonad $ docks defaultConfig
     { manageHook = manageDocks <+> manageHook defaultConfig
-    , layoutHook = smartBorders $ withBorder 2 $ avoidStruts $ smartSpacing 5 $
-                   Tall 1 (3/100) (1/2) |||
-                   Mirror (Tall 1 (3/100) (1/2)) |||
+    , layoutHook = smartBorders $ avoidStruts $
+                   (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
+                   (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
                    Full |||
-                   simpleTabbed
+                   tabbed shrinkText def
     , logHook = dynamicLogWithPP xmobarPP
       { ppOutput = hPutStrLn xmproc
       , ppTitle = xmobarColor "green" "" . shorten 50
