@@ -19,6 +19,8 @@ import XMonad.Util.EZConfig(additionalKeys)
 -- Brightness and audio keys
 import Graphics.X11.ExtraTypes.XF86
 
+import Data.List(elemIndex)
+
 main = do
   xmproc <- spawnPipe "xmobar"
   xmonad $ docks defaultConfig
@@ -40,14 +42,26 @@ main = do
 startup :: X ()
 startup = do
   spawn "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
-  spawn "owncloud"
-  spawn "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
+  spawn $ ifNotRunning "owncloud"
+  spawn $ ifNotRunning "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
   -- spawn "trayer --transparent true --alpha 0 --tint 0x00000000 --SetDockType true --expand true --edge top --align right --width 15 --height 18"
   -- spawn "stalonetray -geometry 1x1+1900 -bg '#000000' --kludges use_icons_hints --grow-gravity NE --icon-gravity NE -i 20 -t false"
-  spawn "xfce4-clipman"
+  spawn $ ifNotRunning "pasystray"
+  spawn $ ifNotRunning "xfce4-clipman"
   spawn "xbacklight -set 12"
-  spawn "compton"
-  spawn "xscreensaver -nosplash"
+  spawn $ ifNotRunning "compton"
+  spawn $ ifNotRunning "xscreensaver -nosplash"
+
+-- Wrap a command in Bash that checks if it's running.
+ifNotRunning :: String -> String
+ifNotRunning s = "if ! [ `pgrep " ++ (basename s) ++ "` ]; then " ++ s ++ "; fi"
+
+-- Grab the program name from a command (everything up to the space,
+-- if there's a space). Doesn't work with escaped spaces.
+basename :: String -> String
+basename s = case elemIndex ' ' s of
+  (Just n) -> take n s
+  Nothing -> s
 
 myKeys = [
   -- scrot
@@ -110,4 +124,15 @@ myKeys = [
          spawn "xbacklight -dec 5"
        else return ())
      -}
+
+  -- extra programs
+  , ((mod4Mask, xK_x),
+       spawn "emacsclient -c")
+  , ((mod4Mask, xK_z),
+       spawn "firefox-nightly")
+  , ((mod4Mask, xK_m),
+       spawn ":"
+       -- TODO put social stuff here (Discord, Riot) and open it on a particular workspace
+    )
+
   ]
