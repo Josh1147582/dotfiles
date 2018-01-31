@@ -1,4 +1,4 @@
 *
 !.gitignore
-!xmonad.hs
+!xmonad*.hs
 !xmobarrc
