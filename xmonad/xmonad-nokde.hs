@@ -26,7 +26,7 @@ import XMonad.Config.Kde
 
 main = do
   xmproc <- spawnPipe "xmobar"
-  xmonad $ docks kde4Config
+  xmonad $ docks defaultConfig
     { manageHook = manageDocks <+> manageHook defaultConfig
     , layoutHook = smartBorders $ avoidStruts $
                    (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
@@ -38,7 +38,7 @@ main = do
       , ppTitle = xmobarColor "green" "" . shorten 50
       }
     , startupHook = startup
-    -- , terminal    = "gnome-terminal"
+    , terminal    = "gnome-terminal"
     , modMask     = mod4Mask
     } `additionalKeys` myKeys
 
@@ -62,7 +62,7 @@ startup = do
 
 -- Wrap a command in Bash that checks if it's running.
 ifNotRunning :: String -> String
-ifNotRunning s = "if ! [ `pgrep " ++ (basename s) ++ "` ]; then " ++ s ++ "; fi"
+ifNotRunning s = "if [ `pgrep -c " ++ (basename s) ++ "` == 0 ]; then " ++ s ++ "; fi"
 
 -- Grab the program name from a command (everything up to the space,
 -- if there's a space). Doesn't work with escaped spaces.
@@ -80,34 +80,34 @@ myKeys = [
   , ((mod4Mask, xK_p ), spawn "rofi -show run")
 
   -- shutdown
-  -- , ((mod4Mask .|. shiftMask, xK_q),
-  --    xmonadPrompt defaultXPConfig
-  --    { promptKeymap = fromList
-  --      [ ((0, xK_r), do
-  --            spawn "emacsclient -e '(kill emacs)'"
-  --            spawn "systemctl reboot")
-  --      , ((0 , xK_s), do
-  --            spawn "emacsclient -e '(kill emacs)'"
-  --            spawn "sudo poweroff")
-  --      , ((0, xK_e), do
-  --            spawn "emacsclient -e '(kill emacs)'"
-  --            io $ exitWith ExitSuccess)
-  --      , ((0, xK_l),  do
-  --            spawn "xscreensaver-command -lock"
-  --            quit)
-  --      , ((0, xK_z), do
-  --            spawn "xscreensaver-command -lock"
-  --            spawn "systemctl suspend"
-  --            quit)
-  --      , ((0, xK_Escape), quit)
-  --      ]
-  --    , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
-  --    })
+  , ((mod4Mask .|. shiftMask, xK_q),
+     xmonadPrompt defaultXPConfig
+     { promptKeymap = fromList
+       [ ((0, xK_r), do
+             spawn "emacsclient -e '(kill emacs)'"
+             spawn "systemctl reboot")
+       , ((0 , xK_s), do
+             spawn "emacsclient -e '(kill emacs)'"
+             spawn "sudo poweroff")
+       , ((0, xK_e), do
+             spawn "emacsclient -e '(kill emacs)'"
+             io $ exitWith ExitSuccess)
+       , ((0, xK_l),  do
+             spawn "xscreensaver-command -lock"
+             quit)
+       , ((0, xK_z), do
+             spawn "xscreensaver-command -lock"
+             spawn "systemctl suspend"
+             quit)
+       , ((0, xK_Escape), quit)
+       ]
+     , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
+     })
   -- pulseaudio
   , ((0, xF86XK_AudioRaiseVolume),
          spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5%")
   , ((0, xF86XK_AudioLowerVolume),
-         spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle5%")
+         spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5%")
   , ((0, xF86XK_AudioMute),
          spawn "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle")
 
