@@ -554,7 +554,7 @@
   :ensure t
   :config
   ;; highlight the minibuffer when it is activated
-  (set-face-attribute 'solaire-minibuffer-face nil :inherit 'solaire-default-face :background "blanched almond")
+  (set-face-attribute 'solaire-minibuffer-face nil :inherit 'solaire-default-face :background "gainsboro")
   (add-hook 'minibuffer-setup-hook #'solaire-mode-in-minibuffer))
 
 (use-package evil-goggles
