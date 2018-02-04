@@ -106,7 +106,7 @@ export EDITOR=emacs
 export VISUAL=emacs
 
 # Terminal Emacs
-alias emacs-term='\emacs -nw --color=no'
+alias emacs-term='\emacs -nw'
 
 # Vim and vi bindings
 
