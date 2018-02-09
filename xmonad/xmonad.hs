@@ -24,15 +24,25 @@ import Data.List(elemIndex, foldl1')
 -- kde
 import XMonad.Config.Kde
 
+import XMonad.Hooks.EwmhDesktops
+
 main = do
-  xmonad $ docks kde4Config
+  xmonad $ ewmh $ docks kde4Config
     { manageHook = manageHook kdeConfig <+> myManageHook
     , layoutHook = smartBorders $ avoidStruts $
                    (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                    (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
-                   Full |||
-                   tabbed shrinkText def
+                   -- Full |||
+
+                   -- Tabs are bugged/don't work in ewmh. On the
+                   -- bright side, it makes a window float over KDE's
+                   -- bar, which is what I want fullscreen to do.
+
+                   -- It's not a bug, it's a feature.
+                   simpleTabbed
+
     , startupHook = startup
+    , handleEventHook = handleEventHook def <+> fullscreenEventHook
     , modMask     = mod4Mask
     } `additionalKeys` myKeys `removeKeys` myRemoveKeys
 
