@@ -49,6 +49,7 @@ main = do
 myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
+  , (mod4Mask, xK_p)
   ]
 
 myManageHook = composeAll . concat $
