@@ -162,7 +162,6 @@
 (set-face-attribute 'evil-goggles-undo-redo-remove-face nil :inherit 'diff-removed)
 (set-face-attribute 'evil-goggles-yank-face nil :inherit 'diff-changed)
 (set-face-attribute 'linum-relative-current-face nil :inherit 'linum :background "dim gray" :foreground "white" :underline nil)
-(set-face-attribute 'mode-line-buffer-id-inactive nil :inherit 'mode-line-buffer-id :background "#cfd8dc")
 (set-face-attribute 'show-paren-match nil :background "light gray" :foreground "#d33682" :weight 'bold)
 (set-face-attribute 'fringe nil :background "#fafafa")
 
@@ -175,10 +174,7 @@
 (unless (file-exists-p custom-file)
   (write-region "(custom-set-faces)
 (custom-set-variables
- '(custom-enabled-themes (quote (material-light)))
- '(custom-safe-themes
-   (quote
-    (\"d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879\" default))))
+ '(custom-enabled-themes (quote (material-light))))
 " nil custom-file))
 (load custom-file)
 
