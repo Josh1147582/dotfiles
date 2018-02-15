@@ -304,6 +304,35 @@
       (powerline-center-evil-theme)
     (powerline-evil-vim-theme)))
 
+;; TODO look at smart-mode-line-powerline and see if i can write my own smart-mode-line config
+; (use-package smart-mode-line
+;   :ensure t
+;   :init
+;   :config
+;   (setq sml/no-confirm-load-theme t)
+;   (setq sml/mule-info nil)
+;   (setq sml/show-frame-identification nil)
+;   (sml/setup))
+
+; (use-package spaceline
+;   :ensure t
+;   :config
+;   (require 'spaceline-config)
+;   (spaceline-spacemacs-theme))
+
+; (use-package telephone-line
+;   :ensure t
+;   :after evil-surround
+;   :config
+;   ;; These don't have any effect, surprise surprise
+;   (set-face-attribute 'telephone-line-evil-emacs t :inherit 'telephone-line-evil)
+;   (set-face-attribute 'telephone-line-evil-insert t :inherit 'telephone-line-evil)
+;   (set-face-attribute 'telephone-line-evil-motion t :inherit 'telephone-line-evil)
+;   (set-face-attribute 'telephone-line-evil-normal t :inherit 'telephone-line-evil)
+;   (set-face-attribute 'telephone-line-evil-operator t :inherit 'telephone-line-evil)
+;   (setq telephone-line-evil-use-short-tag t)
+;   (telephone-line-evil-config))
+
 (use-package linum-relative
   :ensure t
   :diminish linum-relative-mode
