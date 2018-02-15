@@ -12,6 +12,9 @@ export PATH=$HOME/bin:$PATH
 # clang in PATH
 export PATH=/usr/lib/ccache/bin/:$PATH
 
+# stack software in PATH
+export PATH=$HOME/.local/bin:$PATH
+
 # DOOM config
 alias doom='dosbox -conf .dosbox/dosbox-0.74-doom.conf'
 
