@@ -632,13 +632,14 @@
   :if (not (eq system-type 'windows-nt))
   :ensure t
   :defer t
-  :diminish magit-auto-revert-mode)
+  :diminish magit-auto-revert-mode
+  :config
+  (evil-magit-init))
 
 (use-package evil-magit
   :if (not (eq system-type 'windows-nt))
   :ensure t
-  :config
-  (evil-magit-init))
+  :commands evil-magit-init)
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
