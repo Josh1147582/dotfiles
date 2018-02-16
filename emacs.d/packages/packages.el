@@ -698,10 +698,12 @@
 ;;;; Optional packages
 
 (use-package flymd
+  :no-require
   :config
   (setq flymd-close-buffer-delete-temp-files t))
 
 (use-package web-mode
+  :no-require
   :config
   ;; 2 spaces for an indent
   (defun my-web-mode-hook ()
@@ -720,11 +722,13 @@
 (setq js-indent-level 2)
 
 (use-package tide
+  :no-require
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
 
 (use-package racket-mode
+  :no-require
   :mode "\\.scm\\'"
   :config
   ;; C-w prefix in racket-REPL
@@ -735,6 +739,7 @@
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
 (use-package intero
+  :no-require
   :commands intero-mode
   :config
   (add-hook 'haskell-mode-hook 'intero-mode)
@@ -748,13 +753,16 @@
     "r" 'intero-repl)))
 
 (use-package emojify
+  :no-require
   :config
   (add-hook 'after-init-hook #'global-emojify-mode))
 
 (use-package latex-preview-pane
+  :no-require
   :commands latex-preview-pane-mode)
 
 (use-package slime
+  :no-require
   :after bind-key
   :commands slime slime-mode
   :init
@@ -781,13 +789,16 @@
     "eb" 'slime-compile-and-load-file)))
 
 (use-package slime-company
+  :no-require
   :after slime)
 
 ;; TODO learn/configure auctex
 (use-package auctex
+  :no-require
   :defer t)
 
 (use-package atomic-chrome
+  :no-require
   :config
   (atomic-chrome-start-server))
 
