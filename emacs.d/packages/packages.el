@@ -671,8 +671,9 @@
 
 (use-package yasnippet
   :ensure t
+  :defer t
   :init
-  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
   :config
   (yas-reload-all)
   ;; Add yasnippet support for all company backends
