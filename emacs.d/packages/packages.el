@@ -1,8 +1,5 @@
 ;; Package installation
 
-;; TODO add "]]" or some other binding for doc-view-previous/next-page
-;; in doc-view-mode.
-
 (require 'package)
 ;; Create the package install directory if it doesn't exist
 (setq package-user-dir (format "%selpa_%s/"
@@ -672,7 +669,7 @@
 
 (use-package yasnippet
   :ensure t
-  :defer t
+  :commands yas-minor-mode
   :init
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   :config
@@ -698,12 +695,12 @@
 ;;;; Optional packages
 
 (use-package flymd
-  :no-require
+  :defer t
   :config
   (setq flymd-close-buffer-delete-temp-files t))
 
 (use-package web-mode
-  :no-require
+  :defer t
   :config
   ;; 2 spaces for an indent
   (defun my-web-mode-hook ()
@@ -722,13 +719,11 @@
 (setq js-indent-level 2)
 
 (use-package tide
-  :no-require
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
 
 (use-package racket-mode
-  :no-require
   :mode "\\.scm\\'"
   :config
   ;; C-w prefix in racket-REPL
@@ -739,7 +734,6 @@
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
 (use-package intero
-  :no-require
   :commands intero-mode
   :config
   (add-hook 'haskell-mode-hook 'intero-mode)
@@ -753,16 +747,14 @@
     "r" 'intero-repl)))
 
 (use-package emojify
-  :no-require
+  :defer t
   :config
   (add-hook 'after-init-hook #'global-emojify-mode))
 
 (use-package latex-preview-pane
-  :no-require
   :commands latex-preview-pane-mode)
 
 (use-package slime
-  :no-require
   :after bind-key
   :commands slime slime-mode
   :init
@@ -789,16 +781,15 @@
     "eb" 'slime-compile-and-load-file)))
 
 (use-package slime-company
-  :no-require
+  :defer t
   :after slime)
 
 ;; TODO learn/configure auctex
 (use-package auctex
-  :no-require
   :defer t)
 
 (use-package atomic-chrome
-  :no-require
+  :defer t
   :config
   (atomic-chrome-start-server))
 
@@ -869,6 +860,7 @@
 
 
 (use-package flyspell
+  :commands flyspell-goto-previous-error flyspell-goto-next-error flyspell-toggle-correct-mode
   :config
   ;; move point to previous error
   ;; based on code by hatschipuh at
