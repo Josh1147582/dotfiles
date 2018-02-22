@@ -63,3 +63,9 @@ then
     rm -i $HOME/.xmobarrc
 fi
 ln -s $DIR/xmonad/xmobarrc $HOME/.xmobarrc
+
+# Emacs desktop file
+if [ -h $HOME/.local/share/applications ]
+then
+    ln -s $DIR/emacs.d/emacs-client.desktop $HOME/.local/share/applications/emacs-client.desktop
+fi
