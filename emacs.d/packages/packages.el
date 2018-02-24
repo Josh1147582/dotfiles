@@ -142,6 +142,11 @@
 
   (evil-define-key 'normal package-menu-mode-map "q" 'quit-window)
 
+  (defun evil-passthrough-key (state mode key)
+    "Use the default binding for KEY in MODE, rather than the evil-mode binding, for STATE."
+    (evil-define-key state mode (kbd key) (evil-lookup-key mode (kbd key))))
+
+
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
               ("ze" . hscroll-cursor-right)
@@ -691,6 +696,57 @@
   :ensure t
   :after yasnippet)
 
+(use-package gnus
+  :ensure t
+  :init
+  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+  (add-hook 'gnus-startup-hook
+            '(lambda () (loop for mode in (list gnus-article-mode-map gnus-group-mode-map gnus-summary-mode-map)
+                         do (loop for key in (list "RET" "G")
+                                  do (evil-passthrough-key 'motion mode key)))))
+
+  (add-hook 'gnus-startup-hook '(lambda () (gnus-demon-add-handler 'gnus-demon-scan-mail 5 1)))
+  :config
+  (setq gnus-select-method '(nntp "news.gmane.org"))
+  (setq gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date gnus-thread-sort-by-most-recent-number))
+
+  (add-to-list 'gnus-secondary-select-methods
+               '(nnimap "gmail"
+                        (nnimap-address "imap.gmail.com")
+                        (nnimap-server-port 993)
+                        (nnimap-stream ssl)
+                        (nnir-search-engine imap)
+                        ;; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
+                        ;; press 'E' to expire email
+                        (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
+                        (nnmail-expiry-wait 90)))
+  (add-to-list 'gnus-secondary-select-methods
+               '(nnimap "comcast"
+                        (nnimap-address "imap.comcast.net")
+                        (nnimap-server-port 993)
+                        (nnimap-stream ssl)
+                        (nnir-search-engine imap)
+                        (nnmail-expiry-target "nnimap+comcast:Trash")
+                        (nnmail-expiry-wait 90)))
+
+  (eval-after-load 'gnus-topic
+    '(progn
+       (setq gnus-message-archive-group '((format-time-string "sent.%Y")))
+       (setq gnus-topic-topology '(("Gnus" visible)
+                                   (("misc" visible))
+                                   (("comcast" visible nil nil))
+                                   (("gmail" visible nil nil))))
+       (gnus-topic-move-matching ".*comcast.*" "comcast")
+       (gnus-topic-move-matching ".*gmail.*" "gmail")
+       (gnus-topic-move-matching "gwene.*" "feeds")
+       (setq gnus-topic-alist (mapcar 'delete-dups gnus-topic-alist)))))
+
+(use-package gnus-desktop-notify
+  :ensure t
+  :after gnus
+  :config
+  (gnus-desktop-notify-mode))
+
 
 ;;;; Optional packages
 
@@ -941,7 +997,5 @@
 (use-package dired
   :bind (:map dired-mode-map
 	      ("SPC" . nil)))
-
-
 
 (provide 'packages)
