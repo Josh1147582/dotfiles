@@ -701,8 +701,8 @@
   :init
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (add-hook 'gnus-startup-hook
-            '(lambda () (loop for mode in (list gnus-article-mode-map gnus-group-mode-map gnus-summary-mode-map)
-                         do (loop for key in (list "RET" "G")
+            '(lambda () (cl-loop for mode in (list gnus-article-mode-map gnus-group-mode-map gnus-summary-mode-map)
+                         do (cl-loop for key in (list "RET" "G")
                                   do (evil-passthrough-key 'motion mode key)))))
 
   (add-hook 'gnus-startup-hook '(lambda () (gnus-demon-add-handler 'gnus-demon-scan-mail 5 1)))
@@ -729,13 +729,14 @@
                         (nnmail-expiry-target "nnimap+comcast:Trash")
                         (nnmail-expiry-wait 90)))
 
-  (eval-after-load 'gnus-topic
-    '(progn
+  (add-hook 'gnus-topic-mode-hook
+    '(lambda ()
        (setq gnus-message-archive-group '((format-time-string "sent.%Y")))
        (setq gnus-topic-topology '(("Gnus" visible)
                                    (("misc" visible))
                                    (("comcast" visible nil nil))
-                                   (("gmail" visible nil nil))))
+                                   (("gmail" visible nil nil))
+                                   (("feeds" visible nil nil))))
        (gnus-topic-move-matching ".*comcast.*" "comcast")
        (gnus-topic-move-matching ".*gmail.*" "gmail")
        (gnus-topic-move-matching "gwene.*" "feeds")
