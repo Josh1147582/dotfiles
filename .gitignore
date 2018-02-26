@@ -1,10 +1,10 @@
-vim/bundle/ycm_extra_conf.pyc
-vim/bundle/__pycache__
+vim/.vim/bundle/ycm_extra_conf.pyc
+vim/.vim/bundle/__pycache__
 
 *.swp
 
-vim/.netrwhist
+vim/.vim/.netrwhist
 
-vim/spell/*
-vim/bundle/*
-!vim/bundle/Vundle.vim
+vim/.vim/spell/*
+vim/.vim/bundle/*
+!vim/.vim/bundle/Vundle.vim
