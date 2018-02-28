@@ -162,6 +162,7 @@
 (set-face-attribute 'evil-goggles-undo-redo-remove-face nil :inherit 'diff-removed)
 (set-face-attribute 'evil-goggles-yank-face nil :inherit 'diff-changed)
 (set-face-attribute 'linum-relative-current-face nil :inherit 'linum :background "dim gray" :foreground "white" :underline nil)
+(set-face-attribute 'mode-line-buffer-id-inactive nil :inherit 'mode-line-inactive)
 (set-face-attribute 'show-paren-match nil :background "light gray" :foreground "#d33682" :weight 'bold)
 (set-face-attribute 'fringe nil :background "#fafafa")
 
