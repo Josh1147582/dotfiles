@@ -578,7 +578,7 @@
   (eyebrowse-setup-evil-keys)
   (setq eyebrowse-new-workspace t))
 
-(use-package solarized-theme
+(use-package material-theme
   :ensure t)
 
 (use-package solaire-mode
