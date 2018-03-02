@@ -158,6 +158,7 @@
               ("k" . evil-previous-visual-line)
               ("gj" . evil-next-line)
               ("gk" . evil-previous-line)
+              ("gs" . evil-goto-definition)
          ; :map Info-mode-map
          ;      ("g" . nil)
          ;      ("n" . nil)
@@ -306,7 +307,6 @@
       (powerline-center-evil-theme)
     (powerline-evil-vim-theme)))
 
-;; TODO look at smart-mode-line-powerline and see if i can write my own smart-mode-line config
 ; (use-package smart-mode-line
 ;   :ensure t
 ;   :init
@@ -387,8 +387,6 @@
     "/" 'swiper
     "v" 'ivy-switch-buffer
     "n" 'hydra-numbers/body
-    ;; TODO find a better way to display this
-    ;; TODO add button to kill this: maybe k1, k2, etc.?
     "1" 'eyebrowse-switch-to-window-config-1
     "2" 'eyebrowse-switch-to-window-config-2
     "3" 'eyebrowse-switch-to-window-config-3
@@ -600,8 +598,6 @@
   ;; other faces such as `diff-added` will be used for other actions
   (evil-goggles-use-diff-faces))
 
-;; TODO Finish up special rules for windows like help and repl windows.
-;; Where they're positioned, whether or not they're focused, etc.
 (use-package shackle
   :ensure t
   :init
@@ -748,6 +744,14 @@
   :config
   (gnus-desktop-notify-mode))
 
+(use-package dumb-jump
+  :after evil
+  :ensure t
+  :bind (:map evil-normal-state-map
+              ("zs" . hscroll-cursor-left)
+              ("gd" . dumb-jump-go))
+  :config
+  (setq dumb-jump-selector 'ivy))
 
 ;;;; Optional packages
 
@@ -841,7 +845,6 @@
   :defer t
   :after slime)
 
-;; TODO learn/configure auctex
 (use-package auctex
   :defer t)
 
