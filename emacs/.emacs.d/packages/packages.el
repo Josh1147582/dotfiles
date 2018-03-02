@@ -54,10 +54,10 @@
 (use-package engine-mode
   :ensure t)
 
+(defvar evil-want-integration nil)
+
 (use-package evil
   :ensure t
-  :init
-  (defvar evil-want-integration nil)
   :config
   (evil-mode t)
   (setq evil-want-C-i-jump nil)
