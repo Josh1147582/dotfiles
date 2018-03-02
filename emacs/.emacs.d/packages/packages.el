@@ -158,7 +158,6 @@
               ("k" . evil-previous-visual-line)
               ("gj" . evil-next-line)
               ("gk" . evil-previous-line)
-              ("gs" . evil-goto-definition)
          ; :map Info-mode-map
          ;      ("g" . nil)
          ;      ("n" . nil)
@@ -749,9 +748,13 @@
   :ensure t
   :bind (:map evil-normal-state-map
               ("zs" . hscroll-cursor-left)
-              ("gd" . dumb-jump-go))
+              ("gs" . dumb-jump-go-evil-mark))
   :config
-  (setq dumb-jump-selector 'ivy))
+  (setq dumb-jump-selector 'ivy)
+  (defun dumb-jump-go-evil-mark ()
+    (interactive)
+    (evil-set-jump)
+    (dumb-jump-go)))
 
 ;;;; Optional packages
 
