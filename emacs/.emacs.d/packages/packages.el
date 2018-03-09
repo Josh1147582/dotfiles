@@ -386,6 +386,7 @@
     "/" 'swiper
     "v" 'ivy-switch-buffer
     "n" 'hydra-numbers/body
+    "m" 'evil-visual-mark-mode
     "1" 'eyebrowse-switch-to-window-config-1
     "2" 'eyebrowse-switch-to-window-config-2
     "3" 'eyebrowse-switch-to-window-config-3
@@ -755,6 +756,11 @@
     (interactive)
     (evil-set-jump)
     (dumb-jump-go)))
+
+
+(use-package evil-visual-mark-mode
+  :after evil
+  :ensure t)
 
 ;;;; Optional packages
 
