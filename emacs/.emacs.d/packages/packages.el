@@ -697,7 +697,9 @@
   :init
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (add-hook 'gnus-startup-hook
-            '(lambda () (cl-loop for mode in (list gnus-article-mode-map gnus-group-mode-map gnus-summary-mode-map)
+            '(lambda ()
+	       (define-key gnus-summary-mode-map (kbd "RET") 'gnus-summary-next-page)
+	       (cl-loop for mode in (list gnus-article-mode-map gnus-group-mode-map gnus-summary-mode-map)
                          do (cl-loop for key in (list "RET" "G")
                                   do (evil-passthrough-key 'motion mode key)))))
 
