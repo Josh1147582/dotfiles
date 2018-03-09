@@ -862,6 +862,27 @@
   :config
   (atomic-chrome-start-server))
 
+(use-package elpy
+  :defer t
+  :init
+  (add-hook 'python-mode-hook 'elpy-enable))
+
+(use-package jedi
+  ;; Must run `pip3 install --user jedi flake8 autopep8 virtualenv epc`
+  :defer t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup))
+
+(use-package company-jedi
+  :defer t
+  :init
+  (add-hook 'python-mode-hook '(lambda () (add-to-list 'company-backends 'company-jedi))))
+
+(use-package py-autopep8
+  :defer t
+  :config
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
 ;; List of optional packages
 (defvar optional-packages
       '(
@@ -878,6 +899,10 @@
 	auctex
 	company-auctex
         atomic-chrome
+	elpy
+	jedi
+	company-jedi
+	py-autopep8
         ))
 
 (defvar packages-installed-this-session nil)
