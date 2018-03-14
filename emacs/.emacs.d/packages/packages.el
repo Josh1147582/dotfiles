@@ -369,7 +369,7 @@
    :evil-keys ("SPC")
    :evil-states (normal motion visual)
    :bindings
-   ("d" 'diff-buffer-with-file
+   ("d" 'define-word-at-point
     "b" 'buffer-menu
     "f" 'treemacs-toggle
     "u" 'undo-tree-visualize
@@ -762,6 +762,9 @@
 
 (use-package evil-visual-mark-mode
   :after evil
+  :ensure t)
+
+(use-package define-word
   :ensure t)
 
 ;;;; Optional packages
