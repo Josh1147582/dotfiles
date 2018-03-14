@@ -10,6 +10,9 @@
       initial-scratch-message ""
       initial-major-mode 'text-mode)
 
+(defun display-startup-echo-area-message ()
+  (message ""))
+
 ;; Base
 
 (setq ring-bell-function 'ignore) ; Disable beep & flash
