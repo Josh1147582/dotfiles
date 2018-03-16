@@ -1038,7 +1038,7 @@
   (add-to-list 'recentf-exclude ".*.emacs\\.d/elpa.*"))
 
 (use-package dired
-  :bind (:map dired-mode-map
-	      ("SPC" . nil)))
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "SPC") nil))
 
 (provide 'packages)
