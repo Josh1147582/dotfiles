@@ -1,3 +1,6 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports #-}
+
 import XMonad
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
@@ -26,9 +29,45 @@ import XMonad.Config.Kde
 
 import XMonad.Hooks.EwmhDesktops
 
-main = do
+import Control.Exception
+
+import "DBus" DBus
+import "DBus" DBus.Connection as DC
+import "DBus" DBus.Message
+
+import qualified Codec.Binary.UTF8.String as UTF8
+
+prettyPrinter :: DC.Connection -> PP
+prettyPrinter dbus = defaultPP
+    { ppOutput   = dbusOutput dbus
+    , ppCurrent  = wrap "[" "]"
+    , ppSep      = " | "
+    }
+
+getWellKnownName :: DC.Connection -> IO ()
+getWellKnownName dbus = tryGetName `catch` (\(DBus.Error _ _) -> getWellKnownName dbus)
+  where
+    tryGetName = do
+        namereq <- newMethodCall serviceDBus pathDBus interfaceDBus "RequestName"
+        addArgs namereq [String "org.xmonad.Log", Word32 5]
+        sendWithReplyAndBlock dbus namereq 0
+        return ()
+
+dbusOutput :: DC.Connection -> String -> IO ()
+dbusOutput dbus str = do
+    msg <- newSignal "/org/xmonad/Log" "org.xmonad.Log" "Update"
+    addArgs msg [String (UTF8.decodeString str)]
+    -- If the send fails, ignore it.
+    send dbus msg 0 `catch` (\(DBus.Error _ _) -> return 0)
+    return ()
+
+main :: IO ()
+-- main = do
+main = withConnection Session $ \dbus -> do
+  getWellKnownName dbus
   xmonad $ ewmh $ docks kde4Config
     { manageHook = manageHook kdeConfig <+> myManageHook
+    , logHook = dynamicLogWithPP (prettyPrinter dbus)
     , layoutHook = smartBorders $ avoidStruts $
                    (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                    (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
@@ -74,8 +113,8 @@ myManageHook = composeAll . concat $
 
 startupList :: [String]
 startupList =
-  [ "owncloud"
-  , "compton"
+  [ "compton"
+  , "owncloud"
   ]
 
 startup :: X ()

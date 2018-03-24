@@ -138,3 +138,5 @@ alias :q='exit'
 #
 #zle -N zle-line-init
 #zle -N zle-keymap-select
+
+export PATH="$HOME/.local/bin:$PATH"
