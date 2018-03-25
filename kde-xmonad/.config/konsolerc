@@ -5,8 +5,9 @@ DefaultProfile=Profile 1.profile
 Favorites=
 
 [MainWindow]
-Height 1080=1030
-State=AAAA/wAAAAD9AAAAAAAAA7IAAAPoAAAABAAAAAQAAAAIAAAACPwAAAAA
+Height 1080=508
+MenuBar=Enabled
+State=AAAA/wAAAAD9AAAAAAAAA7IAAAHeAAAABAAAAAQAAAAIAAAACPwAAAAA
 ToolBarsMovable=Disabled
 Width 1920=946
 
