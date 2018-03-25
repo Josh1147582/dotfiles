@@ -27,8 +27,10 @@ import XMonad.Config.Kde
 import XMonad.Hooks.EwmhDesktops
 
 main = do
+  -- xmproc <- spawnPipe "xmobar"
   xmonad $ ewmh $ docks kde4Config
     { manageHook = manageHook kdeConfig <+> myManageHook
+    -- { manageHook = manageDocks <+> manageHook kdeConfig <+> myManageHook
     , layoutHook = smartBorders $ avoidStruts $
                    (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                    (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
@@ -41,6 +43,10 @@ main = do
                    -- It's not a bug, it's a feature.
                    simpleTabbed
 
+    -- , logHook = dynamicLogWithPP xmobarPP
+    --   { ppOutput = hPutStrLn xmproc
+    --   , ppTitle = xmobarColor "green" "" . shorten 50
+    --   }
     , startupHook = startup
     , handleEventHook = handleEventHook def <+> fullscreenEventHook
     , modMask     = mod4Mask
@@ -74,8 +80,10 @@ myManageHook = composeAll . concat $
 
 startupList :: [String]
 startupList =
-  [ "owncloud"
+  [ "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
+  -- , "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
   , "compton"
+  , "owncloud"
   ]
 
 startup :: X ()
