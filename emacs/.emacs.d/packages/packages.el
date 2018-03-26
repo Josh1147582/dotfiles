@@ -56,7 +56,14 @@
 
 (defvar evil-want-integration nil)
 
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :init
+  (setq undo-tree-enable-undo-in-region nil))
+
 (use-package evil
+  :after undo-tree
   :ensure t
   :config
   (evil-mode t)
@@ -177,12 +184,6 @@
     "modify numbers"
     ("a" evil-numbers/inc-at-pt "increment")
     ("x" evil-numbers/dec-at-pt "decrement")))
-
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :init
-  (setq undo-tree-enable-undo-in-region nil))
 
 (use-package undohist
   :ensure t
