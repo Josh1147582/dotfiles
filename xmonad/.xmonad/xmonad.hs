@@ -37,21 +37,22 @@ import XMonad.Hooks.EwmhDesktops
 myModMask = mod4Mask
 myTerminal   = "konsole"
 
+-- Command to launch the bar.
+myBar = "xmobar"
+
+-- Custom PP, configure it as you like. It determines what is being written to the bar.
+myPP = xmobarPP {ppTitle = xmobarColor "green" "" . shorten 50}
+
+-- Key binding to toggle the gap for the bar.
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
+-- Main configuration, override the defaults to your liking.
+myConfig = defaultConfig { modMask = mod4Mask }
+
 main = do
-  session <- do
-    s <- getEnv "DESKTOP_SESSION"
-    return (maybe "xmonad" id s)
-  thisDesktopConfig <- case session of
-    "xmonad" -> do
-      xmproc <- spawnPipe "xmobar"
-      return desktopConfig {
-        logHook = dynamicLogWithPP xmobarPP {
-          ppOutput = hPutStrLn xmproc
-        , ppTitle = xmobarColor "green" "" . shorten 50
-          }}
-    _ -> return kde4Config
-  xmonad $ ewmh $ docks thisDesktopConfig {
-    manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
+  xmonad =<< statusBar myBar myPP toggleStrutsKey (ewmh $ docks kde4Config {
+    -- manageHook = manageDocks <+> manageHook kde4Config <+> myManageHook
+    manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
   -- { manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
   , layoutHook = desktopLayoutModifiers $ smartBorders $ avoidStruts $
                  (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
@@ -65,12 +66,16 @@ main = do
                  -- It's not a bug, it's a feature.
                  simpleTabbed
 
-  , startupHook = if session == "xmonad" then startup (startupList ++ xmonadStartupList) else startup startupList
+  -- , logHook = dynamicLogWithPP xmobarPP {
+  --     ppOutput = hPutStrLn xmproc
+  --   , ppTitle = xmobarColor "green" "" . shorten 50
+  --    }
+  , startupHook = startup (startupList ++ xmonadStartupList)
   , handleEventHook = handleEventHook def <+> fullscreenEventHook
   , modMask     = mod4Mask
-  , keys        = \c -> mySetKeys session c `M.union` keys thisDesktopConfig c
+  , keys        = \c -> mySetKeys c `M.union` keys kde4Config c
   } --`additionalKeys` (if session == "xmonad" then (myKeys ++ xmonadKeys) else myKeys)
-    `removeKeys` myRemoveKeys session
+    `removeKeys` myRemoveKeys)
 
 xmonadStartupList =
   [ "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
@@ -82,16 +87,8 @@ xmonadStartupList =
   , "xscreensaver -nosplash"
   ]
 
-confirm :: String -> X () -> X ()
-confirm m f = do
-  result <- dmenu [m]
-  when (init result == m) f
-
-mySetKeys session conf@(XConfig {XMonad.modMask = myModMask}) =
-  if session == "xmonad" then
+mySetKeys conf@(XConfig {XMonad.modMask = myModMask}) =
     M.fromList $ myKeys ++ xmonadKeys
-  else
-    M.fromList $ myKeys
   where
     xmonadKeys = [
   -- scrot
@@ -101,7 +98,6 @@ mySetKeys session conf@(XConfig {XMonad.modMask = myModMask}) =
       -- rofi
       , ((myModMask, xK_p ), spawn "rofi -show run")
       -- shutdown
-      , ((myModMask .|. shiftMask, xK_q), confirm "Exit" $ io (exitWith ExitSuccess))
       --, ((myModMask .|. shiftMask, xK_q),
       --   xmonadPrompt defaultXPConfig
       --   { promptKeymap = fromList
@@ -248,7 +244,7 @@ mySetKeys session conf@(XConfig {XMonad.modMask = myModMask}) =
           | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-myRemoveKeys s =
+myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
   ]
