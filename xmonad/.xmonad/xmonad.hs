@@ -252,11 +252,11 @@ myRemoveKeys s =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
   ]
-  ++
-  if s == "xmonad" then
-    [(mod4Mask, xK_p)]
-  else
-    []
+  -- ++
+  -- if s == "xmonad" then
+  --   [(mod4Mask, xK_p)]
+  -- else
+  --   []
 
 myManageHook = composeAll . concat $
   [ [ className   =? c --> doFloat           | c <- myFloats]
@@ -281,7 +281,7 @@ myManageHook = composeAll . concat $
 startupList :: [String]
 startupList =
   [ "compton"
-  , "owncloud"
+  , "nextcloud"
   ]
 
 startup :: [String] -> X ()
