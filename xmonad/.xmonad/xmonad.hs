@@ -1,59 +1,45 @@
-import System.Posix.Env (getEnv)
-import Data.Maybe (maybe)
-import Control.Monad(when)
-
 import XMonad
-import XMonad.Config.Desktop
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog(dynamicLogWithPP
+                              , xmobarPP
+                              , ppOutput
+                              , ppLayout
+                              , ppTitle)
+import XMonad.Hooks.ManageDocks(docks, docksEventHook, manageDocks, avoidStruts)
 import XMonad.Util.Run(spawnPipe, hPutStrLn, runProcessWithInput)
 
 -- Layouts
 import XMonad.Layout.Spacing(smartSpacing)
-import XMonad.Layout.Tabbed
-import XMonad.Layout.NoBorders
+import XMonad.Layout.Tabbed(simpleTabbed)
+import XMonad.Layout.NoBorders(withBorder, smartBorders)
+import XMonad.Layout.IndependentScreens(countScreens)
 
 -- Shutdown commands and keys
 import Data.Map(fromList)
-import XMonad.Prompt
-import XMonad.Prompt.XMonad
-import XMonad.Prompt.ConfirmPrompt
-import System.Exit(ExitCode(ExitSuccess), exitWith)
-import XMonad.Util.EZConfig(additionalKeys, removeKeys)
-import XMonad.Util.Dmenu
+import XMonad.Util.EZConfig(removeKeys)
 
--- Brightness and audio keys
-import Graphics.X11.ExtraTypes.XF86
-
+-- For starting up a list of programs
 import Data.List(elemIndex, foldl1')
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
--- kde
-import XMonad.Config.Kde
+import XMonad.Config.Kde(kde4Config, desktopLayoutModifiers)
 
-import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.EwmhDesktops(ewmh, fullscreenEventHook)
 
 myModMask = mod4Mask
 myTerminal   = "konsole"
 
+-- Custom PP, configure it as you like. It determines what is being written to the bar.
+myPP = xmobarPP { ppTitle = \_ -> ""
+                , ppLayout = \_ -> ""}
+
 main = do
-  session <- do
-    s <- getEnv "DESKTOP_SESSION"
-    return (maybe "xmonad" id s)
-  thisDesktopConfig <- case session of
-    "xmonad" -> do
-      xmproc <- spawnPipe "xmobar"
-      return desktopConfig {
-        logHook = dynamicLogWithPP xmobarPP {
-          ppOutput = hPutStrLn xmproc
-        , ppTitle = xmobarColor "green" "" . shorten 50
-          }}
-    _ -> return kde4Config
-  xmonad $ ewmh $ docks thisDesktopConfig {
-    manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
-  -- { manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
-  , layoutHook = desktopLayoutModifiers $ smartBorders $ avoidStruts $
+  nScreen <- countScreens
+  xmprocs <- mapM (\dis -> spawnPipe ("xmobar -x " ++ show dis)) [0..nScreen-1]
+  xmonad $ ewmh $ docks $ kde4Config {
+    manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
+  , layoutHook = avoidStruts $ desktopLayoutModifiers $ smartBorders $
                  (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                  (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
                  -- Full |||
@@ -65,87 +51,17 @@ main = do
                  -- It's not a bug, it's a feature.
                  simpleTabbed
 
-  , startupHook = if session == "xmonad" then startup (startupList ++ xmonadStartupList) else startup startupList
-  , handleEventHook = handleEventHook def <+> fullscreenEventHook
+  , logHook = dynamicLogWithPP myPP {
+      ppOutput = \s -> sequence_ [hPutStrLn h s | h <- xmprocs]
+    }
+  , startupHook = startup startupList
+  , handleEventHook = handleEventHook kde4Config <+> fullscreenEventHook <+> docksEventHook
   , modMask     = mod4Mask
-  , keys        = \c -> mySetKeys session c `M.union` keys thisDesktopConfig c
-  } --`additionalKeys` (if session == "xmonad" then (myKeys ++ xmonadKeys) else myKeys)
-    `removeKeys` myRemoveKeys session
+  , keys        = \c -> myKeys c `M.union` keys kde4Config c
+  }
+    `removeKeys` myRemoveKeys
 
-xmonadStartupList =
-  [ "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
-  , "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
-  , "pasystray"
-  , "xfce4-clipman"
-  , "xbacklight -set 12"
-  , "compton"
-  , "xscreensaver -nosplash"
-  ]
-
-confirm :: String -> X () -> X ()
-confirm m f = do
-  result <- dmenu [m]
-  when (init result == m) f
-
-mySetKeys session conf@(XConfig {XMonad.modMask = myModMask}) =
-  if session == "xmonad" then
-    M.fromList $ myKeys ++ xmonadKeys
-  else
-    M.fromList $ myKeys
-  where
-    xmonadKeys = [
-  -- scrot
-        ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
-      , ((0, xK_Print), spawn "scrot")
-
-      -- rofi
-      , ((myModMask, xK_p ), spawn "rofi -show run")
-      -- shutdown
-      , ((myModMask .|. shiftMask, xK_q), confirm "Exit" $ io (exitWith ExitSuccess))
-      --, ((myModMask .|. shiftMask, xK_q),
-      --   xmonadPrompt defaultXPConfig
-      --   { promptKeymap = fromList
-      --     [ ((0, xK_r), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           spawn "systemctl reboot")
-      --     , ((0 , xK_s), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           spawn "sudo poweroff")
-      --     , ((0, xK_e), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           io $ exitWith ExitSuccess)
-      --     , ((0, xK_l),  do
-      --           spawn "xscreensaver-command -lock"
-      --           quit)
-      --     , ((0, xK_z), do
-      --           spawn "xscreensaver-command -lock"
-      --           spawn "systemctl suspend"
-      --           quit)
-      --     , ((0, xK_Escape), quit)
-      --     ]
-      --   , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
-      --   })
-      -- pulseaudio
-      , ((0, xF86XK_AudioRaiseVolume),
-             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5%")
-      , ((0, xF86XK_AudioLowerVolume),
-             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5%")
-      , ((0, xF86XK_AudioMute),
-             spawn "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle")
-
-      -- brightness
-      , ((0, xF86XK_MonBrightnessUp),
-         let
-            returnValM = fmap init $ runProcessWithInput "xbacklight" [] ""
-         in do
-           currentBrightness <- returnValM
-           if (read currentBrightness :: Double) == 0 then
-             spawn "xbacklight -set 2"
-           else
-             spawn "xbacklight -inc 5")
-      , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5")
-      ]
-    myKeys =
+myKeys conf@(XConfig {XMonad.modMask = myModMask}) = M.fromList $
       [
       -- extra programs
       ((myModMask, xK_x),
@@ -248,15 +164,15 @@ mySetKeys session conf@(XConfig {XMonad.modMask = myModMask}) =
           | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-myRemoveKeys s =
+myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
   ]
-  -- ++
+  ++
   -- if s == "xmonad" then
-  --   [(mod4Mask, xK_p)]
+    [(mod4Mask, xK_p)]
   -- else
-  --   []
+  --  []
 
 myManageHook = composeAll . concat $
   [ [ className   =? c --> doFloat           | c <- myFloats]
@@ -282,6 +198,8 @@ startupList :: [String]
 startupList =
   [ "compton"
   , "nextcloud"
+  -- TODO find a way around this dirty hack
+  , "sleep 5 && for i in `xdotool search --all --name xmobar`; do xdotool windowraise $i; done"
   ]
 
 startup :: [String] -> X ()
@@ -289,6 +207,7 @@ startup l = do
   foldl1' (>>) $ map (spawn . ifNotRunning) l
 
 -- Wrap a command in Bash that checks if it's running.
+-- TODO do this in haskell
 ifNotRunning :: String -> String
 ifNotRunning s = "if [ `pgrep -c " ++ (basename s) ++ "` == 0 ]; then " ++ s ++ "; fi"
 
