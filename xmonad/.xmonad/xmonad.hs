@@ -1,6 +1,6 @@
 import System.Posix.Env (getEnv)
 import Data.Maybe (maybe)
-import Control.Monad(when)
+import Control.Monad(when, liftM)
 
 import XMonad
 import XMonad.Config.Desktop
@@ -12,6 +12,7 @@ import XMonad.Util.Run(spawnPipe, hPutStrLn, runProcessWithInput)
 import XMonad.Layout.Spacing(smartSpacing)
 import XMonad.Layout.Tabbed
 import XMonad.Layout.NoBorders
+import XMonad.Layout.IndependentScreens
 
 -- Shutdown commands and keys
 import Data.Map(fromList)
@@ -41,7 +42,8 @@ myTerminal   = "konsole"
 myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP {ppTitle = xmobarColor "green" "" . shorten 50}
+myPP = xmobarPP { ppTitle = \_ -> ""
+                , ppLayout = \_ -> ""}
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
@@ -50,11 +52,14 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 myConfig = defaultConfig { modMask = mod4Mask }
 
 main = do
-  xmonad =<< statusBar myBar myPP toggleStrutsKey (ewmh $ docks kde4Config {
+  nScreen <- countScreens
+  xmprocs <- mapM (\dis -> spawnPipe ("xmobar -x " ++ show dis)) [0..nScreen-1]
+  xmonad $ ewmh $ docks $ kde4Config {
     -- manageHook = manageDocks <+> manageHook kde4Config <+> myManageHook
-    manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
+    -- manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
+    manageHook = manageDocks <+> myManageHook
   -- { manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
-  , layoutHook = desktopLayoutModifiers $ smartBorders $ avoidStruts $
+  , layoutHook = avoidStruts $ desktopLayoutModifiers $ smartBorders $
                  (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                  (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
                  -- Full |||
@@ -66,20 +71,22 @@ main = do
                  -- It's not a bug, it's a feature.
                  simpleTabbed
 
+  , logHook = dynamicLogWithPP myPP {ppOutput = \s -> sequence_ [hPutStrLn h s | h <- xmprocs]}
   -- , logHook = dynamicLogWithPP xmobarPP {
   --     ppOutput = hPutStrLn xmproc
   --   , ppTitle = xmobarColor "green" "" . shorten 50
   --    }
-  , startupHook = startup (startupList ++ xmonadStartupList)
-  , handleEventHook = handleEventHook def <+> fullscreenEventHook
+  -- , startupHook = startup (startupList ++ xmonadStartupList)
+  , startupHook = startup startupList
+  , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
   , modMask     = mod4Mask
   , keys        = \c -> mySetKeys c `M.union` keys kde4Config c
   } --`additionalKeys` (if session == "xmonad" then (myKeys ++ xmonadKeys) else myKeys)
-    `removeKeys` myRemoveKeys)
+    `removeKeys` myRemoveKeys
 
 xmonadStartupList =
   [ "feh --bg-scale ~/Owncloud/Backgrounds/Xmbindings.png"
-  , "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
+  -- , "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 10 --transparent true --alpha 0 --tint 0x000000 --height 22"
   , "pasystray"
   , "xfce4-clipman"
   , "xbacklight -set 12"
@@ -88,59 +95,60 @@ xmonadStartupList =
   ]
 
 mySetKeys conf@(XConfig {XMonad.modMask = myModMask}) =
-    M.fromList $ myKeys ++ xmonadKeys
+    -- M.fromList $ myKeys ++ xmonadKeys
+    M.fromList $ myKeys
   where
-    xmonadKeys = [
-  -- scrot
-        ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
-      , ((0, xK_Print), spawn "scrot")
-
-      -- rofi
-      , ((myModMask, xK_p ), spawn "rofi -show run")
-      -- shutdown
-      --, ((myModMask .|. shiftMask, xK_q),
-      --   xmonadPrompt defaultXPConfig
-      --   { promptKeymap = fromList
-      --     [ ((0, xK_r), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           spawn "systemctl reboot")
-      --     , ((0 , xK_s), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           spawn "sudo poweroff")
-      --     , ((0, xK_e), do
-      --           spawn "emacsclient -e '(kill emacs)'"
-      --           io $ exitWith ExitSuccess)
-      --     , ((0, xK_l),  do
-      --           spawn "xscreensaver-command -lock"
-      --           quit)
-      --     , ((0, xK_z), do
-      --           spawn "xscreensaver-command -lock"
-      --           spawn "systemctl suspend"
-      --           quit)
-      --     , ((0, xK_Escape), quit)
-      --     ]
-      --   , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
-      --   })
-      -- pulseaudio
-      , ((0, xF86XK_AudioRaiseVolume),
-             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5%")
-      , ((0, xF86XK_AudioLowerVolume),
-             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5%")
-      , ((0, xF86XK_AudioMute),
-             spawn "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle")
-
-      -- brightness
-      , ((0, xF86XK_MonBrightnessUp),
-         let
-            returnValM = fmap init $ runProcessWithInput "xbacklight" [] ""
-         in do
-           currentBrightness <- returnValM
-           if (read currentBrightness :: Double) == 0 then
-             spawn "xbacklight -set 2"
-           else
-             spawn "xbacklight -inc 5")
-      , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5")
-      ]
+--    xmonadKeys = [
+--  -- scrot
+--        ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+--      , ((0, xK_Print), spawn "scrot")
+--
+--      -- rofi
+--      , ((myModMask, xK_p ), spawn "rofi -show run")
+--      -- shutdown
+--      --, ((myModMask .|. shiftMask, xK_q),
+--      --   xmonadPrompt defaultXPConfig
+--      --   { promptKeymap = fromList
+--      --     [ ((0, xK_r), do
+--      --           spawn "emacsclient -e '(kill emacs)'"
+--      --           spawn "systemctl reboot")
+--      --     , ((0 , xK_s), do
+--      --           spawn "emacsclient -e '(kill emacs)'"
+--      --           spawn "sudo poweroff")
+--      --     , ((0, xK_e), do
+--      --           spawn "emacsclient -e '(kill emacs)'"
+--      --           io $ exitWith ExitSuccess)
+--      --     , ((0, xK_l),  do
+--      --           spawn "xscreensaver-command -lock"
+--      --           quit)
+--      --     , ((0, xK_z), do
+--      --           spawn "xscreensaver-command -lock"
+--      --           spawn "systemctl suspend"
+--      --           quit)
+--      --     , ((0, xK_Escape), quit)
+--      --     ]
+--      --   , defaultText = "(r) Reboot, (s) Shutdown, (e) Exit, (l) Lock, (z) Sleep"
+--      --   })
+--      -- pulseaudio
+--      , ((0, xF86XK_AudioRaiseVolume),
+--             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5%")
+--      , ((0, xF86XK_AudioLowerVolume),
+--             spawn "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5%")
+--      , ((0, xF86XK_AudioMute),
+--             spawn "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle")
+--
+--      -- brightness
+--      , ((0, xF86XK_MonBrightnessUp),
+--         let
+--            returnValM = fmap init $ runProcessWithInput "xbacklight" [] ""
+--         in do
+--           currentBrightness <- returnValM
+--           if (read currentBrightness :: Double) == 0 then
+--             spawn "xbacklight -set 2"
+--           else
+--             spawn "xbacklight -inc 5")
+--      , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5")
+--      ]
     myKeys =
       [
       -- extra programs
@@ -248,11 +256,11 @@ myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
   ]
-  -- ++
+  ++
   -- if s == "xmonad" then
-  --   [(mod4Mask, xK_p)]
+    [(mod4Mask, xK_p)]
   -- else
-  --   []
+  --  []
 
 myManageHook = composeAll . concat $
   [ [ className   =? c --> doFloat           | c <- myFloats]
@@ -272,6 +280,8 @@ myManageHook = composeAll . concat $
           , "ksplashsimple"
           , "ksplashqml"
           , "ksplashx"
+          , "xmobar"
+          , "plasmashell"
           ]
 
 startupList :: [String]

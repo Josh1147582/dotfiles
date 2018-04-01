@@ -4,17 +4,17 @@ Config {
      font = "xft:SFNS Display:size=11,FontAwesome:size=11"
    , bgColor =      "black"
    , fgColor =      "#A8A8A8"
-   , position = TopW L 90
+   , position = Top
    , border =       BottomB
    , borderColor =  "#646464"
 
    -- layout
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
-   , template = "%StdinReader% }{ %battery% | %cpu% | %memory% | %dynnetwork% | %date%"
+   , template = "}%StdinReader%{"
 
    -- general behavior
-   , lowerOnStart =     True    -- send to bottom of window stack on start
+   , lowerOnStart =     False    -- send to bottom of window stack on start
    , hideOnStart =      False   -- start with window unmapped (hidden)
    , allDesktops =      True    -- show on all desktops
    , overrideRedirect = False    -- set the Override Redirect flag (Xlib)
