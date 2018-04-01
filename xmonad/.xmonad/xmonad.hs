@@ -6,6 +6,7 @@ import XMonad.Hooks.DynamicLog(dynamicLogWithPP
                               , ppTitle)
 import XMonad.Hooks.ManageDocks(docks, docksEventHook, manageDocks, avoidStruts)
 import XMonad.Util.Run(spawnPipe, hPutStrLn, runProcessWithInput)
+import XMonad.Util.SpawnOnce(spawnOnce)
 
 -- Layouts
 import XMonad.Layout.Spacing(smartSpacing)
@@ -30,13 +31,15 @@ import XMonad.Hooks.EwmhDesktops(ewmh, fullscreenEventHook)
 myModMask = mod4Mask
 myTerminal   = "konsole"
 
--- Custom PP, configure it as you like. It determines what is being written to the bar.
+-- Only show workspaces on xmobar, as everything else will be on KDE's panels
 myPP = xmobarPP { ppTitle = \_ -> ""
                 , ppLayout = \_ -> ""}
 
 main = do
+  -- Spawn an xmobar on each screen
   nScreen <- countScreens
   xmprocs <- mapM (\dis -> spawnPipe ("xmobar -x " ++ show dis)) [0..nScreen-1]
+
   xmonad $ ewmh $ docks $ kde4Config {
     manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
   , layoutHook = avoidStruts $ desktopLayoutModifiers $ smartBorders $
@@ -51,10 +54,12 @@ main = do
                  -- It's not a bug, it's a feature.
                  simpleTabbed
 
+  -- Write signals to all xmobars.
   , logHook = dynamicLogWithPP myPP {
       ppOutput = \s -> sequence_ [hPutStrLn h s | h <- xmprocs]
     }
-  , startupHook = startup startupList
+
+  , startupHook = sequence_ [spawnOnce s | s <- startupList]
   , handleEventHook = handleEventHook kde4Config <+> fullscreenEventHook <+> docksEventHook
   , modMask     = mod4Mask
   , keys        = \c -> myKeys c `M.union` keys kde4Config c
@@ -201,20 +206,3 @@ startupList =
   -- TODO find a way around this dirty hack
   , "sleep 5 && for i in `xdotool search --all --name xmobar`; do xdotool windowraise $i; done"
   ]
-
-startup :: [String] -> X ()
-startup l = do
-  foldl1' (>>) $ map (spawn . ifNotRunning) l
-
--- Wrap a command in Bash that checks if it's running.
--- TODO do this in haskell
-ifNotRunning :: String -> String
-ifNotRunning s = "if [ `pgrep -c " ++ (basename s) ++ "` == 0 ]; then " ++ s ++ "; fi"
-
--- Grab the program name from a command (everything up to the space,
--- if there's a space). Doesn't work with escaped spaces.
-basename :: String -> String
-basename s = case elemIndex ' ' s of
-  (Just n) -> take n s
-  Nothing -> s
-
