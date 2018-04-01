@@ -45,20 +45,11 @@ myBar = "xmobar"
 myPP = xmobarPP { ppTitle = \_ -> ""
                 , ppLayout = \_ -> ""}
 
--- Key binding to toggle the gap for the bar.
-toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
-
--- Main configuration, override the defaults to your liking.
-myConfig = defaultConfig { modMask = mod4Mask }
-
 main = do
   nScreen <- countScreens
   xmprocs <- mapM (\dis -> spawnPipe ("xmobar -x " ++ show dis)) [0..nScreen-1]
   xmonad $ ewmh $ docks $ kde4Config {
-    -- manageHook = manageDocks <+> manageHook kde4Config <+> myManageHook
-    -- manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
-    manageHook = manageDocks <+> myManageHook
-  -- { manageHook = manageDocks <+> manageHook thisDesktopConfig <+> myManageHook
+    manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
   , layoutHook = avoidStruts $ desktopLayoutModifiers $ smartBorders $
                  (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                  (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
@@ -71,14 +62,11 @@ main = do
                  -- It's not a bug, it's a feature.
                  simpleTabbed
 
-  , logHook = dynamicLogWithPP myPP {ppOutput = \s -> sequence_ [hPutStrLn h s | h <- xmprocs]}
-  -- , logHook = dynamicLogWithPP xmobarPP {
-  --     ppOutput = hPutStrLn xmproc
-  --   , ppTitle = xmobarColor "green" "" . shorten 50
-  --    }
-  -- , startupHook = startup (startupList ++ xmonadStartupList)
+  , logHook = dynamicLogWithPP myPP {
+      ppOutput = \s -> sequence_ [hPutStrLn h s | h <- xmprocs]
+    }
   , startupHook = startup startupList
-  , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
+  , handleEventHook = handleEventHook kde4Config <+> fullscreenEventHook <+> docksEventHook
   , modMask     = mod4Mask
   , keys        = \c -> mySetKeys c `M.union` keys kde4Config c
   } --`additionalKeys` (if session == "xmonad" then (myKeys ++ xmonadKeys) else myKeys)
@@ -280,14 +268,13 @@ myManageHook = composeAll . concat $
           , "ksplashsimple"
           , "ksplashqml"
           , "ksplashx"
-          , "xmobar"
-          , "plasmashell"
           ]
 
 startupList :: [String]
 startupList =
   [ "compton"
   , "nextcloud"
+  , "sleep 5 && for i in `xdotool search --all --name xmobar`; do xdotool windowraise $i; done"
   ]
 
 startup :: [String] -> X ()
