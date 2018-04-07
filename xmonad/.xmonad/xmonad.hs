@@ -67,117 +67,113 @@ main = do
     `removeKeys` myRemoveKeys
 
 myKeys conf@(XConfig {XMonad.modMask = myModMask}) = M.fromList $
-      [
-      -- extra programs
-      ((myModMask, xK_x),
-           spawn "emacsclient -c")
-      , ((myModMask, xK_z),
-           spawn "firefox-nightly")
-      , ((myModMask, xK_m),
-           spawn ":"
-           -- TODO put social stuff here (Discord, Riot) and open it on a particular workspace
-        )
+  -- extra programs
+  [ ((myModMask, xK_x),
+     spawn "emacsclient -c")
+  , ((myModMask, xK_z),
+     spawn "firefox-nightly")
+  , ((myModMask, xK_m),
+     spawn ":")
+  -- TODO put social stuff here (Discord, Riot) and open it on a particular workspace
 
-      -- defaults
+  -- defaults
 
-      -- Spawn terminal.
-      , ((myModMask .|. shiftMask, xK_Return),
-         spawn myTerminal)
+  -- Spawn terminal.
+  , ((myModMask .|. shiftMask, xK_Return),
+     spawn myTerminal)
 
-      -- Close focused window.
-      , ((myModMask .|. shiftMask, xK_c),
-         kill)
+  -- Close focused window.
+  , ((myModMask .|. shiftMask, xK_c),
+     kill)
 
-      -- Cycle through the available layout algorithms.
-      , ((myModMask, xK_space),
-         sendMessage NextLayout)
+  -- Cycle through the available layout algorithms.
+  , ((myModMask, xK_space),
+     sendMessage NextLayout)
 
-      --  Reset the layouts on the current workspace to default.
-      , ((myModMask .|. shiftMask, xK_space),
-         setLayout $ XMonad.layoutHook conf)
+  --  Reset the layouts on the current workspace to default.
+  , ((myModMask .|. shiftMask, xK_space),
+     setLayout $ XMonad.layoutHook conf)
 
-      -- Resize viewed windows to the correct size.
-      , ((myModMask, xK_n),
-         refresh)
+  -- Resize viewed windows to the correct size.
+  , ((myModMask, xK_n),
+     refresh)
 
-      -- Move focus to the next window.
-      , ((myModMask, xK_Tab),
-         windows W.focusDown)
+  -- Move focus to the next window.
+  , ((myModMask, xK_Tab),
+     windows W.focusDown)
 
-      -- Move focus to the next window.
-      , ((myModMask, xK_j),
-         windows W.focusDown)
+  -- Move focus to the next window.
+  , ((myModMask, xK_j),
+     windows W.focusDown)
 
-      -- Move focus to the previous window.
-      , ((myModMask, xK_k),
-         windows W.focusUp  )
+  -- Move focus to the previous window.
+  , ((myModMask, xK_k),
+     windows W.focusUp  )
 
-      -- Move focus to the master window.
-      , ((myModMask, xK_m),
-         windows W.focusMaster  )
+  -- Move focus to the master window.
+  , ((myModMask, xK_m),
+     windows W.focusMaster  )
 
-      -- Swap the focused window and the master window.
-      , ((myModMask, xK_Return),
-         windows W.swapMaster)
+  -- Swap the focused window and the master window.
+  , ((myModMask, xK_Return),
+     windows W.swapMaster)
 
-      -- Swap the focused window with the next window.
-      , ((myModMask .|. shiftMask, xK_j),
-         windows W.swapDown  )
+  -- Swap the focused window with the next window.
+  , ((myModMask .|. shiftMask, xK_j),
+     windows W.swapDown  )
 
-      -- Swap the focused window with the previous window.
-      , ((myModMask .|. shiftMask, xK_k),
-         windows W.swapUp    )
+  -- Swap the focused window with the previous window.
+  , ((myModMask .|. shiftMask, xK_k),
+     windows W.swapUp    )
 
-      -- Shrink the master area.
-      , ((myModMask, xK_h),
-         sendMessage Shrink)
+  -- Shrink the master area.
+  , ((myModMask, xK_h),
+     sendMessage Shrink)
 
-      -- Expand the master area.
-      , ((myModMask, xK_l),
-         sendMessage Expand)
+  -- Expand the master area.
+  , ((myModMask, xK_l),
+     sendMessage Expand)
 
-      -- Push window back into tiling.
-      , ((myModMask, xK_t),
-         withFocused $ windows . W.sink)
+  -- Push window back into tiling.
+  , ((myModMask, xK_t),
+     withFocused $ windows . W.sink)
 
-      -- Increment the number of windows in the master area.
-      , ((myModMask, xK_comma),
-         sendMessage (IncMasterN 1))
+  -- Increment the number of windows in the master area.
+  , ((myModMask, xK_comma),
+     sendMessage (IncMasterN 1))
 
-      -- Decrement the number of windows in the master area.
-      , ((myModMask, xK_period),
-         sendMessage (IncMasterN (-1)))
+  -- Decrement the number of windows in the master area.
+  , ((myModMask, xK_period),
+     sendMessage (IncMasterN (-1)))
 
-      -- Toggle the status bar gap.
+  -- Toggle the status bar gap.
 
-      -- Restart xmonad.
-      , ((myModMask, xK_q),
-         restart "xmonad" True)
-      ]
-      ++
+  -- Restart xmonad.
+  , ((myModMask, xK_q),
+     restart "xmonad" True)
+  ]
+  ++
 
-      -- mod-[1..9], Switch to workspace N
-      -- mod-shift-[1..9], Move client to workspace N
-      [((m .|. myModMask, k), windows $ f i)
-          | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-          , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-      ++
+  -- mod-[1..9], Switch to workspace N
+  -- mod-shift-[1..9], Move client to workspace N
+  [ ((m .|. myModMask, k), windows $ f i)
+    | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+    , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+  ]
+  ++
 
-      -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-      -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-      [((m .|. myModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-          | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+  -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+  -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+  [ ((m .|. myModMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+  ]
 
 myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
+  , (mod4Mask, xK_p)
   ]
-  ++
-  -- if s == "xmonad" then
-    [(mod4Mask, xK_p)]
-  -- else
-  --  []
 
 myManageHook = composeAll . concat $
   [ [ className   =? c --> doFloat           | c <- myFloats]

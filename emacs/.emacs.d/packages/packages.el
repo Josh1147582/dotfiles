@@ -809,10 +809,16 @@
     (define-key racket-repl-mode-map "\C-w" 'evil-window-map)
     (global-set-key (kbd "C-w") 'racket-repl-mode-map)))
 
+(use-package haskell-mode
+  :ensure t
+  :init
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
+
 (use-package intero
   :commands intero-mode
-  :config
+  :init
   (add-hook 'haskell-mode-hook 'intero-mode)
+  :config
   (bind-map
    my-haskell-map
    :keys ("M-m")
