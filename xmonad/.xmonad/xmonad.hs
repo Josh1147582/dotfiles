@@ -35,6 +35,16 @@ myTerminal   = "konsole"
 myPP = xmobarPP { ppTitle = \_ -> ""
                 , ppLayout = \_ -> ""}
 
+-- Make xmobar workspaces clickable
+xmobarEscape = concatMap doubleLts
+  where doubleLts '<' = "<<"
+        doubleLts x   = [x]
+myWorkspaces = clickable . (map xmobarEscape) $ map show [1..9]
+  where
+    clickable l = [ "<action=xdotool key super+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
+                             (i,ws) <- zip [1..9] l,
+                            let n = i ]
+
 main = do
   -- Spawn an xmobar on each screen
   nScreen <- countScreens
@@ -42,6 +52,7 @@ main = do
 
   xmonad $ ewmh $ docks $ kde4Config {
     manageHook = manageDocks <+> myManageHook <+> manageHook kde4Config
+  , workspaces = myWorkspaces
   , layoutHook = avoidStruts $ desktopLayoutModifiers $ smartBorders $
                  (smartSpacing 5 $ withBorder 2 $ Tall 1 (3/100) (1/2)) |||
                  (smartSpacing 5 $ withBorder 2 $ Mirror (Tall 1 (3/100) (1/2))) |||
