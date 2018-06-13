@@ -83,6 +83,8 @@ myKeys conf@(XConfig {XMonad.modMask = myModMask}) = M.fromList $
      spawn "emacsclient -c")
   , ((myModMask, xK_z),
      spawn "firefox-nightly")
+  , ((myModMask, xK_p),
+     spawn "krunner")
   , ((myModMask, xK_m),
      spawn ":")
   -- TODO put social stuff here (Discord, Riot) and open it on a particular workspace
@@ -183,12 +185,12 @@ myKeys conf@(XConfig {XMonad.modMask = myModMask}) = M.fromList $
 myRemoveKeys =
   [ (mod4Mask, xK_Tab)
   , (mod4Mask .|. shiftMask, xK_Tab)
-  , (mod4Mask, xK_p)
   ]
 
 myManageHook = composeAll . concat $
   [ [ className   =? c --> doFloat           | c <- myFloats]
   , [ title       =? p --> doFloat           | p <- plasmaWindows]
+  , [ className   =? "plasmashell" --> doIgnore ]
   ]
   where myFloats      = ["Gimp"]
         plasmaWindows =
