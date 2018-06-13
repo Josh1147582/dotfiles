@@ -943,6 +943,12 @@
 
 (setq tramp-syntax (quote default))
 
+(use-package flymake
+  :config
+  (use-package flymake-php
+    :init
+    (add-hook 'php-mode-hook 'flymake-php-load)))
+
 (setq prolog-program-name "swipl")
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 
