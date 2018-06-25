@@ -513,6 +513,7 @@
     "oa" 'org-archive-subtree
     "od" 'org-deadline
     "os" 'org-schedule
+    "oc" 'cfw:open-org-calendar
     "op" 'org-priority
     "t" 'org-todo)))
 
@@ -767,6 +768,14 @@
 
 (use-package define-word
   :ensure t)
+
+(use-package calfw
+  :commands cfw:open-org-calendar
+  :ensure t)
+
+(use-package calfw-org
+  :ensure t
+  )
 
 ;;;; Optional packages
 
