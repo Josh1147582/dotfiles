@@ -5,6 +5,8 @@
 
 (setq gc-cons-threshold (* 500 100000))
 
+(setq suggest-key-bindings nil)
+
 (setq inhibit-splash-screen t
       inhibit-startup-echo-area-message t
       initial-scratch-message ""
@@ -160,9 +162,9 @@
 (set-face-attribute 'default nil :height 120 :family "Ubuntu Mono")
 (set-face-attribute 'evil-goggles-delete-face nil :inherit 'diff-removed)
 (set-face-attribute 'evil-goggles-paste-face nil :inherit 'diff-added)
-(set-face-attribute 'evil-goggles-undo-redo-add-face nil :inherit 'diff-added)
-(set-face-attribute 'evil-goggles-undo-redo-change-face nil :inherit 'diff-changed)
-(set-face-attribute 'evil-goggles-undo-redo-remove-face nil :inherit 'diff-removed)
+;(set-face-attribute 'evil-goggles-undo-redo-add-face nil :inherit 'diff-added)
+;(set-face-attribute 'evil-goggles-undo-redo-change-face nil :inherit 'diff-changed)
+;(set-face-attribute 'evil-goggles-undo-redo-remove-face nil :inherit 'diff-removed)
 (set-face-attribute 'evil-goggles-yank-face nil :inherit 'diff-changed)
 (set-face-attribute 'linum-relative-current-face nil :inherit 'linum :background "dim gray" :foreground "white" :underline nil)
 (set-face-attribute 'mode-line-buffer-id-inactive nil :inherit 'mode-line-inactive)

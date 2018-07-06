@@ -25,7 +25,7 @@ then
     antigen bundle zsh-users/zsh-autosuggestions
 
     # Load the theme.
-    antigen theme lambda
+    antigen theme bureau
 
     # Tell antigen that you're done.
     antigen apply

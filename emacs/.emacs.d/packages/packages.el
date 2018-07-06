@@ -415,6 +415,7 @@
 
 (use-package treemacs-evil
   :after treemacs
+  :commands treemacs-toggle
   :ensure t)
 
 (use-package editorconfig
@@ -777,6 +778,12 @@
   :ensure t
   )
 
+(use-package helpful
+  :ensure t
+  :bind (("C-h f" . helpful-callable)
+	 ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)))
+
 ;;;; Optional packages
 
 (use-package flymd
@@ -903,6 +910,16 @@
   :defer t
   :config
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
+(use-package rust-mode
+  :defer t)
+
+(use-package flycheck-rust
+  :defer t
+  :after rust-mode
+  :init
+  (with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
 ;; List of optional packages
 (defvar optional-packages
