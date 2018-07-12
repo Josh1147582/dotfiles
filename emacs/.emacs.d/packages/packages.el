@@ -635,12 +635,18 @@
   :defer t
   :diminish magit-auto-revert-mode
   :config
-  (evil-magit-init))
+  (evil-magit-init)
+  (magit-todos-mode))
 
 (use-package evil-magit
   :if (not (eq system-type 'windows-nt))
   :ensure t
   :commands evil-magit-init)
+
+(use-package magit-todos
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :commands magit-todos-mode)
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
