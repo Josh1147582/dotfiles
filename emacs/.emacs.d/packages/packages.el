@@ -438,10 +438,16 @@
 
 (use-package company
   :ensure t
+  :defer 2
   :diminish company-mode
   :config
   (add-hook 'prog-mode-hook 'company-mode)
-)
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't))
 
 (use-package flycheck
   :ensure t
@@ -908,9 +914,8 @@
   (add-hook 'python-mode-hook 'jedi:setup))
 
 (use-package company-jedi
-  :defer t
-  :init
-  (add-hook 'python-mode-hook '(lambda () (add-to-list 'company-backends 'company-jedi))))
+  :after (company python-mode)
+  :config (add-to-list 'company-backends 'company-jedi))
 
 (use-package py-autopep8
   :defer t
