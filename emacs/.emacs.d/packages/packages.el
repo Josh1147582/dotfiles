@@ -493,6 +493,7 @@
   (setq org-latex-minted-options
     '("breaklines"))
 
+  (add-hook 'org-mode-hook 'visual-line-mode)
   (defun org-variable-toggle-latex-fragment ()
     "Toggle LaTeX fragment, taking into account the current zoom size of the buffer."
     (interactive)
@@ -634,6 +635,16 @@
   "SPC d" "Diff buffer w/ file"))
 
 ;; OS specific
+(use-package magit-todos
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :commands magit-todos-mode)
+
+(use-package evil-magit
+  :if (not (eq system-type 'windows-nt))
+  :ensure t
+  :commands evil-magit-init)
+
 (use-package magit
   :commands magit-status
   :if (not (eq system-type 'windows-nt))
@@ -643,16 +654,6 @@
   :config
   (evil-magit-init)
   (magit-todos-mode))
-
-(use-package evil-magit
-  :if (not (eq system-type 'windows-nt))
-  :ensure t
-  :commands evil-magit-init)
-
-(use-package magit-todos
-  :if (not (eq system-type 'windows-nt))
-  :ensure t
-  :commands magit-todos-mode)
 
 (use-package multi-term
   :if (not (eq system-type 'windows-nt))
@@ -952,6 +953,7 @@
 	jedi
 	company-jedi
 	py-autopep8
+	flymake-php
         ))
 
 (defvar packages-installed-this-session nil)
@@ -983,6 +985,7 @@
 (use-package flymake
   :config
   (use-package flymake-php
+    :ensure t
     :init
     (add-hook 'php-mode-hook 'flymake-php-load)))
 
