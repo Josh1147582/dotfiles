@@ -17,14 +17,9 @@ eval $(dircolors ~/.dircolors)
 # grep the entirety of the history
 alias hg='history | grep'
 
-# Use vim as the default text editor
-export VISUAL=vim
+# Use emacs as the default text editor
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c -a emacs"
 
 # local folder in PATH
 export PATH=$HOME/bin:$PATH
-
-# Terminal Emacs
-alias emacs-term='\emacs -nw --color=no'
-
-# alias for vim muscle memory when quitting
-alias :q='exit'

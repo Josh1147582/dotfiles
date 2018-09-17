@@ -1,10 +1,1 @@
-# apt-get aliases 
-alias update='sudo apt-get update && sudo apt-get dist-upgrade' 
-alias clean='sudo apt-get clean'
-
 alias zork='sudo ttyecho -n /dev/tty7'
-
-export PATH=$PATH:$HOME/bin
-export PATH=$PATH:/home/josh/.local/bin
-
-export EDITOR='emacs-term'

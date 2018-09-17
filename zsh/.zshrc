@@ -1,6 +1,9 @@
 # local zsh config
 source ~/.zshrc.local
 
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/.local/bin
+
 # load antigen if it exists
 if [ -h ~/.antigen.zsh ]
 then
@@ -68,20 +71,14 @@ alias ll='ls -lh --color=auto'
 # Custom ls colors
 eval $(dircolors ~/.dircolors)
 
-# Use vim as the default text editor
-export VISUAL=vim
+# Use emacsclient as the default text editor
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c -a emacs"
 
 # eval used by thefuck
 if hash fuck 2>/dev/null; then
     eval $(thefuck --alias)
 fi
-
-# timestamp alias for dates
-alias ts='date +%y-%m-%d'
-
-# alias for getting latest file in a folder
-alias latest='ls -t | head -n 1'
-
 
 # Home and End keys jump the the beginning/end of the command
 bindkey "^[OH" beginning-of-line
@@ -100,18 +97,6 @@ bindkey ";5D" backward-word
 function cd {
     builtin cd "$@" && ls -F
 }
-
-# Editor defaults
-export EDITOR=emacs
-export VISUAL=emacs
-
-# Terminal Emacs
-alias emacs-term='\emacs -nw'
-
-# Vim and vi bindings
-
-# alias for vim muscle memory when quitting
-alias :q='exit'
 
 function sl_func() {
     # sl - prints a mirror image of ls. (C) 2017 Tobias Girstmair, https://gir.st/, GPLv3
