@@ -31,6 +31,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     typescript
+     html
+     javascript
+     python
+     php
      markdown
      sml
      yaml
