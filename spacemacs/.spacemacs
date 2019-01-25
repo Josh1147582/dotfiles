@@ -65,7 +65,12 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages
+   '(
+     calfw
+     calfw-org
+     org-caldav
+     )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -328,6 +333,23 @@ you should place your code here."
         `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
     (make-directory (concat spacemacs-cache-directory "undo")))
+
+  (require 'calfw)
+  (require 'calfw-org)
+
+  (defun org-agenda-this-buffer ()
+    ;; Automatically jump to a week view of the current buffer.
+    (interactive)
+    (execute-kbd-macro (kbd "<SPC>ma<a")))
+
+  (defun cfw:show-details-command-call ()
+    ;; Lets me call this with RET.
+    (interactive)
+    (execute-kbd-macro (kbd "<SPC>")))
+
+  (evil-define-key 'normal org-mode-map (kbd "<SPC>o") 'org-agenda-this-buffer)
+  (define-key org-agenda-mode-map (kbd "c") 'cfw:open-org-calendar)
+  (define-key cfw:calendar-mode-map (kbd "<RET>") 'cfw:show-details-command-call)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
