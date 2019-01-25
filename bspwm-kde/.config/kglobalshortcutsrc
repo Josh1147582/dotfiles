@@ -2,9 +2,10 @@
 update_info=powerdevil_move_shortcuts.upd:powerdevil_move_shortcuts
 
 [ActivityManager]
-_k_friendly_name=Plasma
+_k_friendly_name=Activity Manager
 switch-to-activity-9cadb9b0-0d32-406b-98a0-66d9e798af45=none,none,
-switch-to-activity-f8c0b0d3-2835-4ec0-92af-f7d313062563=none,none,
+switch-to-activity-c40d4cc6-32ab-4ccc-a51f-5b4c3c9d7b00=none,none,Switch to activity "Default"
+switch-to-activity-f8c0b0d3-2835-4ec0-92af-f7d313062563=none,none,Switch to activity "New"
 
 [KDE Keyboard Layout Switcher]
 Switch to Next Keyboard Layout=Ctrl+Alt+K,none,Switch to Next Keyboard Layout
@@ -35,6 +36,60 @@ _k_friendly_name=KDE Daemon
 {dfb4aba2-b9ba-4be7-a9ac-754a0b0625ef}=Ctrl+#,none,Take Full Screen Screenshot
 
 [kmix]
+Decrease volume  - Bass Speaker, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Capture, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Front, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Headphone Mic Boost, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Headphone Mic, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Headphone, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Headset Mic Boost, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Headset Mic, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - IEC958 2, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - IEC958 3, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - IEC958 4, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - IEC958 5, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - IEC958, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Internal Mic Boost, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Internal Mic, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Master, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - PCM, HDA Intel PCH=none,none,Decrease Volume
+Decrease volume  - Speaker, HDA Intel PCH=none,none,Decrease Volume
+Increase volume  - Bass Speaker, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Capture, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Front, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Headphone Mic Boost, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Headphone Mic, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Headphone, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Headset Mic Boost, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Headset Mic, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - IEC958 2, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - IEC958 3, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - IEC958 4, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - IEC958 5, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - IEC958, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Internal Mic Boost, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Internal Mic, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Master, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - PCM, HDA Intel PCH=none,none,Increase Volume
+Increase volume  - Speaker, HDA Intel PCH=none,none,Increase Volume
+Toggle mute  - Bass Speaker, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Capture, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Front, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Headphone Mic Boost, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Headphone Mic, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Headphone, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Headset Mic Boost, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Headset Mic, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - IEC958 2, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - IEC958 3, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - IEC958 4, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - IEC958 5, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - IEC958, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Internal Mic Boost, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Internal Mic, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Master, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - PCM, HDA Intel PCH=none,none,Toggle Mute
+Toggle mute  - Speaker, HDA Intel PCH=none,none,Toggle Mute
 _k_friendly_name=Audio Volume
 decrease_microphone_volume=Microphone Volume Down,Microphone Volume Down,Decrease Microphone Volume
 decrease_volume=Volume Down,Volume Down,Decrease Volume
@@ -199,7 +254,7 @@ Window to Screen 4=none,none,Window to Screen 4
 Window to Screen 5=none,none,Window to Screen 5
 Window to Screen 6=none,none,Window to Screen 6
 Window to Screen 7=none,none,Window to Screen 7
-_k_friendly_name=KWin
+_k_friendly_name=System Settings Module
 view_actual_size=Meta+0,Meta+0,Actual Size
 view_zoom_in=Meta+=,Meta+=,Zoom In
 view_zoom_out=Meta+-,Meta+-,Zoom Out
