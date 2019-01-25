@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     rust
      typescript
      html
      javascript
@@ -60,7 +61,9 @@ values."
      version-control
      evil-snipe
      latex
-     )
+     (c-c++ :variables
+            c-c++-enable-clang-support t
+            c-c++-default-mode-for-headers 'c++-mode))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -328,6 +331,10 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  (evil-define-minor-mode-key 'normal 'visual-line-mode "j" 'evil-next-visual-line)
+  (evil-define-minor-mode-key 'normal 'visual-line-mode "k" 'evil-previous-visual-line)
+
   (setq undo-tree-auto-save-history t
         undo-tree-history-directory-alist
         `(("." . ,(concat spacemacs-cache-directory "undo"))))
@@ -350,6 +357,13 @@ you should place your code here."
   (evil-define-key 'normal org-mode-map (kbd "<SPC>o") 'org-agenda-this-buffer)
   (define-key org-agenda-mode-map (kbd "c") 'cfw:open-org-calendar)
   (define-key cfw:calendar-mode-map (kbd "<RET>") 'cfw:show-details-command-call)
+
+
+  (defun create-tags (dir-name)
+    "Create tags file."
+    (interactive "DDirectory: ")
+    (eshell-command
+     (format " find %s -type f -regextype sed -regex \".*\\.\\(cpp\\|c\\|h\\)$\" | etags -" dir-name)))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
