@@ -372,6 +372,10 @@ you should place your code here."
 
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  (setq
+   racer-rust-src-path "/home/josh/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"
+   flycheck-rust-cargo-executable "/home/josh/.cargo/bin/cargo"
+   rust-cargo-bin "cargo")
 
   (setq haskell-process-path-ghci "ghci"))
 
