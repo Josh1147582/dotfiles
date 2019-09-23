@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 # Rename a workspace, keeping its current number, so $mod+$num still works.
 # If nothing is given, remove the name.
