@@ -31,6 +31,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     windows-scripts
+     ruby
+     (go
+      :variables go-backend 'go-mode
+      )
      csv
      rust
      typescript
