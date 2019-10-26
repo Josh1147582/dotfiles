@@ -384,8 +384,8 @@ you should place your code here."
    rust-cargo-bin "cargo")
 
   (setq haskell-process-path-ghci "ghci")
-  (with-eval-after-load 'rust-mode
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+  (setq x-select-enable-clipboard-manager nil)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
