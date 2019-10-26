@@ -383,7 +383,10 @@ you should place your code here."
    flycheck-rust-cargo-executable "/home/josh/.cargo/bin/cargo"
    rust-cargo-bin "cargo")
 
-  (setq haskell-process-path-ghci "ghci"))
+  (setq haskell-process-path-ghci "ghci")
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

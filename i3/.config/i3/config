@@ -27,7 +27,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec konsole
+bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -188,6 +188,7 @@ exec --no-startup-id xbacklight -set 12
 
 # System tray/background apps
 exec --no-startup-id nm-applet
+exec --no-startup-id pasystray
 exec --no-startup-id nextcloud
 exec --no-startup-id xfce4-clipman
 exec --no-startup-id discord
@@ -199,4 +200,4 @@ exec --no-startup-id compton
 # On launch apps
 exec --no-startup-id firefox
 
-# exec --no-startup-id feh --bg-scale ~/...
+exec --no-startup-id feh --bg-scale ~/Nextcloud/Backgrounds/garlic-space-green.jpg

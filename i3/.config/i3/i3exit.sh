@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -ex
 lock() {
         $HOME/.config/i3/i3lock/i3lock.sh
 }

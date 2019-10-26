@@ -1,9 +1,6 @@
 # local zsh config
 source ~/.zshrc.local
 
-export PATH=$PATH:$HOME/bin
-export PATH=$PATH:$HOME/.local/bin
-
 # load antigen if it exists
 if [ -h ~/.antigen.zsh ]
 then
