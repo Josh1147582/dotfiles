@@ -1,5 +1,7 @@
 # local zsh config
-source ~/.zshrc.local
+if [ -f ~/.zshrc.local ]; then
+    source ~/.zshrc.local
+fi
 
 # load antigen if it exists
 if [ -h ~/.antigen.zsh ]
