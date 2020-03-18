@@ -374,7 +374,10 @@ you should place your code here."
     "Create tags file."
     (interactive "DDirectory: ")
     (eshell-command
-     (format " find \"%s\" -type f -regextype sed -regex \".*\\.\\(cpp\\|c\\|h\\)$\" | etags -" dir-name)))
+     (format
+      "find \"%s\" -type f -regex \".*\\.[cChH]\\(pp\\)?\" | etags --output=\"%s\" -"
+      dir-name
+      (concat (file-name-as-directory dir-name) "TAGS"))))
 
   (with-eval-after-load 'rust-mode
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
