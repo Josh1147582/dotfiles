@@ -2,7 +2,7 @@
 	path = antigen/.antigen
 	url = https://github.com/zsh-users/antigen
 [submodule "old/vim/.vim/bundle/Vundle.vim"]
-	path = old/vim/.vim/bundle/Vundle.vim
+	path = vim/.vim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim
 [submodule "spacemacs/.emacs.d"]
 	path = spacemacs/.emacs.d

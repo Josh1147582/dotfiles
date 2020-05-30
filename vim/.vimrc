@@ -2,6 +2,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+if isdirectory(expand('~/.vim/bundle/Vundle.vim'))
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -37,6 +38,7 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+endif
 
 
 " space is Leader
@@ -67,24 +69,24 @@ set expandtab " tabs are spaces
 
 """ Numbering
 
-set number " show line numbers
-
-set rnu " show relative line numbers
-
-" toggle relative line nums when focus is gained/lost
-:au FocusLost * :set norelativenumber
-:au FocusGained * :set relativenumber
-
-" map C-n to toggle line nums
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set norelativenumber
-    else
-        set relativenumber
-    endif
-endfunc
-
-nnoremap <Leader>n :call NumberToggle()<CR>
+"set number " show line numbers
+"
+"set rnu " show relative line numbers
+"
+"" toggle relative line nums when focus is gained/lost
+":au FocusLost * :set norelativenumber
+":au FocusGained * :set relativenumber
+"
+"" map C-n to toggle line nums
+"function! NumberToggle()
+"    if(&relativenumber == 1)
+"        set norelativenumber
+"    else
+"        set relativenumber
+"    endif
+"endfunc
+"
+"nnoremap <Leader>n :call NumberToggle()<CR>
 
 
 """ Command menu and Searching

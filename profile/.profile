@@ -35,5 +35,9 @@ pathappend "$HOME/bin"
 pathappend "$HOME/.local/bin"
 pathappend "$HOME/.cargo/bin"
 pathappend "$HOME/.poetry/bin"
+pathappend "/usr/lib/go-1.12/bin"
+pathappend "/usr/local/go/bin"
+pathappend "/usr/sbin"
 
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src/"
+# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src/"
+
