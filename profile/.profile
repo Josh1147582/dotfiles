@@ -16,12 +16,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-if [ -d "$HOME/.pyenv/bin" ]; then
-    PATH="${PATH:+"$PATH:"}$HOME/.pyenv/bin"
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-fi
-
 pathappend() {
     for ARG in "$@"
     do
@@ -31,13 +25,17 @@ pathappend() {
     done
 }
 
-pathappend "$HOME/bin"
-pathappend "$HOME/.local/bin"
-pathappend "$HOME/.cargo/bin"
-pathappend "$HOME/.poetry/bin"
-pathappend "/usr/lib/go-1.12/bin"
-pathappend "/usr/local/go/bin"
-pathappend "/usr/sbin"
+pathappend \
+    "$HOME/bin" \
+    "$HOME/.local/bin" \
+    "$HOME/.cargo/bin" \
+    "$HOME/.poetry/bin" \
+    "$HOME/.pyenv/bin" \
+    "/usr/lib/go-1.12/bin" \
+    "/usr/local/go/bin" \
+    "/usr/sbin"
 
-# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src/"
-
+if [ -d "$HOME/.pyenv/bin" ]; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
