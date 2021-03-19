@@ -16,6 +16,11 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+alias ls='ls --color=auto'
+
+# Custom ls colors
+eval $(dircolors ~/.dircolors)
+
 pathappend() {
     for ARG in "$@"
     do
@@ -31,7 +36,6 @@ pathappend \
     "$HOME/.cargo/bin" \
     "$HOME/.poetry/bin" \
     "$HOME/.pyenv/bin" \
-    "/usr/lib/go-1.12/bin" \
     "/usr/local/go/bin" \
     "/usr/sbin"
 
@@ -39,3 +43,5 @@ if [ -d "$HOME/.pyenv/bin" ]; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
+# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src/"

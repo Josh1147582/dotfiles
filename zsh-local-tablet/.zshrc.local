@@ -1,3 +1,0 @@
-# devkit
-export DEVKITPRO=/mnt/data/devkitPro
-export DEVKITARM=${DEVKITPRO}/devkitARM

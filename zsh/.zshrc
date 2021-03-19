@@ -59,26 +59,6 @@ setopt appendhistory autocd extendedglob nomatch
 # List of word delimeters
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-# ls pleasantness
-alias l='\ls --color=auto'
-alias ls='ls --color=auto'
-alias la='ls -a --color=auto'
-alias lsa='ls -a --color=auto'
-alias lls='ls -lh --color=auto'
-alias ll='ls -lh --color=auto'
-
-# Custom ls colors
-eval $(dircolors ~/.dircolors)
-
-# Use emacsclient as the default text editor
-export EDITOR="emacsclient -t"
-export VISUAL="emacsclient -c -a emacs"
-
-# eval used by thefuck
-if hash fuck 2>/dev/null; then
-    eval $(thefuck --alias)
-fi
-
 # Home and End keys jump the the beginning/end of the command
 bindkey "^[OH" beginning-of-line
 bindkey "^[[H" beginning-of-line
@@ -110,29 +90,3 @@ function sl_func() {
 }
 
 alias sl=sl_func
-
-# vi bindings
-#bindkey -v
-#export KEYTIMEOUT=1
-#
-#bindkey '^P' up-history
-#bindkey '^N' down-history
-#bindkey '^?' backward-delete-char
-#bindkey '^h' backward-delete-char
-#bindkey '^w' backward-kill-word
-#bindkey '^r' history-incremental-search-backward
-#
-#function zle-line-init zle-keymap-select {
-#    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]% %{$reset_color%}"
-#    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-#    zle reset-prompt
-#}
-#function zle-line-finish {
-#    VIM_PROMPT=""
-#    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-#    zle reset-prompt
-#}
-#RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/} $EPS1"
-#
-#zle -N zle-line-init
-#zle -N zle-keymap-select

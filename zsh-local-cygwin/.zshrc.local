@@ -1,5 +1,0 @@
-# Used for X forwarding in Cygwin
-if [[ "$(uname -o)" != "GNU/Linux" ]]; then
-    DISPLAY=:1.0
-fi
-
