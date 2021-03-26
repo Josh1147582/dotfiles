@@ -1,8 +1,0 @@
-#!/bin/sh
-#
-# Start a KDE session with the bspwm tiling window manager
-#
-
-export KDEWM='/usr/bin/i3'
-
-exec startkde "$@"

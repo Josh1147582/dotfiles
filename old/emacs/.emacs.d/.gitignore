@@ -1,6 +1,0 @@
-*
-!.gitignore
-!init.el
-!emacs-client.desktop
-!packages/
-!packages/*
